@@ -18,7 +18,7 @@ namespace SsidSpy.Tests
                 CupType = 1,
                 Color = Models.Color.Black
             };
-            for (int i = 0; i <= 10; i++)
+            for (int i = 1; i <= 10; i++)
             {
                 cup.Drink();
             }
