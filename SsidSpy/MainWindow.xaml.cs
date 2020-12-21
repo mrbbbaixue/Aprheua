@@ -23,6 +23,9 @@ namespace SsidSpy
         public MainWindow()
         {
             InitializeComponent();
+
         }
+
     }
+
 }
