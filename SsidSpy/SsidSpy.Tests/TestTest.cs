@@ -10,5 +10,19 @@ namespace SsidSpy.Tests
         {
             Assert.IsTrue(true);
         }
+
+        [TestMethod]
+        public void ±­×Ó±»ºÈ¿ÕÁË()
+        {
+            var cup = new SsidSpy.Models.Cup {
+                CupType = 1,
+                Color = Models.Color.Black
+            };
+            for (int i = 0; i <= 10; i++)
+            {
+                cup.Drink();
+            }
+            Assert.AreEqual(cup.Percent(),0);
+        }
     }
 }

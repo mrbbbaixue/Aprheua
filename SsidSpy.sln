@@ -5,7 +5,10 @@ VisualStudioVersion = 16.0.30717.126
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SsidSpy", "SsidSpy\SsidSpy.csproj", "{F8F26D75-ABC8-4EDA-9EE5-00A731BE7550}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SsidSpy.Tests", "SsidSpy\SsidSpy.Tests\SsidSpy.Tests.csproj", "{6D518412-6431-4A52-A0C0-DB5F7AAB34DB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SsidSpy.Tests", "SsidSpy\SsidSpy.Tests\SsidSpy.Tests.csproj", "{6D518412-6431-4A52-A0C0-DB5F7AAB34DB}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F8F26D75-ABC8-4EDA-9EE5-00A731BE7550} = {F8F26D75-ABC8-4EDA-9EE5-00A731BE7550}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
