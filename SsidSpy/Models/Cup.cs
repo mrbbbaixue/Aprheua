@@ -6,33 +6,33 @@ using System.Threading.Tasks;
 
 namespace SsidSpy.Models
 {
-    public class Cup
+    public class 杯子
     {
-        public Color Color { get; set; }
-        public int CupType { get; set; }
+        public 颜色 杯子颜色 { get; set; }
+        public int 杯子类型 { get; set; }
 
-        private float _percent;
-        public Cup()
+        private float _水量;
+        public 杯子()
         {
-            _percent = 100;
+            _水量 = 100;
         }
-        public float Percent()
+        public float 水量()
         {
-            return _percent;
+            return _水量;
         }
 
-        public void Drink()
+        public void 被喝一口()
         {
-            _percent -= 10;
+            _水量 -= 10;
         }
     }
 
-    public enum Color
+    public enum 颜色
     {
-        Black,
-        Blue,
-        Pink,
-        Red,
-        White
+        黑色,
+        白色,
+        粉色,
+        蓝色,
+        黄色
     }
 }

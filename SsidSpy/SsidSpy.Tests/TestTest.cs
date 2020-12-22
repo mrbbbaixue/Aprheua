@@ -12,17 +12,18 @@ namespace SsidSpy.Tests
         }
 
         [TestMethod]
-        public void 杯子被喝空了()
+        public void 杯子被喝空了吗()
         {
-            var cup = new SsidSpy.Models.Cup {
-                CupType = 1,
-                Color = Models.Color.Black
+            var 我的水杯 = new SsidSpy.Models.杯子 {
+                杯子类型 = 1,
+                杯子颜色 = Models.颜色.粉色
             };
             for (int i = 1; i <= 10; i++)
             {
-                cup.Drink();
+                我的水杯.被喝一口();
             }
-            Assert.AreEqual(cup.Percent(),0);
+            Assert.AreEqual(我的水杯.水量(),0);
         }
     }
 }
+    

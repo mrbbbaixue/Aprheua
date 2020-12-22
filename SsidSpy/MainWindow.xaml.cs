@@ -23,9 +23,14 @@ namespace SsidSpy
         public MainWindow()
         {
             InitializeComponent();
-
+            Console.WriteLine("初始化了MainWindow ");
         }
 
+        public void 输出李敏杰是傻逼()
+        {
+            Console.WriteLine("李敏杰是傻逼!");
+            return;
+        }
     }
 
 }

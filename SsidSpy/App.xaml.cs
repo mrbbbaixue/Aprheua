@@ -15,10 +15,12 @@ namespace SsidSpy
     {
         private void Application_Startup(object sender, StartupEventArgs e)
         {
+            
             var window = new MainWindow();
             window.Show();
             Console.WriteLine("王卜言大傻逼。");
             Console.WriteLine("王陈昊是大傻逼");
+            window.输出李敏杰是傻逼();
         }
     }
 }
