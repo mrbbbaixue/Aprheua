@@ -1,0 +1,20 @@
+﻿<hc:GlowWindow x:Class="OpenCVSharper.MainWindow"
+        xmlns:hc="https://handyorg.github.io/handycontrol"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:OpenCVSharper"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="720" Width="1280"
+        Style="{StaticResource WindowGlow}"
+        ActiveGlowColor="{DynamicResource PrimaryColor}"
+        ShowNonClientArea="True"
+        NonClientAreaBackground="Transparent"
+        Loaded="Window_Loaded">
+    <!--HandyControl-->
+    <Grid>
+        <Image x:Name="srcImage" HorizontalAlignment="Left" Margin="10,10,0,0" Width="360" Height="360" VerticalAlignment="Top"/>
+        <Image x:Name="dstImage" HorizontalAlignment="Left" Margin="375,10,0,128" Width="552"/>
+    </Grid>
+</hc:GlowWindow>
