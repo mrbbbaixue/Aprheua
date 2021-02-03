@@ -11,9 +11,9 @@
                Height="800" Width="1280"
                WindowStartupLocation="CenterScreen"
                BorderThickness="0"
-               ActiveGlowColor="{StaticResource DangerColor}"
-               InactiveGlowColor="{StaticResource DarkDangerColor}"
-               NonClientAreaBackground="{StaticResource DangerBrush}"
+               ActiveGlowColor="{StaticResource PrimaryColor}"
+               InactiveGlowColor="{StaticResource DarkPrimaryColor}"
+               NonClientAreaBackground="{StaticResource PrimaryBrush}"
                NonClientAreaForeground="White"
                CloseButtonForeground="White"
                OtherButtonForeground="White"
@@ -30,7 +30,7 @@
                 Margin="20,20,0,0"
                 Height="30"
                 Width="120"
-                Style="{StaticResource ButtonDanger}"
+                Style="{StaticResource ButtonPrimary}"
                 Foreground="White"
                 Content="导入图像"
                 FontSize="12"
@@ -39,7 +39,18 @@
                 hc:IconElement.Height="14"
                 hc:IconElement.Width="14"
                 />
-            <ListBox Margin="20,55,0,45"/>
+            <ListBox Margin="20,55,0,45"
+                     Style="{StaticResource ListBoxCustom}"
+                     >
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <DockPanel LastChildFill="True">
+                            <Image></Image>
+                            <TextBlock Padding="10" Text="{Binding Name}"></TextBlock>
+                        </DockPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
             <CheckBox x:Name="selectAllCheckBox"
                       Margin="20,0,0,20"
                       Height="20"
@@ -56,7 +67,7 @@
                 Margin="0,20,0,0"
                 Height="30"
                 Width="140"
-                Style="{StaticResource ButtonDanger}"
+                Style="{StaticResource ButtonPrimary}"
                 Foreground="White"
                 Content="开始分析"
                 FontSize="14"
@@ -75,7 +86,7 @@
                 Margin="0,20,20,0"
                 Height="30"
                 Width="120"
-                Style="{StaticResource ButtonDanger}"
+                Style="{StaticResource ButtonPrimary}"
                 Foreground="White"
                 Content="导出结果"
                 FontSize="12"
