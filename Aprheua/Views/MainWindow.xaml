@@ -1,12 +1,13 @@
-﻿<hc:GlowWindow x:Class="Aprheua.Views.MainWindow"
+﻿<hc:GlowWindow
                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                xmlns:local="clr-namespace:Aprheua"
                xmlns:hc="https://handyorg.github.io/handycontrol"
+               xmlns:ViewModels="clr-namespace:Aprheua.ViewModels" x:Class="Aprheua.Views.MainWindow"
                mc:Ignorable="d"
-               Title="Aprheua - 脸谱分割展示程序" 
+               Title="{Binding WindowTitle}" 
                x:Name="mainWindow"
                Height="800" Width="1280"
                WindowStartupLocation="CenterScreen"
@@ -19,7 +20,7 @@
                OtherButtonForeground="White"
                OtherButtonHoverForeground="White"
                Topmost="true"
-               >
+               Loaded="mainWindow_Loaded">
     <Grid x:Name="mainGrid">
         <Grid x:Name="leftGrid" HorizontalAlignment="Left" Width="250">
             <Button x:Name="importButton"
@@ -39,14 +40,16 @@
                 hc:IconElement.Height="14"
                 hc:IconElement.Width="14"
                 />
-            <ListBox Margin="20,55,0,45"
-                     Style="{StaticResource ListBoxCustom}"
+            <ListBox x:Name="imagesListBox"
+                     Margin="20,55,0,45"
+                     Style="{StaticResource ListBoxBaseStyle}"
+                     ItemsSource="{Binding SourceImages}"
                      >
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <DockPanel LastChildFill="True">
-                            <Image></Image>
-                            <TextBlock Padding="10" Text="{Binding Name}"></TextBlock>
+                            <Image Source="{Binding Path}" Height="50" Width="50" RenderOptions.BitmapScalingMode="LowQuality"/>
+                            <TextBlock Padding="10" Text="{Binding Name}"/>
                         </DockPanel>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
@@ -59,7 +62,7 @@
                       Content="全选"/>
         </Grid>
         <Grid x:Name="centerGrid" Margin="255,0">
-            <Button x:Name="AnalyseButton"
+            <Button x:Name="analyseButton"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Top"
                 HorizontalContentAlignment="Center"
