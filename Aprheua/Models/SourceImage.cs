@@ -12,6 +12,5 @@ namespace Aprheua.Models
         public string Path { get; set; }
         public string Name { get; set; }
         public int NumberOfBlocks { get; set; }
-        
     }
 }
