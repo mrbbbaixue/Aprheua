@@ -20,7 +20,7 @@
                OtherButtonForeground="White"
                OtherButtonHoverForeground="White"
                Topmost="true"
-               Loaded="mainWindow_Loaded">
+               >
     <Grid x:Name="mainGrid">
         <Grid x:Name="leftGrid" HorizontalAlignment="Left" Width="250">
             <Button x:Name="importButton"
@@ -39,6 +39,7 @@
                 hc:IconElement.Geometry="{StaticResource DownloadGeometry}"
                 hc:IconElement.Height="14"
                 hc:IconElement.Width="14"
+                Command="{Binding ImportCommand}"
                 />
             <ListBox x:Name="imagesListBox"
                      Margin="20,55,0,45"

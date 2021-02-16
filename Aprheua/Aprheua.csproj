@@ -104,6 +104,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DelegateCommand.cs" />
     <Compile Include="Models\SourceImage.cs" />
     <Compile Include="ViewModels\MainWindow.cs" />
     <Compile Include="ViewModels\NotificationObject.cs" />

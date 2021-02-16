@@ -26,15 +26,5 @@ namespace Aprheua.Views
             InitializeComponent();
             DataContext = new ViewModels.MainWindow();
         }
-        private void mainWindow_Loaded(object sender, RoutedEventArgs e)
-        {
-            var sourceImage = new Models.SourceImage
-            {
-                Path = @"E:\GitHub\Hi-Icy\Aprheua\2.jpg",
-                Name = $"Test2.jpg"
-            };
-            MainWindowViewModel.SourceImages.Add(sourceImage);
-            MainWindowViewModel.SourceImages.Add(sourceImage);
-        }
     }
 }
