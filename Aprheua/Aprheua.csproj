@@ -106,6 +106,7 @@
     </Compile>
     <Compile Include="DelegateCommand.cs" />
     <Compile Include="Models\SourceImage.cs" />
+    <Compile Include="Models\Utility.cs" />
     <Compile Include="ViewModels\MainWindow.cs" />
     <Compile Include="ViewModels\NotificationObject.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">

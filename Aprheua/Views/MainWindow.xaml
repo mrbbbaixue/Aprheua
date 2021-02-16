@@ -19,7 +19,6 @@
                CloseButtonForeground="White"
                OtherButtonForeground="White"
                OtherButtonHoverForeground="White"
-               Topmost="true"
                >
     <Grid x:Name="mainGrid">
         <Grid x:Name="leftGrid" HorizontalAlignment="Left" Width="250">
@@ -49,7 +48,7 @@
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <DockPanel LastChildFill="True">
-                            <Image Source="{Binding Path}" Height="50" Width="50" RenderOptions.BitmapScalingMode="LowQuality"/>
+                            <Image Source="{Binding ThumbImagePath}" Height="50" Width="50" RenderOptions.BitmapScalingMode="LowQuality"/>
                             <TextBlock Padding="10" Text="{Binding Name}"/>
                         </DockPanel>
                     </DataTemplate>
