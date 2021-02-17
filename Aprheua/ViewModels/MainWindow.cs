@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media.Imaging;
 using Aprheua.Commands;
 
 namespace Aprheua.ViewModels
@@ -20,6 +21,16 @@ namespace Aprheua.ViewModels
             {
                 _windowTitle = value;
                 this.RaisePropertyChanged("WindowTitle");
+            }
+        }
+        private Models.SourceImage _selectedImage;
+        public Models.SourceImage SelectedImage
+        {
+            get { return _selectedImage; }
+            set
+            {
+                _selectedImage = value;
+                this.RaisePropertyChanged("SelectedImage");
             }
         }
         public ObservableCollection<Models.SourceImage> SourceImages { get; set; }
@@ -44,7 +55,8 @@ namespace Aprheua.ViewModels
                     var sourceImage = new Models.SourceImage
                     {
                         Path = Path.GetFullPath(path),
-                        Name = Path.GetFileName(path)
+                        Name = Path.GetFileName(path),
+                        NumberOfBlocks = 0
                     };
                     sourceImage.GenerateThumbImage();
                     //ToDo : 或许有优化空间？
@@ -58,6 +70,7 @@ namespace Aprheua.ViewModels
         {
             //Datas
             WindowTitle = $"Aprheua 脸谱分割展示程序 - {Environment.CurrentDirectory}";
+            SelectedImage = new Models.SourceImage { };
             SourceImages = new ObservableCollection<Models.SourceImage> { };
             //Commands
             ImportCommand = new DelegateCommand(new Action<object>(Import));

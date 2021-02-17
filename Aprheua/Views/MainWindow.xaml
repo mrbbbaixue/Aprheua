@@ -1,4 +1,4 @@
-﻿<hc:GlowWindow
+﻿<hc:GlowWindow x:Name="mainWindow"
                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -7,8 +7,7 @@
                xmlns:hc="https://handyorg.github.io/handycontrol"
                xmlns:ViewModels="clr-namespace:Aprheua.ViewModels" x:Class="Aprheua.Views.MainWindow"
                mc:Ignorable="d"
-               Title="{Binding WindowTitle}" 
-               x:Name="mainWindow"
+               Title="{Binding WindowTitle}"  
                Height="800" Width="1280"
                WindowStartupLocation="CenterScreen"
                BorderThickness="0"
@@ -19,38 +18,57 @@
                CloseButtonForeground="White"
                OtherButtonForeground="White"
                OtherButtonHoverForeground="White"
+               Background="White"
                >
     <Grid x:Name="mainGrid">
         <Grid x:Name="leftGrid" HorizontalAlignment="Left" Width="250">
             <Button x:Name="importButton"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                HorizontalContentAlignment="Center"
-                VerticalContentAlignment="Center"
-                Margin="20,20,0,0"
-                Height="30"
-                Width="120"
-                Style="{StaticResource ButtonPrimary}"
-                Foreground="White"
-                Content="导入图像"
-                FontSize="12"
-                hc:BorderElement.CornerRadius="2"
-                hc:IconElement.Geometry="{StaticResource DownloadGeometry}"
-                hc:IconElement.Height="14"
-                hc:IconElement.Width="14"
-                Command="{Binding ImportCommand}"
-                />
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Margin="20,20,0,0"
+                    Height="30"
+                    Width="120"
+                    Style="{StaticResource ButtonPrimary}"
+                    Foreground="White"
+                    Content="导入图像"
+                    FontSize="12"
+                    hc:BorderElement.CornerRadius="2"
+                    hc:IconElement.Geometry="{StaticResource DownloadGeometry}"
+                    hc:IconElement.Height="14"
+                    hc:IconElement.Width="14"
+                    Command="{Binding ImportCommand}"
+                    />
             <ListBox x:Name="imagesListBox"
                      Margin="20,55,0,45"
                      Style="{StaticResource ListBoxBaseStyle}"
                      ItemsSource="{Binding SourceImages}"
+                     SelectedItem="{Binding SelectedImage}"
+                     SelectionMode="Extended"
                      >
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <DockPanel LastChildFill="True">
-                            <Image Source="{Binding ThumbImagePath}" Height="50" Width="50" RenderOptions.BitmapScalingMode="LowQuality"/>
-                            <TextBlock Padding="10" Text="{Binding Name}"/>
-                        </DockPanel>
+                        <Grid>
+                            <Image Source="{Binding ThumbImagePath}"
+                                   Height="50"
+                                   Width="50"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Center"
+                                   RenderOptions.BitmapScalingMode="LowQuality"
+                                   />
+                            <TextBlock Text="{Binding Name}"
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Top"
+                                       Margin="60,5,0,0"
+                                       FontSize="14"
+                                       />
+                            <TextBlock Text="{Binding NumberOfBlocks, StringFormat={}{0}个分割块}"
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Top"
+                                       Margin="60,30,0,0"
+                                       />
+                        </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
@@ -63,22 +81,27 @@
         </Grid>
         <Grid x:Name="centerGrid" Margin="255,0">
             <Button x:Name="analyseButton"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Top"
-                HorizontalContentAlignment="Center"
-                VerticalContentAlignment="Center"
-                Margin="0,20,0,0"
-                Height="30"
-                Width="140"
-                Style="{StaticResource ButtonPrimary}"
-                Foreground="White"
-                Content="开始分析"
-                FontSize="14"
-                hc:BorderElement.CornerRadius="2"
-                hc:IconElement.Geometry="{StaticResource AskGeometry}"
-                hc:IconElement.Height="15"
-                hc:IconElement.Width="15"
-                />
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Top"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Margin="0,20,0,0"
+                    Height="30"
+                    Width="140"
+                    Style="{StaticResource ButtonPrimary}"
+                    Foreground="White"
+                    Content="开始分析"
+                    FontSize="14"
+                    hc:BorderElement.CornerRadius="2"
+                    hc:IconElement.Geometry="{StaticResource AskGeometry}"
+                    hc:IconElement.Height="15"
+                    hc:IconElement.Width="15"
+                    />
+            <hc:ImageViewer x:Name="imageViewer"
+                            Background="White"
+                            Margin="0,55,0,45"
+                            ImageSource = "{Binding SelectedImage.Path}"
+                            />
         </Grid>
         <Grid x:Name="rightGrid" HorizontalAlignment="Right" Width="250">
             <Button x:Name="exportButton"

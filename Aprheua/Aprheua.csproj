@@ -104,7 +104,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DelegateCommand.cs" />
+    <Compile Include="Commands.cs" />
     <Compile Include="Models\SourceImage.cs" />
     <Compile Include="Models\Utility.cs" />
     <Compile Include="ViewModels\MainWindow.cs" />

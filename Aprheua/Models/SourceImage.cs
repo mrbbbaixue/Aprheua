@@ -18,7 +18,7 @@ namespace Aprheua.Models
         public void GenerateThumbImage()
         {
             var thumbImage = new ThumbImage(Path);
-            thumbImage.GetReducedImage(0.1,ThumbImagePath);
+            thumbImage.GetReducedImage(0.15,ThumbImagePath);
         }
     }
 }
