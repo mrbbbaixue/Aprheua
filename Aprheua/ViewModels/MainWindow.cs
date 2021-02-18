@@ -24,7 +24,7 @@ namespace Aprheua.ViewModels
             }
         }
 
-        public string _imageViewerSource;
+        private string _imageViewerSource;
         public string ImageViewerSource
         {
             get { return _imageViewerSource; }
@@ -37,15 +37,16 @@ namespace Aprheua.ViewModels
         #endregion
 
         #region 数据 Datas
-        public ObservableCollection<Models.SourceImage> SourceImages { get; set; }
-        public List<Models.SourceImage> SelectedImages { get; set; }
+        public ObservableCollection<Models.OriginImage> SourceImages { get; set; }
+        public List<Models.OriginImage> SelectedImages { get; set; }
+        //ToDo : 或许可以优化,不要用SelectedImages来承载，而直接对SourceImages进行修改
         #endregion
 
         #region 命令 Commands
         public DelegateCommand ImportCommand { get; set; }
         public void Import(object parameter)
         {
-            string[] paths = { };
+            string[] paths;
             //打开文件（允许多选）
             var dialog = new Microsoft.Win32.OpenFileDialog
             {
@@ -58,14 +59,14 @@ namespace Aprheua.ViewModels
                 paths = dialog.FileNames; 
                 foreach (string path in paths)
                 {
-                    var sourceImage = new Models.SourceImage
+                    var sourceImage = new Models.OriginImage
                     {
                         Path = Path.GetFullPath(path),
                         Name = Path.GetFileName(path),
                         NumberOfBlocks = 0
                     };
                     sourceImage.GenerateThumbImage();
-                    //ToDo : 或许有优化空间？
+                    //ToDo : （低优先级）或许有优化空间？在SourceImages里采用Async Task
                     SourceImages.Add(sourceImage);
                 }
             }
@@ -80,11 +81,12 @@ namespace Aprheua.ViewModels
         {
             #region 变量 Variables
             WindowTitle = $"Aprheua 脸谱分割展示程序 - {Environment.CurrentDirectory}";
+            ImageViewerSource = "";
             #endregion
 
             #region 数据 Datas
-            SourceImages = new ObservableCollection<Models.SourceImage> { };
-            SelectedImages = new List<Models.SourceImage> { };
+            SourceImages = new ObservableCollection<Models.OriginImage> { };
+            SelectedImages = new List<Models.OriginImage> { };
             #endregion
 
             #region 命令 Commands

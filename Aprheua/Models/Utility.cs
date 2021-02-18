@@ -12,8 +12,8 @@ namespace Aprheua.Models
 {
     public class LogWriter
     {
-        private string _logFilePath;
-        //ToDo : 初始化streamwriter
+        private readonly string _logFilePath;
+        //ToDo : （交给王卜言了）初始化streamwriter
         public LogWriter(string logfilePath)
         {
             _logFilePath = logfilePath;
@@ -67,6 +67,8 @@ namespace Aprheua.Models
         {
             return false;
         }
+
+        //ToDo : （低优先级）增加重载，保持比例缩放到指定大小
 
         /// <summary>   
         /// 生成缩略图方法，返回缩略图的Image对象   

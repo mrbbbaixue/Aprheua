@@ -102,7 +102,7 @@
             <hc:ImageViewer x:Name="imageViewer"
                             Background="White"
                             Margin="0,55,0,45"
-                            
+                            ImageSource="{Binding ImageViewerSource}"
                             />
         </Grid>
         <Grid x:Name="rightGrid" HorizontalAlignment="Right" Width="250">

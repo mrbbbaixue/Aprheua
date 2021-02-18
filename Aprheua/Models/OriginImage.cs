@@ -9,7 +9,7 @@ using OpenCvSharp;
 
 namespace Aprheua.Models
 {
-    public class SourceImage
+    public class OriginImage
     {
         public string Path { get; set; }
         public string ThumbImagePath => System.IO.Path.Combine(App.AprheuaTempThumbImages,$"thumb-{Name}.jpg");
