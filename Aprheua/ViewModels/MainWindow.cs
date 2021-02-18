@@ -24,22 +24,40 @@ namespace Aprheua.ViewModels
             }
         }
 
-        private string _imageViewerSource;
-        public string ImageViewerSource
+        private Models.OriginImage _selectedImage;
+        public Models.OriginImage SelectedImage
         {
-            get { return _imageViewerSource; }
+            get { return _selectedImage; }
             set
             {
-                _imageViewerSource = value;
-                this.RaisePropertyChanged("ImageViewerSource");
+                _selectedImage = value;
+                this.RaisePropertyChanged("SelectedImage");
+            }
+        }
+
+        private bool _selectAllCheckBoxIsChecked;
+        public bool SelectAllCheckBoxIsChecked
+        {
+            get { return _selectAllCheckBoxIsChecked; }
+            set
+            {
+                _selectAllCheckBoxIsChecked = value;
+                this.RaisePropertyChanged("SelectAllCheckBoxIsChecked");
             }
         }
         #endregion
 
         #region 数据 Datas
-        public ObservableCollection<Models.OriginImage> SourceImages { get; set; }
-        public List<Models.OriginImage> SelectedImages { get; set; }
-        //ToDo : 或许可以优化,不要用SelectedImages来承载，而直接对SourceImages进行修改
+        public ObservableCollection<Models.OriginImage> _sourceImages;
+        public ObservableCollection<Models.OriginImage> SourceImages
+        {
+            get { return _sourceImages; }
+            set
+            {
+                _sourceImages = value;
+                this.RaisePropertyChanged("SourceImages");
+            }
+        }
         #endregion
 
         #region 命令 Commands
@@ -59,14 +77,7 @@ namespace Aprheua.ViewModels
                 paths = dialog.FileNames; 
                 foreach (string path in paths)
                 {
-                    var sourceImage = new Models.OriginImage
-                    {
-                        Path = Path.GetFullPath(path),
-                        Name = Path.GetFileName(path),
-                        NumberOfBlocks = 0
-                    };
-                    sourceImage.GenerateThumbImage();
-                    //ToDo : （低优先级）或许有优化空间？在SourceImages里采用Async Task
+                    var sourceImage = new Models.OriginImage(path);
                     SourceImages.Add(sourceImage);
                 }
             }
@@ -74,6 +85,15 @@ namespace Aprheua.ViewModels
         #endregion
 
         #region 事件 Events
+        public DelegateCommand SelectAllCheckBoxClickEvent { get; set; }
+        public void SelectAllCheckBoxClick(object parameter)
+        {
+            foreach(var sourceImage in SourceImages)
+            {
+                sourceImage.IsSelected = SelectAllCheckBoxIsChecked;
+                Console.WriteLine($"{sourceImage.Name} {sourceImage.IsSelected}");
+            }
+        }
 
         #endregion
 
@@ -81,20 +101,20 @@ namespace Aprheua.ViewModels
         {
             #region 变量 Variables
             WindowTitle = $"Aprheua 脸谱分割展示程序 - {Environment.CurrentDirectory}";
-            ImageViewerSource = "";
+            SelectedImage = new Models.OriginImage(Path.Combine(Path.Combine(Environment.CurrentDirectory,"resources"), "default-SelectedImage.png"));
+            SelectAllCheckBoxIsChecked = false;
             #endregion
 
             #region 数据 Datas
             SourceImages = new ObservableCollection<Models.OriginImage> { };
-            SelectedImages = new List<Models.OriginImage> { };
             #endregion
 
             #region 命令 Commands
             ImportCommand = new DelegateCommand(new Action<object>(Import));
             #endregion
 
-            #region 事件 Evnets
-
+            #region 事件 Events
+            SelectAllCheckBoxClickEvent = new DelegateCommand(new Action<object>(SelectAllCheckBoxClick));
             #endregion
         }
     }

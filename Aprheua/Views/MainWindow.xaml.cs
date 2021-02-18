@@ -21,22 +21,12 @@ namespace Aprheua.Views
     /// </summary>
     public partial class MainWindow : HandyControl.Controls.GlowWindow
     {
-        private ViewModels.MainWindow MainWindowData { get; set; }
+        private ViewModels.MainWindow MainWindowViewModel { get; set; }
         public MainWindow()
         {
             InitializeComponent();
-            MainWindowData = new ViewModels.MainWindow();
-            DataContext = MainWindowData;
+            MainWindowViewModel = new ViewModels.MainWindow();
+            DataContext = MainWindowViewModel;
         }
-        private void ImagesListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            //把IList转换至SelectImages并修改ViewModel中的属性，由各自属性通知Views
-            //又耦合了，SingleWayBinding居然不能支持SelectedItems
-            System.Collections.IList items = (System.Collections.IList)this.imagesListBox.SelectedItems;
-            var collection = items.Cast<Aprheua.Models.OriginImage>();
-            MainWindowData.SelectedImages = collection.ToList();
-            MainWindowData.ImageViewerSource = MainWindowData.SelectedImages.FirstOrDefault().Path;
-        }
-
     }
 }

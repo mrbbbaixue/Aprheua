@@ -21,9 +21,10 @@
                OtherButtonHoverForeground="White"
                Background="White"
                d:DataContext="{d:DesignInstance Type=viewmodels:MainWindow}"
+               Topmost="True"
                >
     <Grid x:Name="mainGrid">
-        <Grid x:Name="leftGrid" HorizontalAlignment="Left" Width="250">
+        <Grid x:Name="leftGrid" HorizontalAlignment="Left" Width="300">
             <Button x:Name="importButton"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
@@ -46,42 +47,59 @@
                      Margin="20,55,0,45"
                      Style="{StaticResource ListBoxBaseStyle}"
                      ItemsSource="{Binding SourceImages}"
-                     SelectionChanged="ImagesListBox_SelectionChanged"
-                     SelectionMode="Extended"
+                     SelectedItem="{Binding SelectedImage}"
                      >
+                <i:Interaction.Triggers>
+                    
+                </i:Interaction.Triggers>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Grid>
+                            <CheckBox IsChecked="{Binding IsSelected}"
+                                      Height="20"
+                                      Width="20"
+                                      HorizontalAlignment="Left"
+                                      VerticalAlignment="Center"
+                                      />
                             <Image Source="{Binding ThumbImagePath}"
                                    Height="50"
                                    Width="50"
                                    HorizontalAlignment="Left"
                                    VerticalAlignment="Center"
+                                   Margin="30,0,0,0"
                                    RenderOptions.BitmapScalingMode="LowQuality"
                                    />
                             <TextBlock Text="{Binding Name}"
                                        HorizontalAlignment="Left"
                                        VerticalAlignment="Top"
-                                       Margin="60,5,0,0"
+                                       Margin="90,5,0,0"
                                        FontSize="14"
                                        />
                             <TextBlock Text="{Binding NumberOfBlocks, StringFormat={}{0}个分割块}"
                                        HorizontalAlignment="Left"
                                        VerticalAlignment="Top"
-                                       Margin="60,30,0,0"
+                                       Margin="90,30,0,0"
                                        />
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
             <CheckBox x:Name="selectAllCheckBox"
-                      Margin="20,0,0,20"
+                      Margin="30,0,0,20"
                       Height="20"
+                      Content="全选"
                       VerticalAlignment="Bottom"
                       HorizontalAlignment="Left"
-                      Content="全选"/>
+                      IsChecked="{Binding SelectAllCheckBoxIsChecked}"
+                      >
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click">
+                        <i:InvokeCommandAction Command="{Binding SelectAllCheckBoxClickEvent}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </CheckBox>
         </Grid>
-        <Grid x:Name="centerGrid" Margin="255,0">
+        <Grid x:Name="centerGrid" Margin="305,0">
             <Button x:Name="analyseButton"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Top"
@@ -102,14 +120,15 @@
             <hc:ImageViewer x:Name="imageViewer"
                             Background="White"
                             Margin="0,55,0,45"
-                            ImageSource="{Binding ImageViewerSource}"
+                            ImageSource="{Binding SelectedImage.Path}"
                             />
+            <!-- ToDo: 不能这样写，要和showBlockOverlayCheckBox有关-->
             <CheckBox x:Name="showBlockOverlayCheckBox"
                       Margin="0,0,0,20"
                       Height="20"
                       VerticalAlignment="Bottom"
                       HorizontalAlignment="Left"
-                      Content="分割块覆盖显示"/>
+                      Content="显示分割块"/>
         </Grid>
         <Grid x:Name="rightGrid" HorizontalAlignment="Right" Width="250">
             <Button x:Name="exportButton"

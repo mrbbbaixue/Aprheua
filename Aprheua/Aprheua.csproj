@@ -154,4 +154,7 @@
     </PropertyGroup>
     <Error Condition="!Exists('packages\OpenCvSharp4.runtime.win.4.5.1.20210210\build\net\OpenCvSharp4.runtime.win.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\OpenCvSharp4.runtime.win.4.5.1.20210210\build\net\OpenCvSharp4.runtime.win.props'))" />
   </Target>
+  <PropertyGroup>
+    <PreBuildEvent>xcopy /y /e "$(SolutionDir)..\3rd-party\." "$(TargetDir)"</PreBuildEvent>
+  </PropertyGroup>
 </Project>
