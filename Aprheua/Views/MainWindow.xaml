@@ -104,6 +104,12 @@
                             Margin="0,55,0,45"
                             ImageSource="{Binding ImageViewerSource}"
                             />
+            <CheckBox x:Name="showBlockOverlayCheckBox"
+                      Margin="0,0,0,20"
+                      Height="20"
+                      VerticalAlignment="Bottom"
+                      HorizontalAlignment="Left"
+                      Content="分割块覆盖显示"/>
         </Grid>
         <Grid x:Name="rightGrid" HorizontalAlignment="Right" Width="250">
             <Button x:Name="exportButton"
