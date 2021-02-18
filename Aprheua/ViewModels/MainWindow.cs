@@ -12,7 +12,7 @@ namespace Aprheua.ViewModels
 {
     public class MainWindow : NotificationObject
     {
-        //Datas
+        #region 变量 Variables
         private string _windowTitle;
         public string WindowTitle 
         { 
@@ -23,6 +23,7 @@ namespace Aprheua.ViewModels
                 this.RaisePropertyChanged("WindowTitle");
             }
         }
+
         private Models.SourceImage _selectedImage;
         public Models.SourceImage SelectedImage
         {
@@ -33,9 +34,14 @@ namespace Aprheua.ViewModels
                 this.RaisePropertyChanged("SelectedImage");
             }
         }
-        public ObservableCollection<Models.SourceImage> SourceImages { get; set; }
+        #endregion
 
-        //Commands
+        #region 数据 Datas
+        public ObservableCollection<Models.SourceImage> SourceImages { get; set; }
+        public ObservableCollection<Models.SourceImage> SelectedImages { get; set; }
+        #endregion
+
+        #region 命令 Commands
         public DelegateCommand ImportCommand { get; set; }
         public void Import(object parameter)
         {
@@ -64,16 +70,35 @@ namespace Aprheua.ViewModels
                 }
             }
         }
+        #endregion
 
-        //
+        #region 事件 Events
+        public DelegateCommand ImagesListBoxSelectionChangedEvent { get; set; }
+        public void ImagesListBoxSelectionChanged(object parameter)
+        {
+            WindowTitle = $"ImagesListBoxSelectionChanged() triggered! {Models.Utility.GetTimeStamp()}";
+        }
+        #endregion
+
         public MainWindow()
         {
-            //Datas
+            #region 变量 Variables
             WindowTitle = $"Aprheua 脸谱分割展示程序 - {Environment.CurrentDirectory}";
             SelectedImage = new Models.SourceImage { };
+            #endregion
+
+            #region 数据 Datas
             SourceImages = new ObservableCollection<Models.SourceImage> { };
-            //Commands
+            SelectedImages = new ObservableCollection<Models.SourceImage> { };
+            #endregion
+
+            #region 命令 Commands
             ImportCommand = new DelegateCommand(new Action<object>(Import));
+            #endregion
+
+            #region 事件 Evnets
+            ImagesListBoxSelectionChangedEvent = new DelegateCommand(new Action<object>(ImagesListBoxSelectionChanged));
+            #endregion
         }
     }
 }
