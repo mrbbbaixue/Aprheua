@@ -46,14 +46,9 @@
                      Margin="20,55,0,45"
                      Style="{StaticResource ListBoxBaseStyle}"
                      ItemsSource="{Binding SourceImages}"
-                     SelectedItem="{Binding SelectedImage}"
+                     SelectionChanged="ImagesListBox_SelectionChanged"
                      SelectionMode="Extended"
                      >
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="SelectionChanged">
-                        <i:InvokeCommandAction Command="{Binding ImagesListBoxSelectionChangedEvent}" />
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Grid>
@@ -107,7 +102,7 @@
             <hc:ImageViewer x:Name="imageViewer"
                             Background="White"
                             Margin="0,55,0,45"
-                            ImageSource = "{Binding SelectedImage.Path}"
+                            
                             />
         </Grid>
         <Grid x:Name="rightGrid" HorizontalAlignment="Right" Width="250">

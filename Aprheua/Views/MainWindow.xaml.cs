@@ -21,10 +21,26 @@ namespace Aprheua.Views
     /// </summary>
     public partial class MainWindow : HandyControl.Controls.GlowWindow
     {
+        private ViewModels.MainWindow _dataContext { get; set; }
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new ViewModels.MainWindow();
+            _dataContext = new ViewModels.MainWindow();
+            DataContext = _dataContext;
         }
+
+        //不得不耦合了（
+        private void ImagesListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            System.Collections.IList items = (System.Collections.IList)this.imagesListBox.SelectedItems;
+            var collection = items.Cast<Aprheua.Models.SourceImage>();
+            _dataContext.SelectedImages = collection.ToList();
+            //logging
+            foreach(var image in _dataContext.SelectedImages)
+            {
+                Console.WriteLine(image.Path);
+            }
+        }
+
     }
 }

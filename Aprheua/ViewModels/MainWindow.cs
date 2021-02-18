@@ -24,21 +24,21 @@ namespace Aprheua.ViewModels
             }
         }
 
-        private Models.SourceImage _selectedImage;
-        public Models.SourceImage SelectedImage
+        public string _imageViewerSource;
+        public string ImageViewerSource
         {
-            get { return _selectedImage; }
+            get { return _imageViewerSource; }
             set
             {
-                _selectedImage = value;
-                this.RaisePropertyChanged("SelectedImage");
+                _imageViewerSource = value;
+                this.RaisePropertyChanged("ImageViewerSource");
             }
         }
         #endregion
 
         #region 数据 Datas
         public ObservableCollection<Models.SourceImage> SourceImages { get; set; }
-        public ObservableCollection<Models.SourceImage> SelectedImages { get; set; }
+        public List<Models.SourceImage> SelectedImages { get; set; }
         #endregion
 
         #region 命令 Commands
@@ -73,23 +73,18 @@ namespace Aprheua.ViewModels
         #endregion
 
         #region 事件 Events
-        public DelegateCommand ImagesListBoxSelectionChangedEvent { get; set; }
-        public void ImagesListBoxSelectionChanged(object parameter)
-        {
-            WindowTitle = $"ImagesListBoxSelectionChanged() triggered! {Models.Utility.GetTimeStamp()}";
-        }
+
         #endregion
 
         public MainWindow()
         {
             #region 变量 Variables
             WindowTitle = $"Aprheua 脸谱分割展示程序 - {Environment.CurrentDirectory}";
-            SelectedImage = new Models.SourceImage { };
             #endregion
 
             #region 数据 Datas
             SourceImages = new ObservableCollection<Models.SourceImage> { };
-            SelectedImages = new ObservableCollection<Models.SourceImage> { };
+            SelectedImages = new List<Models.SourceImage> { };
             #endregion
 
             #region 命令 Commands
@@ -97,7 +92,7 @@ namespace Aprheua.ViewModels
             #endregion
 
             #region 事件 Evnets
-            ImagesListBoxSelectionChangedEvent = new DelegateCommand(new Action<object>(ImagesListBoxSelectionChanged));
+
             #endregion
         }
     }

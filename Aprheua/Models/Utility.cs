@@ -10,6 +10,18 @@ using System.IO;
 
 namespace Aprheua.Models
 {
+    public class LogWriter
+    {
+        private string _logFilePath;
+        //ToDo : 初始化streamwriter
+        public LogWriter(string logfilePath)
+        {
+            _logFilePath = logfilePath;
+
+        }
+
+    }
+
     public static class Utility
     {
         public static string GetFileHash(string path)
