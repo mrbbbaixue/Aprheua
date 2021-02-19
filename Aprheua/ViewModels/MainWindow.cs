@@ -73,6 +73,12 @@ namespace Aprheua.ViewModels
                 }
             }
         }
+
+        public DelegateCommand AnalyseCommand { get; set; }
+        public void Analyse(object parameter)
+        {
+            App.UpdateSkin(HandyControl.Data.SkinType.Dark);
+        }
         #endregion
 
         #region 事件 Events
@@ -100,6 +106,7 @@ namespace Aprheua.ViewModels
 
             #region 命令 Commands
             ImportCommand = new DelegateCommand(new Action<object>(Import));
+            AnalyseCommand = new DelegateCommand(new Action<object>(Analyse));
             #endregion
 
             #region 事件 Events
@@ -109,6 +116,7 @@ namespace Aprheua.ViewModels
             //测试事件
             var testImage = new Models.OriginImage("resources\\test.jpg");
             SourceImages.Add(testImage);
+            App.UpdateSkin(HandyControl.Data.SkinType.Dark);
         }
     }
 }

@@ -39,6 +39,15 @@ namespace Aprheua
             mainWindow.Show();
         }
         //ToDo : 程序运行完销毁临时文件夹
-
+        public static void UpdateSkin(HandyControl.Data.SkinType skin)
+        {
+            HandyControl.Themes.SharedResourceDictionary.SharedDictionaries.Clear();
+            Current.Resources.MergedDictionaries.Add(HandyControl.Tools.ResourceHelper.GetSkin(skin));
+            Current.Resources.MergedDictionaries.Add(new ResourceDictionary
+            {
+                Source = new Uri("pack://application:,,,/HandyControl;component/Themes/Theme.xaml")
+            });
+            Current.MainWindow?.OnApplyTemplate();
+        }
     }
 }
