@@ -48,16 +48,7 @@ namespace Aprheua.ViewModels
         #endregion
 
         #region 数据 Datas
-        public ObservableCollection<Models.OriginImage> _sourceImages;
-        public ObservableCollection<Models.OriginImage> SourceImages
-        {
-            get { return _sourceImages; }
-            set
-            {
-                _sourceImages = value;
-                this.RaisePropertyChanged("SourceImages");
-            }
-        }
+        public ObservableCollection<Models.OriginImage> SourceImages;
         #endregion
 
         #region 命令 Commands
@@ -90,11 +81,11 @@ namespace Aprheua.ViewModels
         {
             foreach(var sourceImage in SourceImages)
             {
-                sourceImage.IsSelected = SelectAllCheckBoxIsChecked;
-                Console.WriteLine($"{sourceImage.Name} {sourceImage.IsSelected}");
+                //sourceImage.IsSelected = SelectAllCheckBoxIsChecked;
+                sourceImage.NumberOfBlocks += 1;
+                Console.WriteLine($"{sourceImage.Name} {sourceImage.IsSelected} {sourceImage.NumberOfBlocks}");
             }
         }
-
         #endregion
 
         public MainWindow()
@@ -116,6 +107,10 @@ namespace Aprheua.ViewModels
             #region 事件 Events
             SelectAllCheckBoxClickEvent = new DelegateCommand(new Action<object>(SelectAllCheckBoxClick));
             #endregion
+
+            //测试事件
+            var testImage = new Models.OriginImage("resources\\test.jpg");
+            SourceImages.Add(testImage);
         }
     }
 }

@@ -21,7 +21,6 @@
                OtherButtonHoverForeground="White"
                Background="White"
                d:DataContext="{d:DesignInstance Type=viewmodels:MainWindow}"
-               Topmost="True"
                >
     <Grid x:Name="mainGrid">
         <Grid x:Name="leftGrid" HorizontalAlignment="Left" Width="300">
@@ -75,7 +74,7 @@
                                        Margin="90,5,0,0"
                                        FontSize="14"
                                        />
-                            <TextBlock Text="{Binding NumberOfBlocks, StringFormat={}{0}个分割块}"
+                            <TextBlock Text="{Binding NumberOfBlocks,StringFormat={}{0}个分割块}"
                                        HorizontalAlignment="Left"
                                        VerticalAlignment="Top"
                                        Margin="90,30,0,0"

@@ -10,7 +10,6 @@ namespace Aprheua.ViewModels
       public class NotificationObject : INotifyPropertyChanged
       {
           public event PropertyChangedEventHandler PropertyChanged;
-
           public void RaisePropertyChanged(string property)
           {
               if (this.PropertyChanged != null)
