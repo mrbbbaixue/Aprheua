@@ -12,8 +12,9 @@ namespace Aprheua.Models
 {
     public class OriginImage : NotificationObject
     {
+        public string Path { get; set; }
 
-        public readonly string Path;
+        // ToDo : 增加 RaisePropertChanged 
         public string ThumbImagePath => System.IO.Path.Combine(App.AprheuaThumbImagesFolder, $"thumb-{Name}.jpg");
         public string OverlayImagePath => System.IO.Path.Combine(App.AprheuaOverlayImagesFolder, $"overlay-{Name}.jpg");
         public string Name { get; set; }

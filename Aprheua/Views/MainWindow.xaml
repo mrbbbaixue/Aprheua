@@ -48,9 +48,6 @@
                      ItemsSource="{Binding SourceImages}"
                      SelectedItem="{Binding SelectedImage}"
                      >
-                <i:Interaction.Triggers>
-                    
-                </i:Interaction.Triggers>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Grid>

@@ -48,7 +48,7 @@ namespace Aprheua.ViewModels
         #endregion
 
         #region 数据 Datas
-        public ObservableCollection<Models.OriginImage> SourceImages;
+        public ObservableCollection<Models.OriginImage> SourceImages { get; set; }
         #endregion
 
         #region 命令 Commands
@@ -81,9 +81,7 @@ namespace Aprheua.ViewModels
         {
             foreach(var sourceImage in SourceImages)
             {
-                //sourceImage.IsSelected = SelectAllCheckBoxIsChecked;
-                sourceImage.NumberOfBlocks += 1;
-                Console.WriteLine($"{sourceImage.Name} {sourceImage.IsSelected} {sourceImage.NumberOfBlocks}");
+                sourceImage.IsSelected = SelectAllCheckBoxIsChecked;
             }
         }
         #endregion
