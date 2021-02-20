@@ -21,6 +21,29 @@
                OtherButtonHoverForeground="White"
                d:DataContext="{d:DesignInstance Type=viewmodels:MainWindow}"
                >
+    <hc:GlowWindow.NonClientAreaContent>
+        <Grid x:Name="nonClientAreaGrid">
+            <ToggleButton x:Name="nightModeToggleButton"
+                          BorderThickness="0"
+                          HorizontalAlignment="Right"
+                          VerticalContentAlignment="Center"
+                          Height="30"
+                          Width="40"
+                          Margin="0,0,0,0"
+                          Style="{StaticResource ToggleButtonIconPrimary}"
+                          hc:IconSwitchElement.Geometry="{StaticResource EyeOpenGeometry}"
+                          hc:IconSwitchElement.GeometrySelected="{StaticResource EyeCloseGeometry}"
+                          hc:IconElement.Width="16"
+                          
+                          >
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click">
+                        <i:InvokeCommandAction Command="{Binding NightModeToggleButtonClickEvent}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </ToggleButton>
+        </Grid>
+    </hc:GlowWindow.NonClientAreaContent>
     <Grid x:Name="mainGrid">
         <Grid x:Name="leftGrid" HorizontalAlignment="Left" Width="300">
             <Button x:Name="importButton"
@@ -55,7 +78,13 @@
                                       Width="20"
                                       HorizontalAlignment="Left"
                                       VerticalAlignment="Center"
-                                      />
+                                      >
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="Click">
+                                        <i:InvokeCommandAction Command="{Binding CheckBoxClickEvent}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </CheckBox>
                             <Image Source="{Binding ThumbImagePath}"
                                    Height="50"
                                    Width="50"
@@ -116,7 +145,8 @@
             <hc:ImageViewer x:Name="imageViewer"
                             Margin="0,55,0,45"
                             ImageSource="{Binding SelectedImage.Path}"
-                            Background="{StaticResource RegionBrush}"/>
+                            Background="{StaticResource RegionBrush}"
+                            />
             <!-- ToDo: Background不能这样写，颜色要通知!-->
             <!-- ToDo: ImageSource不能这样写，要和showBlockOverlayCheckBox有关-->
             <CheckBox x:Name="showBlockOverlayCheckBox"
@@ -124,9 +154,10 @@
                       Height="20"
                       VerticalAlignment="Bottom"
                       HorizontalAlignment="Left"
-                      Content="显示分割块"/>
+                      Content="显示分割块"
+                      />
         </Grid>
-        <Grid x:Name="rightGrid" HorizontalAlignment="Right" Width="250">
+        <Grid x:Name="rightGrid" HorizontalAlignment="Right" Width="300">
             <Button x:Name="exportButton"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Top"
@@ -144,6 +175,25 @@
                 hc:IconElement.Height="14"
                 hc:IconElement.Width="14"
                 />
+            <hc:ScrollViewer Margin="0,55,20,45" Background="{StaticResource RegionBrush}" IsInertiaEnabled="True">
+                <WrapPanel Orientation="Horizontal">
+                    <Expander VerticalAlignment="Top" Width="280">
+                        <Expander.Header>
+                            <Grid>
+                                <Label Content="233333" Style="{StaticResource LabelPrimary}"/>
+                            </Grid>
+                        </Expander.Header>
+                        <StackPanel>
+                            <Border Height="100"
+                            BorderThickness="1,0,1,1"
+                            BorderBrush="{DynamicResource BorderBrush}"
+                            Background="{DynamicResource RegionBrush}"
+                            CornerRadius="0,0,4,4">
+                            </Border>
+                        </StackPanel>
+                    </Expander>
+                </WrapPanel>
+            </hc:ScrollViewer>
         </Grid>
     </Grid>
 </hc:GlowWindow>

@@ -39,6 +39,7 @@ namespace Aprheua
             mainWindow.Show();
         }
         //ToDo : 程序运行完销毁临时文件夹
+        //ToDo : 要绑定，且切换主题要在ViewModel进行，需要单独定义颜色
         public static void UpdateSkin(HandyControl.Data.SkinType skin)
         {
             HandyControl.Themes.SharedResourceDictionary.SharedDictionaries.Clear();

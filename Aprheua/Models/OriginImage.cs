@@ -13,11 +13,29 @@ namespace Aprheua.Models
     public class OriginImage : NotificationObject
     {
         public string Path { get; set; }
-
-        // ToDo : 增加 RaisePropertChanged 
-        public string ThumbImagePath => System.IO.Path.Combine(App.AprheuaThumbImagesFolder, $"thumb-{Name}.jpg");
-        public string OverlayImagePath => System.IO.Path.Combine(App.AprheuaOverlayImagesFolder, $"overlay-{Name}.jpg");
         public string Name { get; set; }
+
+        private string _thumbImagePath;
+        public string ThumbImagePath
+        {
+            get { return _thumbImagePath; }
+            set
+            {
+                _thumbImagePath = value;
+                this.RaisePropertyChanged("ThumbImagePath");
+            }
+        }
+
+        private string _overlayImagePath;
+        public string OverlayImagePath
+        {
+            get { return _overlayImagePath; }
+            set
+            {
+                _overlayImagePath = value;
+                this.RaisePropertyChanged("OverlayImagePath");
+            }
+        }
 
         private int _numberOfBlocks;
         public int NumberOfBlocks
@@ -40,10 +58,20 @@ namespace Aprheua.Models
                 this.RaisePropertyChanged("IsSelected");
             }
         }
-        public OriginImage(string path)
+        public Commands.DelegateCommand CheckBoxClickEvent { get; set; }
+
+        public OriginImage(string path, Commands.DelegateCommand checkBoxClickEvent)
+        {
+            Init(path);
+            CheckBoxClickEvent = checkBoxClickEvent;
+        }
+        public OriginImage(string path) => Init(path);
+        public void Init(string path)
         {
             Path = System.IO.Path.GetFullPath(path);
             Name = System.IO.Path.GetFileName(path);
+            ThumbImagePath = System.IO.Path.Combine(App.AprheuaThumbImagesFolder, $"thumb-{Utility.GetTimeStamp()}-{Name}.jpg");
+            OverlayImagePath = System.IO.Path.Combine(App.AprheuaOverlayImagesFolder, $"overlay-{Utility.GetTimeStamp()}-{Name}.jpg");
             NumberOfBlocks = 0;
             IsSelected = false;
             //ToDo : 使用Async异步执行

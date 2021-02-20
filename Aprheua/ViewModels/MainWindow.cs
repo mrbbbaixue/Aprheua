@@ -35,8 +35,8 @@ namespace Aprheua.ViewModels
             }
         }
 
-        private bool _selectAllCheckBoxIsChecked;
-        public bool SelectAllCheckBoxIsChecked
+        private bool? _selectAllCheckBoxIsChecked;
+        public bool? SelectAllCheckBoxIsChecked
         {
             get { return _selectAllCheckBoxIsChecked; }
             set
@@ -68,16 +68,17 @@ namespace Aprheua.ViewModels
                 paths = dialog.FileNames; 
                 foreach (string path in paths)
                 {
-                    var sourceImage = new Models.OriginImage(path);
+                    var sourceImage = new Models.OriginImage(path, ListBoxItemCheckBoxClickEvent);
                     SourceImages.Add(sourceImage);
                 }
             }
+
         }
 
         public DelegateCommand AnalyseCommand { get; set; }
         public void Analyse(object parameter)
         {
-            App.UpdateSkin(HandyControl.Data.SkinType.Dark);
+
         }
         #endregion
 
@@ -87,8 +88,34 @@ namespace Aprheua.ViewModels
         {
             foreach(var sourceImage in SourceImages)
             {
-                sourceImage.IsSelected = SelectAllCheckBoxIsChecked;
+                sourceImage.IsSelected = (bool)SelectAllCheckBoxIsChecked;
             }
+        }
+        public DelegateCommand ListBoxItemCheckBoxClickEvent { get; set; }
+        public void ListBoxItemCheckBoxClick(object parameter)
+        {
+            int selectedCount = 0;
+            foreach (var sourceImage in SourceImages)
+            {
+                selectedCount += sourceImage.IsSelected ? 1 : 0;
+            }
+            if (selectedCount == 0)
+            {
+                SelectAllCheckBoxIsChecked = false;
+                return;
+            }
+            else if (selectedCount == SourceImages.Count)
+            {
+                SelectAllCheckBoxIsChecked = true;
+                return;
+            }
+            SelectAllCheckBoxIsChecked = null;
+        }
+        public DelegateCommand NightModeToggleButtonClickEvent { get; set; }
+        public void NightModeToggleButtonClick(object parameter)
+        {
+            App.UpdateSkin(HandyControl.Data.SkinType.Dark);
+            //ToDo : 完善夜间模式切换
         }
         #endregion
 
@@ -111,12 +138,13 @@ namespace Aprheua.ViewModels
 
             #region 事件 Events
             SelectAllCheckBoxClickEvent = new DelegateCommand(new Action<object>(SelectAllCheckBoxClick));
+            ListBoxItemCheckBoxClickEvent = new DelegateCommand(new Action<object>(ListBoxItemCheckBoxClick));
+            NightModeToggleButtonClickEvent = new DelegateCommand(new Action<object>(NightModeToggleButtonClick));
             #endregion
 
             //测试事件
-            var testImage = new Models.OriginImage("resources\\test.jpg");
+            var testImage = new Models.OriginImage("resources\\test.jpg", ListBoxItemCheckBoxClickEvent);
             SourceImages.Add(testImage);
-            App.UpdateSkin(HandyControl.Data.SkinType.Dark);
         }
     }
 }
