@@ -20,6 +20,7 @@
                OtherButtonForeground="White"
                OtherButtonHoverForeground="White"
                d:DataContext="{d:DesignInstance Type=viewmodels:MainWindow}"
+               Topmost="True"
                >
     <hc:GlowWindow.NonClientAreaContent>
         <Grid x:Name="nonClientAreaGrid">
@@ -34,7 +35,6 @@
                           hc:IconSwitchElement.Geometry="{StaticResource EyeOpenGeometry}"
                           hc:IconSwitchElement.GeometrySelected="{StaticResource EyeCloseGeometry}"
                           hc:IconElement.Width="16"
-                          
                           >
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="Click">
