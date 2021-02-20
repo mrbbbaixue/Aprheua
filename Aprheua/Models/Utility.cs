@@ -12,16 +12,68 @@ namespace Aprheua.Models
 {
     public class LogWriter
     {
-        private readonly string _logFilePath;
-        //ToDo : （交给王卜言了）初始化streamwriter
-        public LogWriter(string logfilePath)
+        private string LogFilePath { get; }
+        private StreamWriter Log { get; set; }
+        private string CreatLogTxtPath { get; }
+        public LogWriter(string logFilePath, string creatLogTxtPath)
         {
-            _logFilePath = logfilePath;
-
+            LogFilePath = logFilePath + @"\Aprheua.log";
+            CreatLogTxtPath = creatLogTxtPath + @"\Aprheua.txt";
+        }
+        public LogWriter(string path)
+        {
+            LogFilePath = path + @"\Aprheua.log";
+            CreatLogTxtPath = path + @"\Aprheua.txt";
         }
 
-    }
+        public void WriteLog(string logContent, LogType logType)
+        {
+            if (!string.IsNullOrEmpty(LogFilePath) && !string.IsNullOrEmpty(logContent))
+            {
+                if (File.Exists(LogFilePath))
+                {
+                    Log = File.AppendText(LogFilePath);
+                }
+                else
+                {
+                    Log = File.CreateText(LogFilePath);
+                }
+                Log.WriteLine($"[{logType}][Time:{DateTime.Now} {Utility.GetTimeStamp()}] {logContent}");
+                Log.Close();
+            }
+            else
+            {
+                throw new Exception("Please Check The LogPath Or inputMessage.");
+            }
+        }
 
+        public void OpenLogInTxt()
+        {
+            File.WriteAllText(CreatLogTxtPath, string.Empty);
+            var logContent = File.ReadAllLines(LogFilePath);
+            StreamWriter logTxt;
+            if (File.Exists(CreatLogTxtPath))
+            {
+                logTxt = File.AppendText(CreatLogTxtPath);
+            }
+            else
+            {
+                logTxt = File.CreateText(CreatLogTxtPath);
+            }
+            foreach (var item in logContent)
+            {
+                logTxt.WriteLine(item);
+            }
+            logTxt.Close();
+            System.Diagnostics.Process.Start("notepad", CreatLogTxtPath);
+        }
+    }
+    public enum LogType
+    {
+        Info = 0,
+        Error = 1,
+        OpenCV = 2
+    }
     public static class Utility
     {
         public static string GetFileHash(string path)
