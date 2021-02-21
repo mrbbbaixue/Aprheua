@@ -175,25 +175,27 @@
                 hc:IconElement.Height="14"
                 hc:IconElement.Width="14"
                 />
-            <hc:ScrollViewer Margin="0,55,20,45" Background="{StaticResource RegionBrush}" IsInertiaEnabled="True">
-                <WrapPanel Orientation="Horizontal">
-                    <Expander VerticalAlignment="Top" Width="280">
-                        <Expander.Header>
-                            <Grid>
-                                <Label Content="233333" Style="{StaticResource LabelPrimary}"/>
-                            </Grid>
-                        </Expander.Header>
-                        <StackPanel>
-                            <Border Height="100"
+            <DataGrid AutoGenerateColumns="False" 
+                      HeadersVisibility="None" 
+                      Margin="0,55,20,45"
+                      >
+                
+                <Expander VerticalAlignment="Top" Width="280">
+                    <Expander.Header>
+                        <Grid>
+                            <Label Content="233333" Style="{StaticResource LabelPrimary}"/>
+                        </Grid>
+                    </Expander.Header>
+                    <StackPanel>
+                        <Border Height="100"
                             BorderThickness="1,0,1,1"
                             BorderBrush="{DynamicResource BorderBrush}"
                             Background="{DynamicResource RegionBrush}"
                             CornerRadius="0,0,4,4">
-                            </Border>
-                        </StackPanel>
-                    </Expander>
-                </WrapPanel>
-            </hc:ScrollViewer>
+                        </Border>
+                    </StackPanel>
+                </Expander>
+            </DataGrid>
         </Grid>
     </Grid>
 </hc:GlowWindow>

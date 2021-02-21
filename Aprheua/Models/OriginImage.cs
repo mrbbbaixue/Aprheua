@@ -60,7 +60,6 @@ namespace Aprheua.Models
             }
         }
         public Commands.DelegateCommand CheckBoxClickEvent { get; set; }
-
         public ObservableCollection<ImageCategory> ImageCategories { get; set; }
         public OriginImage(string path, Commands.DelegateCommand checkBoxClickEvent)
         {
