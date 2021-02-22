@@ -175,27 +175,37 @@
                 hc:IconElement.Height="14"
                 hc:IconElement.Width="14"
                 />
-            <DataGrid AutoGenerateColumns="False" 
-                      HeadersVisibility="None" 
-                      Margin="0,55,20,45"
-                      >
-                
-                <Expander VerticalAlignment="Top" Width="280">
-                    <Expander.Header>
+            <ListBox x:Name="catagoriesListBox"
+                     Margin="0,55,20,45"
+                     Style="{StaticResource StackPanelVerticalListBox}"
+                     ItemsSource="{Binding SelectedImage.ImageCategories}" 
+                     >
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
                         <Grid>
-                            <Label Content="233333" Style="{StaticResource LabelPrimary}"/>
+                            <Expander>
+                                <Expander.Header>
+                                    <Grid>
+                                        <Label Content="{Binding Name}"                                              
+                                               Style="{StaticResource LabelPrimary}"
+                                               HorizontalContentAlignment="Left"
+                                               VerticalContentAlignment="Center"
+                                               />
+                                    </Grid>
+                                </Expander.Header>
+                                <StackPanel>
+                                    <Border Height="100"
+                                            BorderThickness="1,0,1,1"
+                                            BorderBrush="{DynamicResource BorderBrush}"
+                                            Background="{DynamicResource RegionBrush}"
+                                            CornerRadius="0,0,0,0">
+                                    </Border>
+                                </StackPanel>
+                            </Expander>
                         </Grid>
-                    </Expander.Header>
-                    <StackPanel>
-                        <Border Height="100"
-                            BorderThickness="1,0,1,1"
-                            BorderBrush="{DynamicResource BorderBrush}"
-                            Background="{DynamicResource RegionBrush}"
-                            CornerRadius="0,0,4,4">
-                        </Border>
-                    </StackPanel>
-                </Expander>
-            </DataGrid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
         </Grid>
     </Grid>
 </hc:GlowWindow>

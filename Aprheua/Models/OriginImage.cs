@@ -61,6 +61,7 @@ namespace Aprheua.Models
         }
         public Commands.DelegateCommand CheckBoxClickEvent { get; set; }
         public ObservableCollection<ImageCategory> ImageCategories { get; set; }
+
         public OriginImage(string path, Commands.DelegateCommand checkBoxClickEvent)
         {
             Init(path);
@@ -75,6 +76,7 @@ namespace Aprheua.Models
             OverlayImagePath = System.IO.Path.Combine(App.AprheuaOverlayImagesFolder, $"overlay-{Utility.GetTimeStamp()}-{Name}.jpg");
             NumberOfBlocks = 0;
             IsSelected = false;
+            ImageCategories = new ObservableCollection<ImageCategory> { };
             //ToDo : 使用Async异步执行
             var thumbImage = new ThumbImage(Path);
             thumbImage.GetReducedImage(0.15, ThumbImagePath);

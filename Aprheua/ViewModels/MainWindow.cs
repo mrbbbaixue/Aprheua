@@ -14,8 +14,8 @@ namespace Aprheua.ViewModels
     {
         #region 变量 Variables
         private string _windowTitle;
-        public string WindowTitle 
-        { 
+        public string WindowTitle
+        {
             get { return _windowTitle; }
             set
             {
@@ -32,6 +32,11 @@ namespace Aprheua.ViewModels
             {
                 _selectedImage = value;
                 this.RaisePropertyChanged("SelectedImage");
+                //Test
+                if (SelectedImage != null && SourceImages != null)
+                {
+                    Console.WriteLine($"{SourceImages.IndexOf(SelectedImage)}");
+                }
             }
         }
 
@@ -144,6 +149,11 @@ namespace Aprheua.ViewModels
 
             //测试事件
             var testImage = new Models.OriginImage("resources\\test.jpg", ListBoxItemCheckBoxClickEvent);
+            for (int i =1; i <= 10; i++)
+            {
+                var cat = new Models.ImageCategory($"test - {i}");
+                testImage.ImageCategories.Add(cat);
+            }
             SourceImages.Add(testImage);
         }
     }

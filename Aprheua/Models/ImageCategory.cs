@@ -24,10 +24,21 @@ namespace Aprheua.Models
 
         public ObservableCollection<string> Images;
 
-        public ImageCategory(string folderPath)
+        public ImageCategory(string folderPath, string name)
         {
+            Init(name);
+            if (!System.IO.Directory.Exists(folderPath))
+            {
+                System.IO.Directory.CreateDirectory(folderPath);
+            }
             FolderPath = folderPath;
         }
 
+        public ImageCategory(string name) => Init(name);
+        public void Init(string name)
+        {
+            Name = name;
+            //ToDo : 扫描并添加
+        }
     }
 }

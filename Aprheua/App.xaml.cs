@@ -17,7 +17,7 @@ namespace Aprheua
         public static string AprheuaTempFolder => Path.Combine(Environment.GetEnvironmentVariable("temp"),"Aprheua");
         public static string AprheuaThumbImagesFolder => Path.Combine(AprheuaTempFolder,"ThumbImages");
         public static string AprheuaOverlayImagesFolder => Path.Combine(AprheuaTempFolder,"OverlayImages");
-
+        public static string AprheuaLogsFolder => Path.Combine(AprheuaTempFolder, "Logs");
         private void Application_Startup(object sender, StartupEventArgs e)
         {
             #region Step 1 : Create Folders
@@ -32,6 +32,10 @@ namespace Aprheua
             if (!Directory.Exists(AprheuaOverlayImagesFolder))
             {
                 Directory.CreateDirectory(AprheuaOverlayImagesFolder);
+            }
+            if (!Directory.Exists(AprheuaLogsFolder))
+            {
+                Directory.CreateDirectory(AprheuaLogsFolder);
             }
             #endregion
             //Final Step : Open MainWindow
