@@ -110,8 +110,8 @@
                 </ListBox.ItemTemplate>
             </ListBox>
             <CheckBox x:Name="selectAllCheckBox"
-                      Margin="30,0,0,20"
-                      Height="20"
+                      Margin="30,0,0,10"
+                      Height="30"
                       Content="全选"
                       VerticalAlignment="Bottom"
                       HorizontalAlignment="Left"
@@ -149,12 +149,22 @@
                             Background="{DynamicResource RegionBrush}"
                             />
             <CheckBox x:Name="showBlockOverlayCheckBox"
-                      Margin="10,0,0,20"
-                      Height="20"
+                      Margin="10,0,0,10"
+                      Height="30"
                       VerticalAlignment="Bottom"
                       HorizontalAlignment="Left"
                       Content="显示分割块"
                       />
+            <Label Content="{Binding ImageViewerPath}"
+                   Background="Transparent"
+                   BorderThickness="0"                   
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Bottom"
+                   HorizontalContentAlignment="Left"
+                   VerticalContentAlignment="Center"
+                   Height="30"
+                   Margin="100,0,0,10"
+                   />
         </Grid>
         <Grid x:Name="rightGrid" HorizontalAlignment="Right" Width="300">
             <Button x:Name="exportButton"
@@ -181,31 +191,64 @@
                     >
                 <ScrollViewer>
                     <ItemsControl x:Name="catagoriesItemsControl"                          
-                          ItemsSource="{Binding SelectedImage.ImageCategories}"
-                          VirtualizingPanel.IsVirtualizing="True"
-                          >
+                                  ItemsSource="{Binding SelectedImage.ImageCategories}"
+                                  VirtualizingPanel.IsVirtualizing="True"
+                                  >
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Expander>
                                     <Expander.Header>
-                                        <Label Content="{Binding Name}"
-                                           Style="{StaticResource LabelPrimary}"
-                                           HorizontalContentAlignment="Left"
-                                           VerticalContentAlignment="Center"                                           
-                                           />
+                                        <Grid>
+                                            <Label Content="{Binding Name}"
+                                               Style="{StaticResource LabelPrimary}"
+                                               HorizontalContentAlignment="Center"
+                                               VerticalContentAlignment="Center"                                           
+                                               HorizontalAlignment="Left"
+                                               VerticalAlignment="Center"
+                                               />
+                                        </Grid>
                                     </Expander.Header>
                                     <StackPanel>
+                                        <Grid>
+                                            <Button x:Name="addBlockButton"
+                                                Style="{StaticResource ButtonDashed}"                                                
+                                                HorizontalAlignment="Left"
+                                                Margin="5,5,0,0"
+                                                Width="40"
+                                                hc:IconElement.Geometry="{StaticResource DropperGeometry}"
+                                                hc:IconElement.Height="15"
+                                                hc:IconElement.Width="15"
+                                                />
+                                            <Button x:Name="removeCategoriesButton"
+                                                Style="{StaticResource ButtonDashedDanger}"                                                
+                                                HorizontalAlignment="Right"
+                                                Margin="0,5,5,0"
+                                                Width="120"
+                                                hc:IconElement.Geometry="{StaticResource DeleteFillCircleGeometry}"
+                                                hc:IconElement.Height="15"
+                                                hc:IconElement.Width="15"
+                                                Content="删除分类"
+                                                />
+                                        </Grid>
                                         <ItemsControl x:Name="imageBlocksItemsControl"
-                                                  ItemsSource="{Binding ImageBlocks}"
-                                                  VirtualizingPanel.IsVirtualizing="True"
-                                                  >
+                                                      ItemsSource="{Binding ImageBlocks}"
+                                                      VirtualizingPanel.IsVirtualizing="True"
+                                                      ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                                                      >
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <WrapPanel Orientation="Horizontal"/>
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
                                             <ItemsControl.ItemTemplate>
                                                 <DataTemplate>
-                                                    <WrapPanel>
+                                                    <WrapPanel Orientation="Vertical"
+                                                               Margin="5,5,5,5"
+                                                               >
                                                         <Image Source="{Binding BlockPath}"
-                                                           Width="50"
-                                                           Height="50"
-                                                           />
+                                                               Width="82"
+                                                               Height="82"
+                                                               />
                                                     </WrapPanel>
                                                 </DataTemplate>
                                             </ItemsControl.ItemTemplate>
@@ -217,6 +260,21 @@
                     </ItemsControl>
                 </ScrollViewer>
             </Border>
+            <Button x:Name="addCategoriesButton"
+                    Style="{StaticResource ButtonDashedPrimary}"                                                
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Margin="0,0,20,10"
+                    Padding="0,0,0,0"
+                    Width="280"
+                    hc:IconElement.Geometry="{StaticResource AddGeometry}"
+                    hc:IconElement.Height="14"
+                    hc:IconElement.Width="14"
+                    Content="添加分类"
+                    FontSize="14"
+                    />
         </Grid>
     </Grid>
 </hc:GlowWindow>
