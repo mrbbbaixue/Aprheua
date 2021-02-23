@@ -21,8 +21,7 @@ namespace Aprheua.Models
         }
 
         private readonly string FolderPath;
-
-        public ObservableCollection<string> Images;
+        public ObservableCollection<ImageBlock> ImageBlocks { get; set; }
 
         public ImageCategory(string folderPath, string name)
         {
@@ -33,10 +32,10 @@ namespace Aprheua.Models
             }
             FolderPath = folderPath;
         }
-
         public ImageCategory(string name) => Init(name);
         public void Init(string name)
         {
+            ImageBlocks = new ObservableCollection<ImageBlock> { };
             Name = name;
             //ToDo : 扫描并添加
         }

@@ -108,6 +108,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Commands.cs" />
+    <Compile Include="Models\ImageBlock.cs" />
     <Compile Include="Models\ImageCategory.cs" />
     <Compile Include="Models\OriginImage.cs" />
     <Compile Include="Models\Utility.cs" />

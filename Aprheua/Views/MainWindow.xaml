@@ -68,7 +68,8 @@
                      Margin="20,55,0,45"
                      Style="{StaticResource ListBoxBaseStyle}"
                      ItemsSource="{Binding SourceImages}"
-                     SelectedItem="{Binding SelectedImage}"
+                     SelectedIndex="{Binding SelectedIndex}"
+                     VirtualizingPanel.IsVirtualizing="True"
                      >
                 <ListBox.ItemTemplate>
                     <DataTemplate>
@@ -99,7 +100,7 @@
                                        Margin="90,5,0,0"
                                        FontSize="14"
                                        />
-                            <TextBlock Text="{Binding NumberOfBlocks,StringFormat={}{0}个分割块}"
+                            <TextBlock Text="{Binding NumberOfImageBlocks,StringFormat={}{0}个分割块}"
                                        HorizontalAlignment="Left"
                                        VerticalAlignment="Top"
                                        Margin="90,30,0,0"
@@ -144,11 +145,9 @@
                     />
             <hc:ImageViewer x:Name="imageViewer"
                             Margin="0,55,0,45"
-                            ImageSource="{Binding SelectedImage.Path}"
-                            Background="{StaticResource RegionBrush}"
+                            ImageSource="{Binding ImageViewerPath}"
+                            Background="{DynamicResource RegionBrush}"
                             />
-            <!-- ToDo: Background不能这样写，颜色要通知!-->
-            <!-- ToDo: ImageSource不能这样写，要和showBlockOverlayCheckBox有关-->
             <CheckBox x:Name="showBlockOverlayCheckBox"
                       Margin="10,0,0,20"
                       Height="20"
@@ -175,37 +174,49 @@
                 hc:IconElement.Height="14"
                 hc:IconElement.Width="14"
                 />
-            <ListBox x:Name="catagoriesListBox"
-                     Margin="0,55,20,45"
-                     Style="{StaticResource StackPanelVerticalListBox}"
-                     ItemsSource="{Binding SelectedImage.ImageCategories}" 
-                     >
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <Grid>
-                            <Expander>
-                                <Expander.Header>
-                                    <Grid>
-                                        <Label Content="{Binding Name}"                                              
-                                               Style="{StaticResource LabelPrimary}"
-                                               HorizontalContentAlignment="Left"
-                                               VerticalContentAlignment="Center"
-                                               />
-                                    </Grid>
-                                </Expander.Header>
-                                <StackPanel>
-                                    <Border Height="100"
-                                            BorderThickness="1,0,1,1"
-                                            BorderBrush="{DynamicResource BorderBrush}"
-                                            Background="{DynamicResource RegionBrush}"
-                                            CornerRadius="0,0,0,0">
-                                    </Border>
-                                </StackPanel>
-                            </Expander>
-                        </Grid>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+            <Border Margin="0,55,20,45"
+                    Background="{DynamicResource RegionBrush}"
+                    BorderThickness="1"
+                    BorderBrush="{DynamicResource BorderBrush}"
+                    >
+                <ScrollViewer>
+                    <ItemsControl x:Name="catagoriesItemsControl"                          
+                          ItemsSource="{Binding SelectedImage.ImageCategories}"
+                          VirtualizingPanel.IsVirtualizing="True"
+                          >
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Expander>
+                                    <Expander.Header>
+                                        <Label Content="{Binding Name}"
+                                           Style="{StaticResource LabelPrimary}"
+                                           HorizontalContentAlignment="Left"
+                                           VerticalContentAlignment="Center"                                           
+                                           />
+                                    </Expander.Header>
+                                    <StackPanel>
+                                        <ItemsControl x:Name="imageBlocksItemsControl"
+                                                  ItemsSource="{Binding ImageBlocks}"
+                                                  VirtualizingPanel.IsVirtualizing="True"
+                                                  >
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <WrapPanel>
+                                                        <Image Source="{Binding BlockPath}"
+                                                           Width="50"
+                                                           Height="50"
+                                                           />
+                                                    </WrapPanel>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </StackPanel>
+                                </Expander>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Border>
         </Grid>
     </Grid>
 </hc:GlowWindow>

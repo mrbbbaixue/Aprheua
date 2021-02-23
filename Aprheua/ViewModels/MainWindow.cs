@@ -24,22 +24,6 @@ namespace Aprheua.ViewModels
             }
         }
 
-        private Models.OriginImage _selectedImage;
-        public Models.OriginImage SelectedImage
-        {
-            get { return _selectedImage; }
-            set
-            {
-                _selectedImage = value;
-                this.RaisePropertyChanged("SelectedImage");
-                //Test
-                if (SelectedImage != null && SourceImages != null)
-                {
-                    Console.WriteLine($"{SourceImages.IndexOf(SelectedImage)}");
-                }
-            }
-        }
-
         private bool? _selectAllCheckBoxIsChecked;
         public bool? SelectAllCheckBoxIsChecked
         {
@@ -50,6 +34,24 @@ namespace Aprheua.ViewModels
                 this.RaisePropertyChanged("SelectAllCheckBoxIsChecked");
             }
         }
+
+        private int _selectedIndex;
+        public int SelectedIndex
+        {
+            get { return _selectedIndex; }
+            set
+            {
+                _selectedIndex = value;
+                this.RaisePropertyChanged("SelectedIndex");
+                this.RaisePropertyChanged("SelectedImage");
+                this.RaisePropertyChanged("ImageViewerPath");
+            }
+        }
+        public Models.OriginImage SelectedImage => SourceImages[SelectedIndex];
+        public string ImageViewerPath => (false) ? SourceImages[SelectedIndex].OverlayImagePath : SourceImages[SelectedIndex].Path;
+
+        private HandyControl.Data.SkinType _currentSkin = 0;
+        //SkinType : Default = 0, Dark = 1, Violet = 2.
         #endregion
 
         #region 数据 Datas
@@ -119,16 +121,16 @@ namespace Aprheua.ViewModels
         public DelegateCommand NightModeToggleButtonClickEvent { get; set; }
         public void NightModeToggleButtonClick(object parameter)
         {
-            App.UpdateSkin(HandyControl.Data.SkinType.Dark);
-            //ToDo : 完善夜间模式切换
+            _currentSkin = (_currentSkin == 0) ? HandyControl.Data.SkinType.Dark
+                                               : HandyControl.Data.SkinType.Default;
+            App.UpdateSkin(_currentSkin);           
         }
         #endregion
 
         public MainWindow()
         {
             #region 变量 Variables
-            WindowTitle = $"Aprheua 脸谱分割展示程序 - {Environment.CurrentDirectory}";
-            SelectedImage = new Models.OriginImage(Path.Combine(Path.Combine(Environment.CurrentDirectory,"resources"), "default-SelectedImage.png"));
+            WindowTitle = $"Aprheua 脸谱分割展示程序 - {Environment.CurrentDirectory}";         
             SelectAllCheckBoxIsChecked = false;
             #endregion
 
@@ -148,10 +150,17 @@ namespace Aprheua.ViewModels
             #endregion
 
             //测试事件
-            var testImage = new Models.OriginImage("resources\\test.jpg", ListBoxItemCheckBoxClickEvent);
+            var testImage = new Models.OriginImage("E:\\GitHub\\Hi-Icy\\Aprheua\\build\\resources\\test.jpg", ListBoxItemCheckBoxClickEvent);
             for (int i =1; i <= 10; i++)
             {
                 var cat = new Models.ImageCategory($"test - {i}");
+                for (int j = 1; j <= 10; j++)
+                {
+                    var block = new Models.ImageBlock {
+                        BlockPath = "E:\\GitHub\\Hi-Icy\\Aprheua\\build\\resources\\test.jpg"
+                    };
+                    cat.ImageBlocks.Add(block);
+                }
                 testImage.ImageCategories.Add(cat);
             }
             SourceImages.Add(testImage);

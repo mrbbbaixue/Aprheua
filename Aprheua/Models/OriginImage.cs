@@ -38,13 +38,13 @@ namespace Aprheua.Models
             }
         }
 
-        private int _numberOfBlocks;
-        public int NumberOfBlocks
+        private int _numberOfImageBlocks;
+        public int NumberOfImageBlocks
         {
-            get { return _numberOfBlocks; }
+            get { return _numberOfImageBlocks; }
             set
             {
-                _numberOfBlocks = value;
+                _numberOfImageBlocks = value;
                 this.RaisePropertyChanged("NumberOfBlocks");
             }
         }
@@ -74,7 +74,7 @@ namespace Aprheua.Models
             Name = System.IO.Path.GetFileName(path);
             ThumbImagePath = System.IO.Path.Combine(App.AprheuaThumbImagesFolder, $"thumb-{Utility.GetTimeStamp()}-{Name}.jpg");
             OverlayImagePath = System.IO.Path.Combine(App.AprheuaOverlayImagesFolder, $"overlay-{Utility.GetTimeStamp()}-{Name}.jpg");
-            NumberOfBlocks = 0;
+            NumberOfImageBlocks = 0;
             IsSelected = false;
             ImageCategories = new ObservableCollection<ImageCategory> { };
             //ToDo : 使用Async异步执行
