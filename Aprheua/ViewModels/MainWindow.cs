@@ -47,8 +47,21 @@ namespace Aprheua.ViewModels
                 this.RaisePropertyChanged("ImageViewerPath");
             }
         }
+
+        private bool _showBlockOverlayCheckBoxIsChecked;
+        public bool ShowBlockOverlayCheckBoxIsChecked
+        {
+            get { return _showBlockOverlayCheckBoxIsChecked; }
+            set
+            {
+                _showBlockOverlayCheckBoxIsChecked = value;
+                this.RaisePropertyChanged("ShowBlockOverlayCheckBoxIsChecked");
+                this.RaisePropertyChanged("ImageViewerPath");
+            }
+        }
+
         public Models.OriginImage SelectedImage => SourceImages[SelectedIndex];
-        public string ImageViewerPath => (false) ? SourceImages[SelectedIndex].OverlayImagePath : SourceImages[SelectedIndex].Path;
+        public string ImageViewerPath => (ShowBlockOverlayCheckBoxIsChecked) ? SourceImages[SelectedIndex].OverlayImagePath : SourceImages[SelectedIndex].Path;
 
         private HandyControl.Data.SkinType _currentSkin = 0;
         //SkinType : Default = 0, Dark = 1, Violet = 2.
@@ -118,6 +131,12 @@ namespace Aprheua.ViewModels
             }
             SelectAllCheckBoxIsChecked = null;
         }
+        public DelegateCommand ShowBlockOverlayCheckBoxClickEvent { get; set; }
+        public void ShowBlockOverlayCheckBoxClick(object parameter)
+        {
+            //ToDo : 判断imageViewerPath 有没有更新？
+            //可能这个没必要
+        }
         public DelegateCommand NightModeToggleButtonClickEvent { get; set; }
         public void NightModeToggleButtonClick(object parameter)
         {
@@ -125,6 +144,14 @@ namespace Aprheua.ViewModels
                                                : HandyControl.Data.SkinType.Default;
             App.UpdateSkin(_currentSkin);           
         }
+        public DelegateCommand AddCategoryClickEvent { get; set; }
+        public void AddCategory(object parameter)
+        {
+            Console.WriteLine("AddCategory Triggered!");
+            //ToDo : addCategory
+            SelectedImage.AddCategory(Path.Combine(App.AprheuaCategoriesFolder, $"test - {Models.Utility.GetTimeStamp()}"), $"test - {Models.Utility.GetTimeStamp()}");
+        }
+
         #endregion
 
         public MainWindow()
@@ -146,22 +173,16 @@ namespace Aprheua.ViewModels
             #region 事件 Events
             SelectAllCheckBoxClickEvent = new DelegateCommand(new Action<object>(SelectAllCheckBoxClick));
             ListBoxItemCheckBoxClickEvent = new DelegateCommand(new Action<object>(ListBoxItemCheckBoxClick));
+            ShowBlockOverlayCheckBoxClickEvent = new DelegateCommand(new Action<object>(ShowBlockOverlayCheckBoxClick));
             NightModeToggleButtonClickEvent = new DelegateCommand(new Action<object>(NightModeToggleButtonClick));
+            AddCategoryClickEvent = new DelegateCommand(new Action<object>(AddCategory));
             #endregion
 
             //测试事件
             var testImage = new Models.OriginImage("E:\\GitHub\\Hi-Icy\\Aprheua\\build\\resources\\test.jpg", ListBoxItemCheckBoxClickEvent);
             for (int i =1; i <= 10; i++)
             {
-                var cat = new Models.ImageCategory($"test - {i}");
-                for (int j = 1; j <= 10; j++)
-                {
-                    var block = new Models.ImageBlock {
-                        BlockPath = "E:\\GitHub\\Hi-Icy\\Aprheua\\build\\resources\\test.jpg"
-                    };
-                    cat.ImageBlocks.Add(block);
-                }
-                testImage.ImageCategories.Add(cat);
+                testImage.AddCategory(Path.Combine(App.AprheuaCategoriesFolder,$"test - {i} - {Models.Utility.GetTimeStamp()}"), $"test - {i}");                
             }
             SourceImages.Add(testImage);
         }

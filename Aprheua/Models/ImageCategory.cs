@@ -22,22 +22,24 @@ namespace Aprheua.Models
 
         private readonly string FolderPath;
         public ObservableCollection<ImageBlock> ImageBlocks { get; set; }
+        public Commands.DelegateCommand RemoveCategoryClickEvent { get; set; }
+        public Commands.DelegateCommand AddBlockClickEvent { get; set; }
 
-        public ImageCategory(string folderPath, string name)
+        public ImageCategory(string folderPath, string name, Commands.DelegateCommand removeCategoryClickEvent)
         {
-            Init(name);
+            ImageBlocks = new ObservableCollection<ImageBlock> { };
+            Name = name;
             if (!System.IO.Directory.Exists(folderPath))
             {
                 System.IO.Directory.CreateDirectory(folderPath);
             }
             FolderPath = folderPath;
+            RemoveCategoryClickEvent = removeCategoryClickEvent;
+            AddBlockClickEvent = new Commands.DelegateCommand(new Action<object>(AddBlock));
         }
-        public ImageCategory(string name) => Init(name);
-        public void Init(string name)
+        public void AddBlock(object parameter)
         {
-            ImageBlocks = new ObservableCollection<ImageBlock> { };
-            Name = name;
-            //ToDo : 扫描并添加
+            Console.WriteLine($"AddBlock triggered!");
         }
     }
 }

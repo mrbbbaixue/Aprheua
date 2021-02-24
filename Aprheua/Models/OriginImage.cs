@@ -64,12 +64,6 @@ namespace Aprheua.Models
 
         public OriginImage(string path, Commands.DelegateCommand checkBoxClickEvent)
         {
-            Init(path);
-            CheckBoxClickEvent = checkBoxClickEvent;
-        }
-        public OriginImage(string path) => Init(path);
-        public void Init(string path)
-        {
             Path = System.IO.Path.GetFullPath(path);
             Name = System.IO.Path.GetFileName(path);
             ThumbImagePath = System.IO.Path.Combine(App.AprheuaThumbImagesFolder, $"thumb-{Utility.GetTimeStamp()}-{Name}.jpg");
@@ -77,9 +71,29 @@ namespace Aprheua.Models
             NumberOfImageBlocks = 0;
             IsSelected = false;
             ImageCategories = new ObservableCollection<ImageCategory> { };
-            //ToDo : 使用Async异步执行
+            //ToDo : （低优先级）使用Async异步执行
             var thumbImage = new ThumbImage(Path);
             thumbImage.GetReducedImage(0.15, ThumbImagePath);
+            CheckBoxClickEvent = checkBoxClickEvent;
         }
+        public void AddCategory(string folderPath, string name)
+        {            
+            Console.WriteLine($"Add = {name}");
+            Commands.DelegateCommand removeCategoryClickEvent = new Commands.DelegateCommand(new Action<object>((obj) =>
+            {
+                foreach(var imagecategory in ImageCategories)
+                {
+                    if (imagecategory.Name == name)
+                    {
+                        ImageCategories.Remove(imagecategory);
+                        Console.WriteLine($"Remove = {name}");
+                        break;
+                    }
+                }
+            }));
+            var category = new ImageCategory(folderPath, name, removeCategoryClickEvent);
+            ImageCategories.Add(category);
+        }
+
     }
 }

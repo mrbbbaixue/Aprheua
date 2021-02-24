@@ -20,7 +20,6 @@
                OtherButtonForeground="White"
                OtherButtonHoverForeground="White"
                d:DataContext="{d:DesignInstance Type=viewmodels:MainWindow}"
-               Topmost="True"
                >
     <hc:GlowWindow.NonClientAreaContent>
         <Grid x:Name="nonClientAreaGrid">
@@ -65,7 +64,7 @@
                     Command="{Binding ImportCommand}"
                     />
             <ListBox x:Name="imagesListBox"
-                     Margin="20,55,0,45"
+                     Margin="20,55,0,55"
                      Style="{StaticResource ListBoxBaseStyle}"
                      ItemsSource="{Binding SourceImages}"
                      SelectedIndex="{Binding SelectedIndex}"
@@ -110,7 +109,7 @@
                 </ListBox.ItemTemplate>
             </ListBox>
             <CheckBox x:Name="selectAllCheckBox"
-                      Margin="30,0,0,10"
+                      Margin="30,0,0,20"
                       Height="30"
                       Content="全选"
                       VerticalAlignment="Bottom"
@@ -144,17 +143,24 @@
                     Command="{Binding AnalyseCommand}"
                     />
             <hc:ImageViewer x:Name="imageViewer"
-                            Margin="0,55,0,45"
+                            Margin="0,55,0,55"
                             ImageSource="{Binding ImageViewerPath}"
                             Background="{DynamicResource RegionBrush}"
                             />
             <CheckBox x:Name="showBlockOverlayCheckBox"
-                      Margin="10,0,0,10"
+                      Margin="10,0,0,20"
                       Height="30"
                       VerticalAlignment="Bottom"
                       HorizontalAlignment="Left"
                       Content="显示分割块"
-                      />
+                      IsChecked="{Binding ShowBlockOverlayCheckBoxIsChecked}"
+                      >
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click">
+                        <i:InvokeCommandAction Command="{Binding ShowBlockOverlayCheckBoxClickEvent}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </CheckBox>
             <Label Content="{Binding ImageViewerPath}"
                    Background="Transparent"
                    BorderThickness="0"                   
@@ -163,7 +169,7 @@
                    HorizontalContentAlignment="Left"
                    VerticalContentAlignment="Center"
                    Height="30"
-                   Margin="100,0,0,10"
+                   Margin="100,0,0,20"
                    />
         </Grid>
         <Grid x:Name="rightGrid" HorizontalAlignment="Right" Width="300">
@@ -184,7 +190,7 @@
                 hc:IconElement.Height="14"
                 hc:IconElement.Width="14"
                 />
-            <Border Margin="0,55,20,45"
+            <Border Margin="0,55,20,55"
                     Background="{DynamicResource RegionBrush}"
                     BorderThickness="1"
                     BorderBrush="{DynamicResource BorderBrush}"
@@ -218,8 +224,14 @@
                                                 hc:IconElement.Geometry="{StaticResource DropperGeometry}"
                                                 hc:IconElement.Height="15"
                                                 hc:IconElement.Width="15"
-                                                />
-                                            <Button x:Name="removeCategoriesButton"
+                                                >
+                                                <i:Interaction.Triggers>
+                                                    <i:EventTrigger EventName="Click">
+                                                        <i:InvokeCommandAction Command="{Binding AddBlockClickEvent}"/>
+                                                    </i:EventTrigger>
+                                                </i:Interaction.Triggers>
+                                            </Button>
+                                            <Button x:Name="removeCategoryButton"
                                                 Style="{StaticResource ButtonDashedDanger}"                                                
                                                 HorizontalAlignment="Right"
                                                 Margin="0,5,5,0"
@@ -228,7 +240,13 @@
                                                 hc:IconElement.Height="15"
                                                 hc:IconElement.Width="15"
                                                 Content="删除分类"
-                                                />
+                                                >
+                                                <i:Interaction.Triggers>
+                                                    <i:EventTrigger EventName="Click">
+                                                        <i:InvokeCommandAction Command="{Binding RemoveCategoryClickEvent}"/>
+                                                    </i:EventTrigger>
+                                                </i:Interaction.Triggers>
+                                            </Button>
                                         </Grid>
                                         <ItemsControl x:Name="imageBlocksItemsControl"
                                                       ItemsSource="{Binding ImageBlocks}"
@@ -260,13 +278,13 @@
                     </ItemsControl>
                 </ScrollViewer>
             </Border>
-            <Button x:Name="addCategoriesButton"
+            <Button x:Name="addCategoryButton"
                     Style="{StaticResource ButtonDashedPrimary}"                                                
                     HorizontalAlignment="Right"
                     VerticalAlignment="Bottom"
                     HorizontalContentAlignment="Center"
                     VerticalContentAlignment="Center"
-                    Margin="0,0,20,10"
+                    Margin="0,0,20,20"
                     Padding="0,0,0,0"
                     Width="280"
                     hc:IconElement.Geometry="{StaticResource AddGeometry}"
@@ -274,7 +292,13 @@
                     hc:IconElement.Width="14"
                     Content="添加分类"
                     FontSize="14"
-                    />
+                    >
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click">
+                        <i:InvokeCommandAction Command="{Binding AddCategoryClickEvent}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Button>
         </Grid>
     </Grid>
 </hc:GlowWindow>
