@@ -19,13 +19,13 @@ namespace Aprheua.Models
             _imageBlockOutputPath = imageBlockOutputPath;
         }
 
-        public List<string> StartHaarClassifier(HaarClassifierChecking haarClassifierChecking)
+        public List<string> StartHaarClassifier(HaarClassifierChecking haarClassifierChecking, int nDetection, int minSize, int maxSize)
         {
             int count = 1;
             List<string> OutputImageBlockPath = new List<string>();
             Mat srcImage = new Mat(_imageInputPath, ImreadModes.AnyColor);
             CascadeClassifier haarClassifier = new CascadeClassifier(_haarClassifierPath + $@"\{haarClassifierChecking}.xml");
-            Rect[] imageBlockRect = haarClassifier.DetectMultiScale(srcImage, 1.1, 3, 0, new Size(20, 20), new Size(50, 50));
+            Rect[] imageBlockRect = haarClassifier.DetectMultiScale(srcImage, 1.1, nDetection, 0, new Size(minSize, minSize), new Size(maxSize, maxSize));
             foreach (var item in imageBlockRect)
             {
                 Mat imageBlock = new Mat(srcImage, item);
