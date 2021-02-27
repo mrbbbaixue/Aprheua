@@ -10,17 +10,18 @@
                mc:Ignorable="d"
                Title="{Binding WindowTitle}"  
                Height="800" Width="1280"
+               MinHeight="600" MinWidth="1024"
                WindowStartupLocation="CenterScreen"
                BorderThickness="0"
-               ActiveGlowColor="{StaticResource PrimaryColor}"
-               InactiveGlowColor="{StaticResource DarkPrimaryColor}"
+               ActiveGlowColor="#F52443"
+               InactiveGlowColor="#F52443"
                NonClientAreaBackground="{StaticResource PrimaryBrush}"
                NonClientAreaForeground="White"
                CloseButtonForeground="White"
                OtherButtonForeground="White"
                OtherButtonHoverForeground="White"
                d:DataContext="{d:DesignInstance Type=viewmodels:MainWindow}"               
-               Icon="/Aprheua;component/Resources/Aprheua-Logo-Square.ico"
+               Icon="/Aprheua;component/Resources/Aprheua-Logo-Square.png"
                >
     <hc:GlowWindow.NonClientAreaContent>
         <Grid x:Name="nonClientAreaGrid">
@@ -147,6 +148,7 @@
                             Margin="0,55,0,55"
                             ImageSource="{Binding ImageViewerPath}"
                             Background="{DynamicResource RegionBrush}"
+                            ShowImgMap="True"
                             />
             <CheckBox x:Name="showBlockOverlayCheckBox"
                       Margin="10,0,0,20"
@@ -207,11 +209,12 @@
                                     <Expander.Header>
                                         <Grid>
                                             <Label Content="{Binding Name}"
-                                               Style="{StaticResource LabelPrimary}"
-                                               HorizontalContentAlignment="Center"
-                                               VerticalContentAlignment="Center"                                           
-                                               HorizontalAlignment="Left"
-                                               VerticalAlignment="Center"
+                                                   Background="Transparent"
+                                                   HorizontalContentAlignment="Center"
+                                                   VerticalContentAlignment="Center"                                           
+                                                   HorizontalAlignment="Left"
+                                                   VerticalAlignment="Center"
+                                                   BorderBrush="Transparent"
                                                />
                                         </Grid>
                                     </Expander.Header>
@@ -220,7 +223,7 @@
                                             <Button x:Name="addBlockButton"
                                                 Style="{StaticResource ButtonDashed}"                                                
                                                 HorizontalAlignment="Left"
-                                                Margin="5,5,0,0"
+                                                Margin="5,5,5,5"
                                                 Width="40"
                                                 hc:IconElement.Geometry="{StaticResource DropperGeometry}"
                                                 hc:IconElement.Height="15"
@@ -235,7 +238,7 @@
                                             <Button x:Name="removeCategoryButton"
                                                 Style="{StaticResource ButtonDashedDanger}"                                                
                                                 HorizontalAlignment="Right"
-                                                Margin="0,5,5,0"
+                                                Margin="0,5,5,5"
                                                 Width="120"
                                                 hc:IconElement.Geometry="{StaticResource DeleteFillCircleGeometry}"
                                                 hc:IconElement.Height="15"

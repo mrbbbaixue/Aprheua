@@ -21,7 +21,7 @@ namespace Aprheua
         public static string AprheuaLogsFolder => Path.Combine(AprheuaTempFolder, "Logs");
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            #region Step 1 : Create Folders
+            // 第一步 : 创建文件夹
             if (!Directory.Exists(AprheuaTempFolder))
             {
                 Directory.CreateDirectory(AprheuaTempFolder);
@@ -42,22 +42,14 @@ namespace Aprheua
             {
                 Directory.CreateDirectory(AprheuaCategoriesFolder);
             }
-            #endregion
+            // 第二步 : 主题设置
+            var brush = (System.Windows.Media.Brush)new System.Windows.Media.BrushConverter().ConvertFromString("#F52443");
+            HandyControl.Themes.ThemeManager.Current.AccentColor = brush;
             //Final Step : Open MainWindow
             CreateMainWindow();
         }
         //ToDo : 程序运行完销毁临时文件夹
-        public static void UpdateSkin(HandyControl.Data.SkinType skin)
-        {
-            HandyControl.Themes.SharedResourceDictionary.SharedDictionaries.Clear();
-            Current.Resources.MergedDictionaries.Add(HandyControl.Tools.ResourceHelper.GetSkin(skin));
-            Current.Resources.MergedDictionaries.Add(new ResourceDictionary
-            {
-                Source = new Uri("pack://application:,,,/HandyControl;component/Themes/Theme.xaml")
-            });
-            Current.MainWindow?.OnApplyTemplate();
-        }
-        public static void CreateWindow()
+        public static void CreateAddCategoryWindow()
         {
 
         }

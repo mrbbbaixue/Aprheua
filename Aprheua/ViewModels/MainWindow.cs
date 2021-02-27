@@ -62,9 +62,6 @@ namespace Aprheua.ViewModels
 
         public Models.OriginImage SelectedImage => SourceImages[SelectedIndex];
         public string ImageViewerPath => (ShowBlockOverlayCheckBoxIsChecked) ? SourceImages[SelectedIndex].OverlayImagePath : SourceImages[SelectedIndex].Path;
-
-        private HandyControl.Data.SkinType _currentSkin = 0;
-        //SkinType : Default = 0, Dark = 1, Violet = 2.
         #endregion
 
         #region 数据 Datas
@@ -140,9 +137,9 @@ namespace Aprheua.ViewModels
         public DelegateCommand NightModeToggleButtonClickEvent { get; set; }
         public void NightModeToggleButtonClick(object parameter)
         {
-            _currentSkin = (_currentSkin == 0) ? HandyControl.Data.SkinType.Dark
-                                               : HandyControl.Data.SkinType.Default;
-            App.UpdateSkin(_currentSkin);           
+            HandyControl.Themes.ThemeManager.Current.ApplicationTheme = 
+                (HandyControl.Themes.ThemeManager.Current.ApplicationTheme != HandyControl.Themes.ApplicationTheme.Dark) ?
+                HandyControl.Themes.ApplicationTheme.Dark : HandyControl.Themes.ApplicationTheme.Light;
         }
         public DelegateCommand AddCategoryClickEvent { get; set; }
         public void AddCategory(object parameter)
