@@ -22,10 +22,10 @@ namespace Aprheua.Models
             //Action action2= new Action(haarProcess.StartEars);
             //Action action3 = new Action(haarProcess.StartNose);
             //Action action4 = new Action(haarProcess.StartMouth);
-            //Task task1 = new Task(new Action(haarProcess.StartEyes));
-            //Task task2 = new Task(new Action(haarProcess.StartEars));
-            //Task task3 = new Task(new Action(haarProcess.StartNose));
-            //Task task4 = new Task(new Action(haarProcess.StartMouth));
+            //Task task1 = new Task(action1);
+            //Task task2 = new Task(action2);
+            //Task task3 = new Task(action3);
+            //Task task4 = new Task(action4);
 
 
             task1.Start();
