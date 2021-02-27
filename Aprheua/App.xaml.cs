@@ -44,8 +44,7 @@ namespace Aprheua
             }
             #endregion
             //Final Step : Open MainWindow
-            var mainWindow = new Aprheua.Views.MainWindow();
-            mainWindow.Show();
+            CreateMainWindow();
         }
         //ToDo : 程序运行完销毁临时文件夹
         public static void UpdateSkin(HandyControl.Data.SkinType skin)
@@ -57,6 +56,17 @@ namespace Aprheua
                 Source = new Uri("pack://application:,,,/HandyControl;component/Themes/Theme.xaml")
             });
             Current.MainWindow?.OnApplyTemplate();
+        }
+        public static void CreateWindow()
+        {
+
+        }
+
+        public static void CreateMainWindow()
+        {
+            var mainwindow = new Aprheua.Views.MainWindow();
+            mainwindow.Show();
+            return;
         }
     }
 }

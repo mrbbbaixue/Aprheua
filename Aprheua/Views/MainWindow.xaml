@@ -19,7 +19,8 @@
                CloseButtonForeground="White"
                OtherButtonForeground="White"
                OtherButtonHoverForeground="White"
-               d:DataContext="{d:DesignInstance Type=viewmodels:MainWindow}"
+               d:DataContext="{d:DesignInstance Type=viewmodels:MainWindow}"               
+               Icon="/Aprheua;component/Resources/Aprheua-Logo-Square.ico"
                >
     <hc:GlowWindow.NonClientAreaContent>
         <Grid x:Name="nonClientAreaGrid">
