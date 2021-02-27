@@ -15,6 +15,19 @@ namespace Aprheua.Models
             Task task2 = new Task(new Action(haarProcess.StartEars));
             Task task3 = new Task(new Action(haarProcess.StartNose));
             Task task4 = new Task(new Action(haarProcess.StartMouth));
+
+            //用哪种？
+
+            //Action action1 = new Action(haarProcess.StartEyes);
+            //Action action2= new Action(haarProcess.StartEars);
+            //Action action3 = new Action(haarProcess.StartNose);
+            //Action action4 = new Action(haarProcess.StartMouth);
+            //Task task1 = new Task(new Action(haarProcess.StartEyes));
+            //Task task2 = new Task(new Action(haarProcess.StartEars));
+            //Task task3 = new Task(new Action(haarProcess.StartNose));
+            //Task task4 = new Task(new Action(haarProcess.StartMouth));
+
+
             task1.Start();
             task2.Start();
             task3.Start();
