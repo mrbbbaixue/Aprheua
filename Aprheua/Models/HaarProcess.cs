@@ -10,7 +10,7 @@ namespace Aprheua.Models
     {
         public List<string> StartClassifier()
         {
-            HaarProcess haarProcess = new HaarProcess(@"", @"", @"", 3, 30, 50);
+            HaarProcess haarProcess = new HaarProcess(@"", @"", @"", 3, 30, 50);//这个应该是传入的，我先这样写着
             Task task1 = new Task(new Action(haarProcess.StartEyes));
             Task task2 = new Task(new Action(haarProcess.StartEars));
             Task task3 = new Task(new Action(haarProcess.StartNose));
