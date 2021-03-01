@@ -22,6 +22,14 @@ namespace Aprheua
         private void Application_Startup(object sender, StartupEventArgs e)
         {
             // 第一步 : 创建文件夹
+            /*
+             * 我这样写好傻
+             * 真是烂透了...
+             * 烂透了
+             * 我什么时候
+             * 才能明白她真正的意义呢
+             * 什么时候...
+             */
             if (!Directory.Exists(AprheuaTempFolder))
             {
                 Directory.CreateDirectory(AprheuaTempFolder);
@@ -48,7 +56,10 @@ namespace Aprheua
             //Final Step : Open MainWindow
             CreateMainWindow();
         }
-
+        private void Application_Exit(object sender, ExitEventArgs e)
+        {
+            Models.Utility.DeleteFolder(AprheuaTempFolder);
+        }
         //ToDo : 程序运行完销毁临时文件夹
         public static string CreateAddCategoryWindow()
         {
@@ -65,11 +76,6 @@ namespace Aprheua
             var mainwindow = new Aprheua.Views.MainWindow();
             mainwindow.Show();
             return;
-        }
-
-        private void Application_Exit(object sender, ExitEventArgs e)
-        {
-
-        }
+        }    
     }
 }
