@@ -38,9 +38,6 @@ namespace Aprheua.Models
     class HaarProcess
     {
         public List<string> ImageBlockPath { get; set; }
-        private string _haarClassifierPath { get; set; }
-        private string _imageInputPath { get; set; }
-        private string _imageBlockOutputPath { get; set; }
         public bool isStartEyes { get; set; }
         public bool isStartEars { get; set; }
         public bool isStartNose { get; set; }
@@ -49,15 +46,13 @@ namespace Aprheua.Models
         public int _minSize { get; set; }
         public int _maxSize { get; set; }
 
-        HaarClassifier haarClassifier = new HaarClassifier(@"", @"", @"");
+        HaarClassifier haarClassifier = null;
         public HaarProcess(string haarClassifierPath, string imageInputPath, string imageBlockOutputPath, int nDetection, int minSize, int maxSize)
         {
+            haarClassifier = new HaarClassifier(haarClassifierPath, imageInputPath, imageBlockOutputPath);
             _nDetection = nDetection;
             _minSize = minSize;
             _maxSize = maxSize;
-            _haarClassifierPath = haarClassifierPath;
-            _imageInputPath = imageInputPath;
-            _imageBlockOutputPath = imageBlockOutputPath;
             isStartEyes = false;
             isStartEars = false;
             isStartNose = false;
