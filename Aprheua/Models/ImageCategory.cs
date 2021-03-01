@@ -21,13 +21,25 @@ namespace Aprheua.Models
         }
 
         private readonly string FolderPath;
+        public ObservableCollection<ImageBlock> ImageBlocks { get; set; }
+        public Commands.DelegateCommand RemoveCategoryClickEvent { get; set; }
+        public Commands.DelegateCommand AddBlockClickEvent { get; set; }
 
-        public ObservableCollection<string> Images;
-
-        public ImageCategory(string folderPath)
+        public ImageCategory(string folderPath, string name, Commands.DelegateCommand removeCategoryClickEvent)
         {
+            ImageBlocks = new ObservableCollection<ImageBlock> { };
+            Name = name;
+            if (!System.IO.Directory.Exists(folderPath))
+            {
+                System.IO.Directory.CreateDirectory(folderPath);
+            }
             FolderPath = folderPath;
+            RemoveCategoryClickEvent = removeCategoryClickEvent;
+            AddBlockClickEvent = new Commands.DelegateCommand(new Action<object>(AddBlock));
         }
-
+        public void AddBlock(object parameter)
+        {
+            Console.WriteLine($"AddBlock triggered!");
+        }
     }
 }

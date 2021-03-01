@@ -17,10 +17,11 @@ namespace Aprheua
         public static string AprheuaTempFolder => Path.Combine(Environment.GetEnvironmentVariable("temp"),"Aprheua");
         public static string AprheuaThumbImagesFolder => Path.Combine(AprheuaTempFolder,"ThumbImages");
         public static string AprheuaOverlayImagesFolder => Path.Combine(AprheuaTempFolder,"OverlayImages");
-
+        public static string AprheuaCategoriesFolder => Path.Combine(AprheuaTempFolder, "Categories");
+        public static string AprheuaLogsFolder => Path.Combine(AprheuaTempFolder, "Logs");
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            #region Step 1 : Create Folders
+            // 第一步 : 创建文件夹
             if (!Directory.Exists(AprheuaTempFolder))
             {
                 Directory.CreateDirectory(AprheuaTempFolder);
@@ -33,22 +34,42 @@ namespace Aprheua
             {
                 Directory.CreateDirectory(AprheuaOverlayImagesFolder);
             }
-            #endregion
-            //Final Step : Open MainWindow
-            var mainWindow = new Aprheua.Views.MainWindow();
-            mainWindow.Show();
-        }
-        //ToDo : 程序运行完销毁临时文件夹
-        //ToDo : 要绑定，且切换主题要在ViewModel进行，需要单独定义颜色
-        public static void UpdateSkin(HandyControl.Data.SkinType skin)
-        {
-            HandyControl.Themes.SharedResourceDictionary.SharedDictionaries.Clear();
-            Current.Resources.MergedDictionaries.Add(HandyControl.Tools.ResourceHelper.GetSkin(skin));
-            Current.Resources.MergedDictionaries.Add(new ResourceDictionary
+            if (!Directory.Exists(AprheuaLogsFolder))
             {
-                Source = new Uri("pack://application:,,,/HandyControl;component/Themes/Theme.xaml")
-            });
-            Current.MainWindow?.OnApplyTemplate();
+                Directory.CreateDirectory(AprheuaLogsFolder);
+            }
+            if (!Directory.Exists(AprheuaCategoriesFolder))
+            {
+                Directory.CreateDirectory(AprheuaCategoriesFolder);
+            }
+            // 第二步 : 主题设置
+            var brush = (System.Windows.Media.Brush)new System.Windows.Media.BrushConverter().ConvertFromString("#F52443");
+            HandyControl.Themes.ThemeManager.Current.AccentColor = brush;
+            //Final Step : Open MainWindow
+            CreateMainWindow();
+        }
+
+        //ToDo : 程序运行完销毁临时文件夹
+        public static string CreateAddCategoryWindow()
+        {
+            var addCategoryWindow = new Aprheua.Views.AddCategoryWindow();
+            if (addCategoryWindow.ShowDialog() == true)
+            {
+                return addCategoryWindow.CategoryName;
+            }
+            return null;
+        }
+
+        public static void CreateMainWindow()
+        {
+            var mainwindow = new Aprheua.Views.MainWindow();
+            mainwindow.Show();
+            return;
+        }
+
+        private void Application_Exit(object sender, ExitEventArgs e)
+        {
+
         }
     }
 }

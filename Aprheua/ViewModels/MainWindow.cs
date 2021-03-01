@@ -14,24 +14,13 @@ namespace Aprheua.ViewModels
     {
         #region 变量 Variables
         private string _windowTitle;
-        public string WindowTitle 
-        { 
+        public string WindowTitle
+        {
             get { return _windowTitle; }
             set
             {
                 _windowTitle = value;
                 this.RaisePropertyChanged("WindowTitle");
-            }
-        }
-
-        private Models.OriginImage _selectedImage;
-        public Models.OriginImage SelectedImage
-        {
-            get { return _selectedImage; }
-            set
-            {
-                _selectedImage = value;
-                this.RaisePropertyChanged("SelectedImage");
             }
         }
 
@@ -45,6 +34,34 @@ namespace Aprheua.ViewModels
                 this.RaisePropertyChanged("SelectAllCheckBoxIsChecked");
             }
         }
+
+        private int _selectedIndex;
+        public int SelectedIndex
+        {
+            get { return _selectedIndex; }
+            set
+            {
+                _selectedIndex = value;
+                this.RaisePropertyChanged("SelectedIndex");
+                this.RaisePropertyChanged("SelectedImage");
+                this.RaisePropertyChanged("ImageViewerPath");
+            }
+        }
+
+        private bool _showBlockOverlayCheckBoxIsChecked;
+        public bool ShowBlockOverlayCheckBoxIsChecked
+        {
+            get { return _showBlockOverlayCheckBoxIsChecked; }
+            set
+            {
+                _showBlockOverlayCheckBoxIsChecked = value;
+                this.RaisePropertyChanged("ShowBlockOverlayCheckBoxIsChecked");
+                this.RaisePropertyChanged("ImageViewerPath");
+            }
+        }
+
+        public Models.OriginImage SelectedImage => SourceImages[SelectedIndex];
+        public string ImageViewerPath => (ShowBlockOverlayCheckBoxIsChecked) ? SourceImages[SelectedIndex].OverlayImagePath : SourceImages[SelectedIndex].Path;
         #endregion
 
         #region 数据 Datas
@@ -111,19 +128,34 @@ namespace Aprheua.ViewModels
             }
             SelectAllCheckBoxIsChecked = null;
         }
+        public DelegateCommand ShowBlockOverlayCheckBoxClickEvent { get; set; }
+        public void ShowBlockOverlayCheckBoxClick(object parameter)
+        {
+            //ToDo : 判断imageViewerPath 有没有更新？
+            //可能这个没必要
+        }
         public DelegateCommand NightModeToggleButtonClickEvent { get; set; }
         public void NightModeToggleButtonClick(object parameter)
         {
-            App.UpdateSkin(HandyControl.Data.SkinType.Dark);
-            //ToDo : 完善夜间模式切换
+            HandyControl.Themes.ThemeManager.Current.ApplicationTheme = 
+                (HandyControl.Themes.ThemeManager.Current.ApplicationTheme != HandyControl.Themes.ApplicationTheme.Dark) ?
+                HandyControl.Themes.ApplicationTheme.Dark : HandyControl.Themes.ApplicationTheme.Light;
         }
+        public DelegateCommand AddCategoryClickEvent { get; set; }
+        public void AddCategory(object parameter)
+        {
+            Console.WriteLine("AddCategory Triggered!");
+            //ToDo : addCategory
+            App.CreateAddCategoryWindow();
+            SelectedImage.AddCategory(Path.Combine(App.AprheuaCategoriesFolder, $"test - {Models.Utility.GetTimeStamp()}"), $"test - {Models.Utility.GetTimeStamp()}");
+        }
+
         #endregion
 
         public MainWindow()
         {
             #region 变量 Variables
-            WindowTitle = $"Aprheua 脸谱分割展示程序 - {Environment.CurrentDirectory}";
-            SelectedImage = new Models.OriginImage(Path.Combine(Path.Combine(Environment.CurrentDirectory,"resources"), "default-SelectedImage.png"));
+            WindowTitle = $"Aprheua 脸谱分割展示程序 - {Environment.CurrentDirectory}";         
             SelectAllCheckBoxIsChecked = false;
             #endregion
 
@@ -139,11 +171,17 @@ namespace Aprheua.ViewModels
             #region 事件 Events
             SelectAllCheckBoxClickEvent = new DelegateCommand(new Action<object>(SelectAllCheckBoxClick));
             ListBoxItemCheckBoxClickEvent = new DelegateCommand(new Action<object>(ListBoxItemCheckBoxClick));
+            ShowBlockOverlayCheckBoxClickEvent = new DelegateCommand(new Action<object>(ShowBlockOverlayCheckBoxClick));
             NightModeToggleButtonClickEvent = new DelegateCommand(new Action<object>(NightModeToggleButtonClick));
+            AddCategoryClickEvent = new DelegateCommand(new Action<object>(AddCategory));
             #endregion
 
             //测试事件
-            var testImage = new Models.OriginImage("resources\\test.jpg", ListBoxItemCheckBoxClickEvent);
+            var testImage = new Models.OriginImage($"{Environment.CurrentDirectory}\\resources\\test.jpg", ListBoxItemCheckBoxClickEvent);
+            for (int i =1; i <= 10; i++)
+            {
+                testImage.AddCategory(Path.Combine(App.AprheuaCategoriesFolder,$"test - {i} - {Models.Utility.GetTimeStamp()}"), $"test - {i}");                
+            }
             SourceImages.Add(testImage);
         }
     }

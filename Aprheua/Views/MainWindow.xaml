@@ -10,17 +10,18 @@
                mc:Ignorable="d"
                Title="{Binding WindowTitle}"  
                Height="800" Width="1280"
+               MinHeight="600" MinWidth="1024"
                WindowStartupLocation="CenterScreen"
                BorderThickness="0"
-               ActiveGlowColor="{StaticResource PrimaryColor}"
-               InactiveGlowColor="{StaticResource DarkPrimaryColor}"
+               ActiveGlowColor="#F52443"
+               InactiveGlowColor="#F52443"
                NonClientAreaBackground="{StaticResource PrimaryBrush}"
                NonClientAreaForeground="White"
                CloseButtonForeground="White"
                OtherButtonForeground="White"
                OtherButtonHoverForeground="White"
-               d:DataContext="{d:DesignInstance Type=viewmodels:MainWindow}"
-               Topmost="True"
+               d:DataContext="{d:DesignInstance Type=viewmodels:MainWindow}"               
+               Icon="/Aprheua;component/Resources/Aprheua-Logo-Square.png"
                >
     <hc:GlowWindow.NonClientAreaContent>
         <Grid x:Name="nonClientAreaGrid">
@@ -65,10 +66,11 @@
                     Command="{Binding ImportCommand}"
                     />
             <ListBox x:Name="imagesListBox"
-                     Margin="20,55,0,45"
+                     Margin="20,55,0,55"
                      Style="{StaticResource ListBoxBaseStyle}"
                      ItemsSource="{Binding SourceImages}"
-                     SelectedItem="{Binding SelectedImage}"
+                     SelectedIndex="{Binding SelectedIndex}"
+                     VirtualizingPanel.IsVirtualizing="True"
                      >
                 <ListBox.ItemTemplate>
                     <DataTemplate>
@@ -99,7 +101,7 @@
                                        Margin="90,5,0,0"
                                        FontSize="14"
                                        />
-                            <TextBlock Text="{Binding NumberOfBlocks,StringFormat={}{0}个分割块}"
+                            <TextBlock Text="{Binding NumberOfImageBlocks,StringFormat={}{0}个分割块}"
                                        HorizontalAlignment="Left"
                                        VerticalAlignment="Top"
                                        Margin="90,30,0,0"
@@ -110,7 +112,7 @@
             </ListBox>
             <CheckBox x:Name="selectAllCheckBox"
                       Margin="30,0,0,20"
-                      Height="20"
+                      Height="30"
                       Content="全选"
                       VerticalAlignment="Bottom"
                       HorizontalAlignment="Left"
@@ -143,19 +145,35 @@
                     Command="{Binding AnalyseCommand}"
                     />
             <hc:ImageViewer x:Name="imageViewer"
-                            Margin="0,55,0,45"
-                            ImageSource="{Binding SelectedImage.Path}"
-                            Background="{StaticResource RegionBrush}"
+                            Margin="0,55,0,55"
+                            ImageSource="{Binding ImageViewerPath}"
+                            Background="{DynamicResource RegionBrush}"
+                            ShowImgMap="True"
                             />
-            <!-- ToDo: Background不能这样写，颜色要通知!-->
-            <!-- ToDo: ImageSource不能这样写，要和showBlockOverlayCheckBox有关-->
             <CheckBox x:Name="showBlockOverlayCheckBox"
                       Margin="10,0,0,20"
-                      Height="20"
+                      Height="30"
                       VerticalAlignment="Bottom"
                       HorizontalAlignment="Left"
                       Content="显示分割块"
-                      />
+                      IsChecked="{Binding ShowBlockOverlayCheckBoxIsChecked}"
+                      >
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click">
+                        <i:InvokeCommandAction Command="{Binding ShowBlockOverlayCheckBoxClickEvent}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </CheckBox>
+            <Label Content="{Binding ImageViewerPath}"
+                   Background="Transparent"
+                   BorderThickness="0"                   
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Bottom"
+                   HorizontalContentAlignment="Left"
+                   VerticalContentAlignment="Center"
+                   Height="30"
+                   Margin="100,0,0,20"
+                   />
         </Grid>
         <Grid x:Name="rightGrid" HorizontalAlignment="Right" Width="300">
             <Button x:Name="exportButton"
@@ -175,27 +193,119 @@
                 hc:IconElement.Height="14"
                 hc:IconElement.Width="14"
                 />
-            <DataGrid AutoGenerateColumns="False" 
-                      HeadersVisibility="None" 
-                      Margin="0,55,20,45"
-                      >
-                
-                <Expander VerticalAlignment="Top" Width="280">
-                    <Expander.Header>
-                        <Grid>
-                            <Label Content="233333" Style="{StaticResource LabelPrimary}"/>
-                        </Grid>
-                    </Expander.Header>
-                    <StackPanel>
-                        <Border Height="100"
-                            BorderThickness="1,0,1,1"
-                            BorderBrush="{DynamicResource BorderBrush}"
-                            Background="{DynamicResource RegionBrush}"
-                            CornerRadius="0,0,4,4">
-                        </Border>
-                    </StackPanel>
-                </Expander>
-            </DataGrid>
+            <Border Margin="0,55,20,55"
+                    Background="{DynamicResource RegionBrush}"
+                    BorderThickness="1"
+                    BorderBrush="{DynamicResource BorderBrush}"
+                    >
+                <ScrollViewer>
+                    <ItemsControl x:Name="catagoriesItemsControl"                          
+                                  ItemsSource="{Binding SelectedImage.ImageCategories}"
+                                  VirtualizingPanel.IsVirtualizing="True"
+                                  >
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Expander>
+                                    <Expander.Header>
+                                        <Grid>
+                                            <Label Content="{Binding Name}"
+                                                   Background="Transparent"
+                                                   HorizontalContentAlignment="Center"
+                                                   VerticalContentAlignment="Center"                                           
+                                                   HorizontalAlignment="Left"
+                                                   VerticalAlignment="Center"
+                                                   BorderBrush="Transparent"
+                                               />
+                                        </Grid>
+                                    </Expander.Header>
+                                    <StackPanel>
+                                        <Grid>
+                                            <Button x:Name="addBlockButton"
+                                                Style="{StaticResource ButtonDashed}"                                                
+                                                HorizontalAlignment="Left"
+                                                Margin="5,5,5,5"
+                                                Width="40"
+                                                hc:BorderElement.CornerRadius="2"
+                                                hc:IconElement.Geometry="{StaticResource DropperGeometry}"
+                                                hc:IconElement.Height="15"
+                                                hc:IconElement.Width="15"
+                                                >
+                                                <i:Interaction.Triggers>
+                                                    <i:EventTrigger EventName="Click">
+                                                        <i:InvokeCommandAction Command="{Binding AddBlockClickEvent}"/>
+                                                    </i:EventTrigger>
+                                                </i:Interaction.Triggers>
+                                            </Button>
+                                            <Button x:Name="removeCategoryButton"
+                                                Style="{StaticResource ButtonDashedDanger}"                                                
+                                                HorizontalAlignment="Right"
+                                                Margin="0,5,5,5"
+                                                Width="120"
+                                                hc:BorderElement.CornerRadius="2"
+                                                hc:IconElement.Geometry="{StaticResource DeleteFillCircleGeometry}"
+                                                hc:IconElement.Height="15"
+                                                hc:IconElement.Width="15"
+                                                Content="删除分类"
+                                                >
+                                                <i:Interaction.Triggers>
+                                                    <i:EventTrigger EventName="Click">
+                                                        <i:InvokeCommandAction Command="{Binding RemoveCategoryClickEvent}"/>
+                                                    </i:EventTrigger>
+                                                </i:Interaction.Triggers>
+                                            </Button>
+                                        </Grid>
+                                        <ItemsControl x:Name="imageBlocksItemsControl"
+                                                      ItemsSource="{Binding ImageBlocks}"
+                                                      VirtualizingPanel.IsVirtualizing="True"
+                                                      ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                                                      >
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <WrapPanel Orientation="Horizontal"/>
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <WrapPanel Orientation="Vertical"
+                                                               Margin="5,5,5,5"
+                                                               >
+                                                        <Image Source="{Binding BlockPath}"
+                                                               Width="82"
+                                                               Height="82"
+                                                               />
+                                                    </WrapPanel>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </StackPanel>
+                                </Expander>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Border>
+            <Button x:Name="addCategoryButton"
+                    Style="{StaticResource ButtonDashedPrimary}"                                                
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Margin="0,0,20,20"
+                    Padding="0,0,0,0"
+                    Width="280"
+                    hc:BorderElement.CornerRadius="2"
+                    hc:IconElement.Geometry="{StaticResource AddGeometry}"
+                    hc:IconElement.Height="14"
+                    hc:IconElement.Width="14"
+                    Content="添加分类"
+                    FontSize="14"
+                    >
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="Click">
+                        <i:InvokeCommandAction Command="{Binding AddCategoryClickEvent}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </Button>
         </Grid>
     </Grid>
 </hc:GlowWindow>

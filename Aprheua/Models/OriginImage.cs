@@ -38,13 +38,13 @@ namespace Aprheua.Models
             }
         }
 
-        private int _numberOfBlocks;
-        public int NumberOfBlocks
+        private int _numberOfImageBlocks;
+        public int NumberOfImageBlocks
         {
-            get { return _numberOfBlocks; }
+            get { return _numberOfImageBlocks; }
             set
             {
-                _numberOfBlocks = value;
+                _numberOfImageBlocks = value;
                 this.RaisePropertyChanged("NumberOfBlocks");
             }
         }
@@ -61,23 +61,39 @@ namespace Aprheua.Models
         }
         public Commands.DelegateCommand CheckBoxClickEvent { get; set; }
         public ObservableCollection<ImageCategory> ImageCategories { get; set; }
+
         public OriginImage(string path, Commands.DelegateCommand checkBoxClickEvent)
-        {
-            Init(path);
-            CheckBoxClickEvent = checkBoxClickEvent;
-        }
-        public OriginImage(string path) => Init(path);
-        public void Init(string path)
         {
             Path = System.IO.Path.GetFullPath(path);
             Name = System.IO.Path.GetFileName(path);
             ThumbImagePath = System.IO.Path.Combine(App.AprheuaThumbImagesFolder, $"thumb-{Utility.GetTimeStamp()}-{Name}.jpg");
             OverlayImagePath = System.IO.Path.Combine(App.AprheuaOverlayImagesFolder, $"overlay-{Utility.GetTimeStamp()}-{Name}.jpg");
-            NumberOfBlocks = 0;
+            NumberOfImageBlocks = 0;
             IsSelected = false;
-            //ToDo : 使用Async异步执行
+            ImageCategories = new ObservableCollection<ImageCategory> { };
+            //ToDo : （低优先级）使用Async异步执行
             var thumbImage = new ThumbImage(Path);
             thumbImage.GetReducedImage(0.15, ThumbImagePath);
+            CheckBoxClickEvent = checkBoxClickEvent;
         }
+        public void AddCategory(string folderPath, string name)
+        {            
+            Console.WriteLine($"Add = {name}");
+            Commands.DelegateCommand removeCategoryClickEvent = new Commands.DelegateCommand(new Action<object>((obj) =>
+            {
+                foreach(var imagecategory in ImageCategories)
+                {
+                    if (imagecategory.Name == name)
+                    {
+                        ImageCategories.Remove(imagecategory);
+                        Console.WriteLine($"Remove = {name}");
+                        break;
+                    }
+                }
+            }));
+            var category = new ImageCategory(folderPath, name, removeCategoryClickEvent);
+            ImageCategories.Add(category);
+        }
+
     }
 }
