@@ -25,7 +25,7 @@ namespace Aprheua.Views
         {
             InitializeComponent();
             WindowTitle = $"添加分类";
-            CategoryName = $"New Category {Models.Utility.GetTimeStamp()}";
+            CategoryName = $"New Category - {Models.Utility.GetTimeStamp()}";
             DataContext = this;
         }
     }

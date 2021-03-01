@@ -66,5 +66,10 @@ namespace Aprheua
             mainwindow.Show();
             return;
         }
+
+        private void Application_Exit(object sender, ExitEventArgs e)
+        {
+
+        }
     }
 }

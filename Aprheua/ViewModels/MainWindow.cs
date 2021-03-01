@@ -177,7 +177,7 @@ namespace Aprheua.ViewModels
             #endregion
 
             //测试事件
-            var testImage = new Models.OriginImage("E:\\GitHub\\Hi-Icy\\Aprheua\\build\\resources\\test.jpg", ListBoxItemCheckBoxClickEvent);
+            var testImage = new Models.OriginImage($"{Environment.CurrentDirectory}\\resources\\test.jpg", ListBoxItemCheckBoxClickEvent);
             for (int i =1; i <= 10; i++)
             {
                 testImage.AddCategory(Path.Combine(App.AprheuaCategoriesFolder,$"test - {i} - {Models.Utility.GetTimeStamp()}"), $"test - {i}");                
