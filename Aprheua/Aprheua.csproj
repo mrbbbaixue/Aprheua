@@ -115,6 +115,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Commands.cs" />
+    <Compile Include="Models\HaarClassifier.cs" />
+    <Compile Include="Models\HaarProcess.cs" />
     <Compile Include="Models\ImageBlock.cs" />
     <Compile Include="Models\ImageCategory.cs" />
     <Compile Include="Models\OriginImage.cs" />
