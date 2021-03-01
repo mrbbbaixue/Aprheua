@@ -158,41 +158,60 @@ namespace Aprheua.Models
             return false;
         }
 
-//ToDo : （低优先级）增加1个重载，保持比例缩放到指定大小
-/* 即：在保持比例不变的情况下把长边缩小到指定大小
- * 比如 GetReducedImage(int targetMaxPixel, string targetFilePath)
- * GetReducedImage(50,"xxx.jpg");
- * 假设这张图的大小是100*50px，那处理后应该是50*25px
- * 假设这张图的大小是100*150px，那处理后应该是33.3 * 50px
- * 具体参考下面这个方法，只需要把下面这个方法复制一份，修改缩放大小就行
- * 最后记得和这个方法一样把图输出到指定位置 string targetFilePath
- */
-
-    /// <summary>   
-    /// 生成缩略图方法，返回缩略图的Image对象   
-    /// </summary>   
-    /// <param name="Percent">缩略图的宽度百分比 如：0.8</param>     
-    /// <param name="targetFilePath">缩略图保存的全文件名</param>   
-    /// <returns>成功返回true,否则返回false</returns>   
-    public bool GetReducedImage(double Percent, string targetFilePath)
-    {
-        try
+        //ToDo : （低优先级）增加1个重载，保持比例缩放到指定大小
+        /* 即：在保持比例不变的情况下把长边缩小到指定大小
+         * 比如 GetReducedImage(int targetMaxPixel, string targetFilePath)
+         * GetReducedImage(50,"xxx.jpg");
+         * 假设这张图的大小是100*50px，那处理后应该是50*25px
+         * 假设这张图的大小是100*150px，那处理后应该是33.3 * 50px
+         * 具体参考下面这个方法，只需要把下面这个方法复制一份，修改缩放大小就行
+         * 最后记得和这个方法一样把图输出到指定位置 string targetFilePath
+         */
+        public bool GetReducedImage(int targetMaxPixel, string targetFilePath)
         {
-            Image ReducedImage;
-            Image.GetThumbnailImageAbort callb = new Image.GetThumbnailImageAbort(ThumbnailCallback);
-            ImageWidth = Convert.ToInt32(ResourceImage.Width * Percent);
-            ImageHeight = Convert.ToInt32(ResourceImage.Height * Percent);
-            ReducedImage = ResourceImage.GetThumbnailImage(ImageWidth, ImageHeight, callb, IntPtr.Zero);
-            ReducedImage.Save(@targetFilePath, ImageFormat.Jpeg);
-            ReducedImage.Dispose();
-            return true;
+            try
+            {
+                Image ReducedImage;
+                Image.GetThumbnailImageAbort callb = new Image.GetThumbnailImageAbort(ThumbnailCallback);
+                double Percent = Convert.ToDouble(targetMaxPixel) / Convert.ToDouble(ResourceImage.Width > ResourceImage.Height ? ResourceImage.Width : ResourceImage.Height);
+                ImageWidth = Convert.ToInt32(ResourceImage.Width * Percent);
+                ImageHeight = Convert.ToInt32(ResourceImage.Height * Percent);
+                ReducedImage = ResourceImage.GetThumbnailImage(ImageWidth, ImageHeight, callb, IntPtr.Zero);
+                ReducedImage.Save(@targetFilePath, ImageFormat.Jpeg);
+                ReducedImage.Dispose();
+                return true;
+            }
+            catch (Exception e)
+            {
+                ErrMessage = e.Message;
+                return false;
+            }
         }
-        catch (Exception e)
+        /// <summary>   
+        /// 生成缩略图方法，返回缩略图的Image对象   
+        /// </summary>   
+        /// <param name="Percent">缩略图的宽度百分比 如：0.8</param>     
+        /// <param name="targetFilePath">缩略图保存的全文件名</param>   
+        /// <returns>成功返回true,否则返回false</returns>   
+        public bool GetReducedImage(double Percent, string targetFilePath)
         {
-        ErrMessage = e.Message;
-        return false;
+            try
+            {
+                Image ReducedImage;
+                Image.GetThumbnailImageAbort callb = new Image.GetThumbnailImageAbort(ThumbnailCallback);
+                ImageWidth = Convert.ToInt32(ResourceImage.Width * Percent);
+                ImageHeight = Convert.ToInt32(ResourceImage.Height * Percent);
+                ReducedImage = ResourceImage.GetThumbnailImage(ImageWidth, ImageHeight, callb, IntPtr.Zero);
+                ReducedImage.Save(@targetFilePath, ImageFormat.Jpeg);
+                ReducedImage.Dispose();
+                return true;
+            }
+            catch (Exception e)
+            {
+                ErrMessage = e.Message;
+                return false;
+            }
         }
-    }
 
     }
 }
