@@ -74,7 +74,8 @@ namespace Aprheua
         public static string CreateAddCategoryWindow()
         {
             var addCategoryWindow = new Aprheua.Views.AddCategoryWindow();
-            if (addCategoryWindow.ShowDialog() == true)
+            addCategoryWindow.ShowDialog();
+            if (addCategoryWindow.IsOKClicked)
             {
                 return addCategoryWindow.CategoryName;
             }

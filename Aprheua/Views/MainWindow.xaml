@@ -158,11 +158,6 @@
                       Content="显示分割块"
                       IsChecked="{Binding ShowBlockOverlayCheckBoxIsChecked}"
                       >
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="Click">
-                        <i:InvokeCommandAction Command="{Binding ShowBlockOverlayCheckBoxClickEvent}"/>
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
             </CheckBox>
             <Label Content="{Binding ImageViewerPath}"
                    Background="Transparent"

@@ -128,12 +128,6 @@ namespace Aprheua.ViewModels
             }
             SelectAllCheckBoxIsChecked = null;
         }
-        public DelegateCommand ShowBlockOverlayCheckBoxClickEvent { get; set; }
-        public void ShowBlockOverlayCheckBoxClick(object parameter)
-        {
-            //ToDo : 判断imageViewerPath 有没有更新？
-            //可能这个没必要
-        }
         public DelegateCommand NightModeToggleButtonClickEvent { get; set; }
         public void NightModeToggleButtonClick(object parameter)
         {
@@ -144,10 +138,13 @@ namespace Aprheua.ViewModels
         public DelegateCommand AddCategoryClickEvent { get; set; }
         public void AddCategory(object parameter)
         {
-            Console.WriteLine("AddCategory Triggered!");
-            //ToDo : addCategory
+            Console.WriteLine("AddCategory Triggered!");            
             var categoryName = App.CreateAddCategoryWindow();
-            SelectedImage.AddCategory(Path.Combine(App.AprheuaCategoriesFolder, $"{categoryName}"), $"{categoryName}");
+            Console.WriteLine($"{categoryName}");
+            if (!String.IsNullOrWhiteSpace(categoryName))
+            {
+                SelectedImage.AddCategory(Path.Combine(App.AprheuaCategoriesFolder, $"{categoryName}"), $"{categoryName}");
+            }
         }
 
         #endregion
@@ -171,14 +168,13 @@ namespace Aprheua.ViewModels
             #region 事件 Events
             SelectAllCheckBoxClickEvent = new DelegateCommand(new Action<object>(SelectAllCheckBoxClick));
             ListBoxItemCheckBoxClickEvent = new DelegateCommand(new Action<object>(ListBoxItemCheckBoxClick));
-            ShowBlockOverlayCheckBoxClickEvent = new DelegateCommand(new Action<object>(ShowBlockOverlayCheckBoxClick));
             NightModeToggleButtonClickEvent = new DelegateCommand(new Action<object>(NightModeToggleButtonClick));
             AddCategoryClickEvent = new DelegateCommand(new Action<object>(AddCategory));
             #endregion
 
             //测试事件
             var testImage = new Models.OriginImage($"{Environment.CurrentDirectory}\\resources\\default-SelectedImage.png", ListBoxItemCheckBoxClickEvent);
-            for (int i =1; i <= 10; i++)
+            for (int i =1; i <= 3; i++)
             {
                 testImage.AddCategory(Path.Combine(App.AprheuaCategoriesFolder,$"test - {i} - {Models.Utility.GetTimeStamp()}"), $"test - {i}");                
             }

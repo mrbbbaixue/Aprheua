@@ -158,15 +158,6 @@ namespace Aprheua.Models
             return false;
         }
 
-        //ToDo : （低优先级）增加1个重载，保持比例缩放到指定大小
-        /* 即：在保持比例不变的情况下把长边缩小到指定大小
-         * 比如 GetReducedImage(int targetMaxPixel, string targetFilePath)
-         * GetReducedImage(50,"xxx.jpg");
-         * 假设这张图的大小是100*50px，那处理后应该是50*25px
-         * 假设这张图的大小是100*150px，那处理后应该是33.3 * 50px
-         * 具体参考下面这个方法，只需要把下面这个方法复制一份，修改缩放大小就行
-         * 最后记得和这个方法一样把图输出到指定位置 string targetFilePath
-         */
         public bool GetReducedImage(int targetMaxPixel, string targetFilePath)
         {
             try
