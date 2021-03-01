@@ -48,10 +48,16 @@ namespace Aprheua
             //Final Step : Open MainWindow
             CreateMainWindow();
         }
-        //ToDo : 程序运行完销毁临时文件夹
-        public static void CreateAddCategoryWindow()
-        {
 
+        //ToDo : 程序运行完销毁临时文件夹
+        public static string CreateAddCategoryWindow()
+        {
+            var addCategoryWindow = new Aprheua.Views.AddCategoryWindow();
+            if (addCategoryWindow.ShowDialog() == true)
+            {
+                return addCategoryWindow.CategoryName;
+            }
+            return null;
         }
 
         public static void CreateMainWindow()

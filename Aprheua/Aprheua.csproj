@@ -119,7 +119,6 @@
     <Compile Include="Models\ImageCategory.cs" />
     <Compile Include="Models\OriginImage.cs" />
     <Compile Include="Models\Utility.cs" />
-    <Compile Include="ViewModels\AddCategoryWindow.cs" />
     <Compile Include="ViewModels\MainWindow.cs" />
     <Compile Include="ViewModels\NotificationObject.cs" />
     <Compile Include="Views\AddCategoryWindow.xaml.cs">

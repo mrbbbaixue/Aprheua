@@ -17,14 +17,16 @@ namespace Aprheua.Views
     /// <summary>
     /// AddCategoryWindow.xaml 的交互逻辑
     /// </summary>
-    public partial class AddCategoryWindow : HandyControl.Controls.GlowWindow
+    public partial class AddCategoryWindow : HandyControl.Controls.Window
     {
-        private ViewModels.AddCategoryWindow AddCategoryWindowViewModel { get; set; }
+        public string WindowTitle { get; set; }
+        public string CategoryName { get; set; }
         public AddCategoryWindow()
         {
             InitializeComponent();
-            AddCategoryWindowViewModel = new ViewModels.AddCategoryWindow();
-            this.DataContext = AddCategoryWindowViewModel;
+            WindowTitle = $"添加分类";
+            CategoryName = $"New Category {Models.Utility.GetTimeStamp()}";
+            DataContext = this;
         }
     }
 }

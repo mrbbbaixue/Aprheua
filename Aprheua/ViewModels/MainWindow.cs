@@ -146,6 +146,7 @@ namespace Aprheua.ViewModels
         {
             Console.WriteLine("AddCategory Triggered!");
             //ToDo : addCategory
+            App.CreateAddCategoryWindow();
             SelectedImage.AddCategory(Path.Combine(App.AprheuaCategoriesFolder, $"test - {Models.Utility.GetTimeStamp()}"), $"test - {Models.Utility.GetTimeStamp()}");
         }
 
