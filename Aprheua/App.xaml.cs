@@ -58,17 +58,7 @@ namespace Aprheua
         }
         private void Application_Exit(object sender, ExitEventArgs e)
         {
-            try
-            {
-                Models.Utility.DeleteFolder(AprheuaTempFolder);
-            }
-            catch (Exception ex)
-            {
-                //ToDo : Error handler
-                /*
-                 * 应该调用Application.UnhandledException
-                 */
-            }
+            Models.Utility.DeleteFolder(AprheuaTempFolder);
         }
         //ToDo : 程序运行完销毁临时文件夹
         public static string CreateAddCategoryWindow()
@@ -91,6 +81,8 @@ namespace Aprheua
         private void Application_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
             //ToDo : 显示一个错误窗口(MessageBox)，然后开始执行退出方法（Application.Exit）
+            MessageBox.Show(e.Exception.Message);
+            Application_Exit(sender, null);
         }
     }
 }
