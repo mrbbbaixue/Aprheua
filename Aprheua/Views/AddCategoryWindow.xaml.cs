@@ -28,5 +28,12 @@ namespace Aprheua.Views
             CategoryName = $"New Category - {Models.Utility.GetTimeStamp()}";
             DataContext = this;
         }
+
+        private void OkButton_Click(object sender, RoutedEventArgs e)
+        {
+            //test
+            Console.WriteLine($"{CategoryName}");
+            this.Close();
+        }
     }
 }

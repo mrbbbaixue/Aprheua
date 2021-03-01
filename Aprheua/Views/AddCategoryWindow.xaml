@@ -42,6 +42,7 @@
                 Margin="0,0,10,10"
                 hc:BorderElement.CornerRadius="2"
                 Style="{StaticResource ButtonPrimary}"
+                Click="OkButton_Click"
                 />
     </Grid>
 </hc:Window>

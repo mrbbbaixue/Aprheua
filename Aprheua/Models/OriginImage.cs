@@ -72,6 +72,7 @@ namespace Aprheua.Models
             IsSelected = false;
             ImageCategories = new ObservableCollection<ImageCategory> { };
             //ToDo : （低优先级）使用Async异步执行
+            //ToDo : 生成之后需要Dispose
             var thumbImage = new ThumbImage(Path);
             thumbImage.GetReducedImage(0.15, ThumbImagePath);
             CheckBoxClickEvent = checkBoxClickEvent;
