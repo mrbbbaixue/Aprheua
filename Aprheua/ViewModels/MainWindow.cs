@@ -60,8 +60,26 @@ namespace Aprheua.ViewModels
             }
         }
 
-        public Models.OriginImage SelectedImage => SourceImages[SelectedIndex];
-        public string ImageViewerPath => (ShowBlockOverlayCheckBoxIsChecked) ? SourceImages[SelectedIndex].OverlayImagePath : SourceImages[SelectedIndex].Path;
+        public Models.OriginImage SelectedImage => (SelectedIndex >= 0) ? SourceImages[SelectedIndex] : null;
+
+        private string _imageViewerPath;
+        public string ImageViewerPath
+        {
+            get
+            {
+                if (SelectedImage != null)
+                {
+                    return (ShowBlockOverlayCheckBoxIsChecked) ? SourceImages[SelectedIndex].OverlayImagePath : SourceImages[SelectedIndex].Path;
+                }
+                return null;
+            }
+            set
+            {
+                _imageViewerPath = value;
+                this.RaisePropertyChanged("ImageViewerPath");
+            }
+        }
+
         #endregion
 
         #region 数据 Datas
@@ -85,7 +103,7 @@ namespace Aprheua.ViewModels
                 paths = dialog.FileNames; 
                 foreach (string path in paths)
                 {
-                    var sourceImage = new Models.OriginImage(path, ListBoxItemCheckBoxClickEvent);
+                    var sourceImage = new Models.OriginImage(path, ListBoxItemCheckBoxClickEvent, RemoveImageClickEvent);
                     SourceImages.Add(sourceImage);
                 }
             }
@@ -137,14 +155,19 @@ namespace Aprheua.ViewModels
         }
         public DelegateCommand AddCategoryClickEvent { get; set; }
         public void AddCategory(object parameter)
-        {
-            Console.WriteLine("AddCategory Triggered!");            
+        {         
             var categoryName = App.CreateAddCategoryWindow();
-            Console.WriteLine($"{categoryName}");
+            Console.WriteLine($"Add Category : {categoryName}");
             if (!String.IsNullOrWhiteSpace(categoryName))
             {
-                SelectedImage.AddCategory(Path.Combine(App.AprheuaCategoriesFolder, $"{categoryName}"), $"{categoryName}");
+                SelectedImage.AddCategory(Path.Combine(App.AprheuaCategoriesFolder, $"{categoryName} - {SelectedImage.Name}"), $"{categoryName}");
             }
+        }
+        public DelegateCommand RemoveImageClickEvent { get; set; }
+        public void RemoveImageClick(object parameter)
+        {
+            var index = SelectedIndex;
+            SourceImages.Remove(SourceImages[index]);
         }
 
         #endregion
@@ -170,13 +193,14 @@ namespace Aprheua.ViewModels
             ListBoxItemCheckBoxClickEvent = new DelegateCommand(new Action<object>(ListBoxItemCheckBoxClick));
             NightModeToggleButtonClickEvent = new DelegateCommand(new Action<object>(NightModeToggleButtonClick));
             AddCategoryClickEvent = new DelegateCommand(new Action<object>(AddCategory));
+            RemoveImageClickEvent = new DelegateCommand(new Action<object>(RemoveImageClick));
             #endregion
 
             //测试事件
-            var testImage = new Models.OriginImage($"{Environment.CurrentDirectory}\\resources\\default-SelectedImage.png", ListBoxItemCheckBoxClickEvent);
+            var testImage = new Models.OriginImage($"{Environment.CurrentDirectory}\\resources\\default-SelectedImage.png", ListBoxItemCheckBoxClickEvent, RemoveImageClickEvent);
             for (int i =1; i <= 3; i++)
             {
-                testImage.AddCategory(Path.Combine(App.AprheuaCategoriesFolder,$"test - {i} - {Models.Utility.GetTimeStamp()}"), $"test - {i}");                
+                testImage.AddCategory(Path.Combine(App.AprheuaCategoriesFolder,$"Test {i} - {testImage.Name}"), $"Test {i}");                
             }
             SourceImages.Add(testImage);
         }

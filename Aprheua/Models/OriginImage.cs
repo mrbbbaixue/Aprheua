@@ -60,14 +60,20 @@ namespace Aprheua.Models
             }
         }
         public Commands.DelegateCommand CheckBoxClickEvent { get; set; }
+        public Commands.DelegateCommand RemoveImageClickEvent { get; set; }
+        public Commands.DelegateCommand OpenInExplorerClickEvent { get; set; }
+        public void OpenInExplorerClick(object parameter)
+        {
+            //ToDo : 在资源管理器中打开Path所在文件夹
+        }
         public ObservableCollection<ImageCategory> ImageCategories { get; set; }
 
-        public OriginImage(string path, Commands.DelegateCommand checkBoxClickEvent)
+        public OriginImage(string path, Commands.DelegateCommand checkBoxClickEvent, Commands.DelegateCommand removeImageClickEvent)
         {
             Path = System.IO.Path.GetFullPath(path);
             Name = System.IO.Path.GetFileName(path);
-            ThumbImagePath = System.IO.Path.Combine(App.AprheuaThumbImagesFolder, $"thumb-{Utility.GetTimeStamp()}-{Name}.jpg");
-            OverlayImagePath = System.IO.Path.Combine(App.AprheuaOverlayImagesFolder, $"overlay-{Utility.GetTimeStamp()}-{Name}.jpg");
+            ThumbImagePath = System.IO.Path.Combine(App.AprheuaThumbImagesFolder, $"thumb-{Utility.GetTimeStamp()}-{Name}");
+            OverlayImagePath = System.IO.Path.Combine(App.AprheuaOverlayImagesFolder, $"overlay-{Utility.GetTimeStamp()}-{Name}");
             NumberOfImageBlocks = 0;
             IsSelected = false;
             ImageCategories = new ObservableCollection<ImageCategory> { };
@@ -76,10 +82,11 @@ namespace Aprheua.Models
             var thumbImage = new ThumbImage(Path);
             thumbImage.GetReducedImage(50, ThumbImagePath);
             CheckBoxClickEvent = checkBoxClickEvent;
+            RemoveImageClickEvent = removeImageClickEvent;
+            OpenInExplorerClickEvent = new Commands.DelegateCommand(new Action<object>(OpenInExplorerClick));
         }
         public void AddCategory(string folderPath, string name)
         {            
-            Console.WriteLine($"Add = {name}");
             Commands.DelegateCommand removeCategoryClickEvent = new Commands.DelegateCommand(new Action<object>((obj) =>
             {
                 foreach(var imagecategory in ImageCategories)
@@ -87,7 +94,6 @@ namespace Aprheua.Models
                     if (imagecategory.Name == name)
                     {
                         ImageCategories.Remove(imagecategory);
-                        Console.WriteLine($"Remove = {name}");
                         break;
                     }
                 }
