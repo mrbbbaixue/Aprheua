@@ -106,6 +106,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\AnalyseWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -115,16 +119,22 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Commands.cs" />
+    <Compile Include="DelegateCommandBase.cs" />
     <Compile Include="Models\HaarClassifier.cs" />
     <Compile Include="Models\HaarProcess.cs" />
     <Compile Include="Models\ImageBlock.cs" />
     <Compile Include="Models\ImageCategory.cs" />
     <Compile Include="Models\OriginImage.cs" />
+    <Compile Include="Models\SadOfMine.cs" />
     <Compile Include="Models\Utility.cs" />
+    <Compile Include="ViewModels\AnalyseWindow.cs" />
     <Compile Include="ViewModels\MainWindow.cs" />
     <Compile Include="ViewModels\NotificationObject.cs" />
     <Compile Include="Views\AddCategoryWindow.xaml.cs">
       <DependentUpon>AddCategoryWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AnalyseWindow.xaml.cs">
+      <DependentUpon>AnalyseWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -149,6 +159,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include=".editorconfig" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

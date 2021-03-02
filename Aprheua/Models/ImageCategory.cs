@@ -39,7 +39,8 @@ namespace Aprheua.Models
         }
         public void AddBlock(object parameter)
         {
-            Console.WriteLine($"AddBlock triggered!");
+            //ToDo : AddImageBlock
+            App.Log.Info($"AddBlock for category : {Name} has triggered!");
         }
     }
 }

@@ -62,7 +62,6 @@ namespace Aprheua.ViewModels
 
         public Models.OriginImage SelectedImage => (SelectedIndex >= 0) ? SourceImages[SelectedIndex] : null;
 
-        private string _imageViewerPath;
         public string ImageViewerPath
         {
             get
@@ -72,11 +71,6 @@ namespace Aprheua.ViewModels
                     return (ShowBlockOverlayCheckBoxIsChecked) ? SourceImages[SelectedIndex].OverlayImagePath : SourceImages[SelectedIndex].Path;
                 }
                 return null;
-            }
-            set
-            {
-                _imageViewerPath = value;
-                this.RaisePropertyChanged("ImageViewerPath");
             }
         }
 
@@ -152,16 +146,19 @@ namespace Aprheua.ViewModels
             HandyControl.Themes.ThemeManager.Current.ApplicationTheme = 
                 (HandyControl.Themes.ThemeManager.Current.ApplicationTheme != HandyControl.Themes.ApplicationTheme.Dark) ?
                 HandyControl.Themes.ApplicationTheme.Dark : HandyControl.Themes.ApplicationTheme.Light;
+            App.Log.Info($"Current.ApplicationTheme changed to {HandyControl.Themes.ThemeManager.Current.ApplicationTheme}.");
         }
         public DelegateCommand AddCategoryClickEvent { get; set; }
         public void AddCategory(object parameter)
-        {         
+        {
             var categoryName = App.CreateAddCategoryWindow();
-            Console.WriteLine($"Add Category : {categoryName}");
             if (!String.IsNullOrWhiteSpace(categoryName))
             {
                 SelectedImage.AddCategory(Path.Combine(App.AprheuaCategoriesFolder, $"{categoryName} - {SelectedImage.Name}"), $"{categoryName}");
+                App.Log.Info($"Add Category : {categoryName}");
+                return;
             }
+            App.Log.Error($"Returned categoryName is NullOrWhiteSpace, will abort...");
         }
         public DelegateCommand RemoveImageClickEvent { get; set; }
         public void RemoveImageClick(object parameter)

@@ -18,5 +18,10 @@ namespace Aprheua.Models
                 this.RaisePropertyChanged("BlockPath");
             }
         }
+        public Commands.DelegateCommand RemoveBlockClickEvent { get; set; }
+        public ImageBlock(Commands.DelegateCommand removeBlockClickEvent)
+        {
+            RemoveBlockClickEvent = removeBlockClickEvent;
+        }
     }
 }

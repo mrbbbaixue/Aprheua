@@ -13,67 +13,60 @@ namespace Aprheua.Models
     public class LogWriter
     {
         private string LogFilePath { get; }
-        private StreamWriter Log { get; set; }
-        private string CreatLogTxtPath { get; }
-        public LogWriter(string logFilePath, string creatLogTxtPath)
+        private StreamWriter LogStreamWriter { get; set; }
+        public LogWriter(string logFilePath)
         {
-            LogFilePath = logFilePath + @"\Aprheua.log";
-            CreatLogTxtPath = creatLogTxtPath + @"\Aprheua.txt";
-        }
-        public LogWriter(string path)
-        {
-            LogFilePath = path + @"\Aprheua.log";
-            CreatLogTxtPath = path + @"\Aprheua.txt";
+            LogFilePath = System.IO.Path.Combine(logFilePath, $"{App.LogFilePrefix}{Utility.GetTimeStamp()}.log");
         }
 
-        public void WriteLog(string logContent, LogType logType)
+        private void Write(string logContent, LogType logType)
         {
             if (!string.IsNullOrEmpty(LogFilePath) && !string.IsNullOrEmpty(logContent))
             {
                 if (File.Exists(LogFilePath))
                 {
-                    Log = File.AppendText(LogFilePath);
+                    LogStreamWriter = File.AppendText(LogFilePath);
                 }
                 else
                 {
-                    Log = File.CreateText(LogFilePath);
+                    LogStreamWriter = File.CreateText(LogFilePath);
                 }
-                Log.WriteLine($"[{logType}][Time:{DateTime.Now} {Utility.GetTimeStamp()}] {logContent}");
-                Log.Close();
+                Console.WriteLine($"Log > [{logType}] {logContent}");
+                LogStreamWriter.WriteLine($"[{logType}][Time:{DateTime.Now} {Utility.GetTimeStamp()}] {logContent}");
+                LogStreamWriter.Close();
             }
             else
             {
-                throw new Exception("Please Check The LogPath Or inputMessage.");
+                throw new Exception("Please Check The LogPath Or inputMessage!");
             }
         }
-
-        public void OpenLogInTxt()
+        public void Info(string content)
         {
-            File.WriteAllText(CreatLogTxtPath, string.Empty);
-            var logContent = File.ReadAllLines(LogFilePath);
-            StreamWriter logTxt;
-            if (File.Exists(CreatLogTxtPath))
-            {
-                logTxt = File.AppendText(CreatLogTxtPath);
-            }
-            else
-            {
-                logTxt = File.CreateText(CreatLogTxtPath);
-            }
-            foreach (var item in logContent)
-            {
-                logTxt.WriteLine(item);
-            }
-            logTxt.Close();
-            System.Diagnostics.Process.Start("notepad", CreatLogTxtPath);
+            Write(content, LogType.Info);
+            return;
+        }
+        public void Error(string content)
+        {
+            Write(content, LogType.Error);
+            return;
+        }
+        public void OpenCV(string content)
+        {
+            Write(content, LogType.OpenCV);
+            return;
+        }
+        public void OpenInNotepad()
+        {
+            System.Diagnostics.Process.Start("notepad", LogFilePath);
+        }
+        public enum LogType
+        {
+            Info = 0,
+            Error = 1,
+            OpenCV = 2
         }
     }
-    public enum LogType
-    {
-        Info = 0,
-        Error = 1,
-        OpenCV = 2
-    }
+
     public static class Utility
     {
         public static string GetFileHash(string path)
