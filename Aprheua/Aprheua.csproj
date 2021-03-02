@@ -119,7 +119,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Commands.cs" />
-    <Compile Include="DelegateCommandBase.cs" />
     <Compile Include="Models\HaarClassifier.cs" />
     <Compile Include="Models\HaarProcess.cs" />
     <Compile Include="Models\ImageBlock.cs" />
