@@ -1,12 +1,9 @@
 ﻿using System;
-using System.IO;
-using System.Collections.Generic;
-using System.Configuration;
 using System.Data;
+using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Reflection;
+using System.Windows;
 
 namespace Aprheua
 {
@@ -105,7 +102,7 @@ namespace Aprheua
         {
             var mainwindow = new Aprheua.Views.MainWindow();
             mainwindow.Show();
-            Log.Info($"MainWindow Created!");
+            Log.Info("MainWindow Created!");
             return;
         }
         public static void CreateAnalyseWindow()
@@ -113,7 +110,7 @@ namespace Aprheua
             //ToDo : 自动分析窗口
             var analyseWindow = new Aprheua.Views.AnalyseWindow();
             analyseWindow.Show();
-            Log.Info($"AnalyseWindow Created!");
+            Log.Info("AnalyseWindow Created!");
         }
 
         private void Application_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)

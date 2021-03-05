@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Aprheua.Models
 {
@@ -16,7 +12,7 @@ namespace Aprheua.Models
             set
             {
                 _name = value;
-                this.RaisePropertyChanged("Name");
+                RaisePropertyChanged("Name");
             }
         }
 

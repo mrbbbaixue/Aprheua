@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Media.Imaging;
 using Aprheua.Commands;
 
 namespace Aprheua.ViewModels
@@ -20,7 +15,7 @@ namespace Aprheua.ViewModels
             set
             {
                 _windowTitle = value;
-                this.RaisePropertyChanged("WindowTitle");
+                RaisePropertyChanged("WindowTitle");
             }
         }
 
@@ -31,7 +26,7 @@ namespace Aprheua.ViewModels
             set
             {
                 _selectAllCheckBoxIsChecked = value;
-                this.RaisePropertyChanged("SelectAllCheckBoxIsChecked");
+                RaisePropertyChanged("SelectAllCheckBoxIsChecked");
             }
         }
 
@@ -42,9 +37,9 @@ namespace Aprheua.ViewModels
             set
             {
                 _selectedIndex = value;
-                this.RaisePropertyChanged("SelectedIndex");
-                this.RaisePropertyChanged("SelectedImage");
-                this.RaisePropertyChanged("ImageViewerPath");
+                RaisePropertyChanged("SelectedIndex");
+                RaisePropertyChanged("SelectedImage");
+                RaisePropertyChanged("ImageViewerPath");
             }
         }
 
@@ -55,8 +50,8 @@ namespace Aprheua.ViewModels
             set
             {
                 _showBlockOverlayCheckBoxIsChecked = value;
-                this.RaisePropertyChanged("ShowBlockOverlayCheckBoxIsChecked");
-                this.RaisePropertyChanged("ImageViewerPath");
+                RaisePropertyChanged("ShowBlockOverlayCheckBoxIsChecked");
+                RaisePropertyChanged("ImageViewerPath");
             }
         }
 

@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using HandyControl.Interactivity;
@@ -13,21 +9,21 @@ namespace Aprheua.Commands
     {
           public bool CanExecute(object parameter)
           {
-              if (this.CanExecuteFunc == null)
+              if (CanExecuteFunc == null)
               {
                   return true;
               }
 
-              return this.CanExecuteFunc(parameter);
+              return CanExecuteFunc(parameter);
           }
           public event EventHandler CanExecuteChanged;
           public void Execute(object parameter)
           {
-              if (this.ExecuteAction == null)
+              if (ExecuteAction == null)
               {
                   return;
               }
-              this.ExecuteAction(parameter);
+              ExecuteAction(parameter);
           }
           public Action<object> ExecuteAction { get; set; }
           public Func<object, bool> CanExecuteFunc { get; set; }

@@ -1,13 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Media.Imaging;
 using Aprheua.ViewModels;
-using OpenCvSharp;
 
 namespace Aprheua.Models
 {
@@ -23,7 +16,7 @@ namespace Aprheua.Models
             set
             {
                 _thumbImagePath = value;
-                this.RaisePropertyChanged("ThumbImagePath");
+                RaisePropertyChanged("ThumbImagePath");
             }
         }
 
@@ -34,7 +27,7 @@ namespace Aprheua.Models
             set
             {
                 _overlayImagePath = value;
-                this.RaisePropertyChanged("OverlayImagePath");
+                RaisePropertyChanged("OverlayImagePath");
             }
         }
 
@@ -45,7 +38,7 @@ namespace Aprheua.Models
             set
             {
                 _numberOfImageBlocks = value;
-                this.RaisePropertyChanged("NumberOfBlocks");
+                RaisePropertyChanged("NumberOfBlocks");
             }
         }
 
@@ -56,7 +49,7 @@ namespace Aprheua.Models
             set
             {
                 _isSelected = value;
-                this.RaisePropertyChanged("IsSelected");
+                RaisePropertyChanged("IsSelected");
             }
         }
         public Commands.DelegateCommand CheckBoxClickEvent { get; set; }

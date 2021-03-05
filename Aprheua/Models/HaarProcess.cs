@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Aprheua.Models
@@ -46,7 +44,7 @@ namespace Aprheua.Models
         public int _minSize { get; set; }
         public int _maxSize { get; set; }
 
-        HaarClassifier haarClassifier = null;
+        readonly HaarClassifier haarClassifier = null;
         public HaarProcess(string haarClassifierPath, string imageInputPath, string imageBlockOutputPath, int nDetection, int minSize, int maxSize)
         {
             haarClassifier = new HaarClassifier(haarClassifierPath, imageInputPath, imageBlockOutputPath);

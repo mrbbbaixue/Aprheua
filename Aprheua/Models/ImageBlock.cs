@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Aprheua.Models
+﻿namespace Aprheua.Models
 {
     public class ImageBlock : ViewModels.NotificationObject
     {
@@ -15,7 +9,7 @@ namespace Aprheua.Models
             set
             {
                 _blockPath = value;
-                this.RaisePropertyChanged("BlockPath");
+                RaisePropertyChanged("BlockPath");
             }
         }
         public Commands.DelegateCommand RemoveBlockClickEvent { get; set; }
