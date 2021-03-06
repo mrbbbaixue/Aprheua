@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using Aprheua.ViewModels;
 
 namespace Aprheua.Models
 {
-    public class ImageCategory : ViewModels.NotificationObject
+    public class ImageCategory : NotificationObject
     {
         private string _name;
         public string Name

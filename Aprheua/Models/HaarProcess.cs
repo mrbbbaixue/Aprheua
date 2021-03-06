@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-
+/*
 namespace Aprheua.Models
 {
     class Start
     {
+        
         public List<string> StartClassifier()
         {
             HaarProcess haarProcess = new HaarProcess(@"", @"", @"", 3, 30, 50);//这个应该是传入的，我先这样写着
@@ -96,4 +97,6 @@ namespace Aprheua.Models
         }
 
     }
+        
 }
+        */

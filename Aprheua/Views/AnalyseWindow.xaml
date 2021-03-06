@@ -10,7 +10,7 @@
             mc:Ignorable="d"   
             ResizeMode="NoResize"
             Title="{Binding WindowTitle}"
-            Height="400" Width="350"
+            Height="400" Width="650"
             WindowStartupLocation="CenterOwner"
             WindowState="Normal"
             ShowInTaskbar="False"
@@ -31,8 +31,75 @@
                 Background="Transparent"
                 FontSize="14"
                 />
-        <Button x:Name="okButton"
-                Content="确定"
+        <Grid Margin="10,50,10,50">
+            <hc:Divider Content="数据集文件" HorizontalContentAlignment="Left" Margin="0,0,350,251"/>
+            <ListBox Margin="0,25,350,0"
+                     Style="{StaticResource ListBoxBaseStyle}"
+                     ItemsSource="{Binding Classifiers}"
+                     VirtualizingPanel.IsVirtualizing="True"
+                     >
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <CheckBox IsChecked="{Binding IsSelected}"
+                                      Height="20"
+                                      Width="20"
+                                      HorizontalAlignment="Left"
+                                      VerticalAlignment="Center"
+                                      />
+                            <TextBlock Text="{Binding Name}"
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Center"
+                                       Margin="30,0,0,0"
+                                       FontSize="12"
+                                       />
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            <hc:Divider Content="其他选项" HorizontalContentAlignment="Left" Margin="290,0,0,251"/>
+            <Grid Margin="290,25,0,171">
+                <Label Content="检测大小范围"
+                    Margin="0,0,242,48"
+                    Background="Transparent"
+                    BorderThickness="0"
+                   />
+                <hc:RangeSlider
+                    hc:TipElement.Visibility="Visible" 
+                    hc:TipElement.Placement="Top" 
+                    IsSnapToTickEnabled="True" 
+                    Maximum="100" 
+                    ValueStart="{Binding MinSize}"
+                    ValueEnd="{Binding MaxSize}"
+                    TickFrequency="5" 
+                    TickPlacement="BottomRight" 
+                    Margin="0,45,0,0"
+                    Background="{DynamicResource RegionBrush}"
+                    />
+            </Grid>
+            <Grid Margin="290,120,0,76">
+                <Label Content="重复检测次数"
+                    Margin="0,0,242,48"
+                    Background="Transparent"
+                    BorderThickness="0"
+                   />
+                <Slider 
+                    hc:TipElement.Visibility="Visible" 
+                    hc:TipElement.Placement="Top" 
+                    IsSnapToTickEnabled="True" 
+                    Maximum="10" 
+                    Minimum="1"
+                    Value="{Binding MinNeighbors}" 
+                    TickFrequency="1"
+                    TickPlacement="BottomRight" 
+                    Margin="0,45,0,0"
+                    Background="{DynamicResource RegionBrush}"
+                    hc:TipElement.StringFormat="0次"
+                    />
+            </Grid>
+        </Grid>
+        <Button x:Name="startButton"
+                Content="开始"
                 Width="100"
                 Height="30"
                 HorizontalAlignment="Right"

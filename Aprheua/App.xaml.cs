@@ -17,10 +17,15 @@ namespace Aprheua
         public static string AprheuaOverlayImagesFolder => Path.Combine(AprheuaTempFolder, "OverlayImages");
         public static string AprheuaCategoriesFolder => Path.Combine(AprheuaTempFolder, "Categories");
         public static string AprheuaLogsFolder => Path.Combine(AprheuaTempFolder, "Logs");
+        public static string AprheuaClassifiersFolder => Path.Combine(Environment.CurrentDirectory, "classifiers");
+        public static string AprheuaResourceFolder => Path.Combine(Environment.CurrentDirectory,"resources");
         public static string LogFilePrefix => "Aprheua-log-";
         public static Models.LogWriter Log { get; set; }
         public static ViewModels.MainWindow MainWindowViewModel { get; set; }
         public static ViewModels.AnalyseWindow AnalyseWindowViewModel { get; set; }
+        public static Views.MainWindow MainWindowWindow { get; set; }
+        public static Views.AddCategoryWindow AddCategoryWindowWindow { get; set; }
+        public static Views.AnalyseWindow AnalyseWindowWindow { get; set; }
         private void Application_Startup(object sender, StartupEventArgs e)
         {
             // 第一步 : 创建文件夹
@@ -92,32 +97,37 @@ namespace Aprheua
             }
         }
         //ToDo : 程序运行完销毁临时文件夹
-        public static string CreateAddCategoryWindow()
-        {
-            var addCategoryWindow = new Aprheua.Views.AddCategoryWindow();
-            Log.Info("AddCategoryWindow Created!");
-            addCategoryWindow.ShowDialog();
-            if (addCategoryWindow.IsOKClicked)
-            {
-                Log.Info($"addCategoryWindow.IsOKClicked : {addCategoryWindow.IsOKClicked}");
-                Log.Info($"addCategoryWindow.CategoryName : {addCategoryWindow.CategoryName}");
-                return addCategoryWindow.CategoryName;
-            }
-            Log.Error($"addCategoryWindow.IsOKClicked is {addCategoryWindow.IsOKClicked}, will return null CategoryName!");
-            return null;
-        }
         public static void CreateMainWindow()
         {
-            var mainwindow = new Aprheua.Views.MainWindow();
-            mainwindow.Show();
+            MainWindowWindow = new Aprheua.Views.MainWindow();
+            MainWindowWindow.Show();
             Log.Info("MainWindow Created!");
             return;
         }
+        public static string CreateAddCategoryWindow()
+        {
+            AddCategoryWindowWindow = new Aprheua.Views.AddCategoryWindow
+            {
+                Owner = MainWindowWindow
+            };
+            Log.Info("AddCategoryWindow Created!");
+            AddCategoryWindowWindow.ShowDialog();
+            if (AddCategoryWindowWindow.IsOKClicked)
+            {
+                Log.Info($"addCategoryWindow.IsOKClicked : {AddCategoryWindowWindow.IsOKClicked}");
+                Log.Info($"addCategoryWindow.CategoryName : {AddCategoryWindowWindow.CategoryName}");
+                return AddCategoryWindowWindow.CategoryName;
+            }
+            Log.Error($"addCategoryWindow.IsOKClicked is {AddCategoryWindowWindow.IsOKClicked}, will return null CategoryName!");
+            return null;
+        }
         public static void CreateAnalyseWindow()
         {
-            //ToDo : 自动分析窗口
-            var analyseWindow = new Aprheua.Views.AnalyseWindow();
-            analyseWindow.Show();
+            AnalyseWindowWindow = new Aprheua.Views.AnalyseWindow
+            {
+                Owner = MainWindowWindow
+            };
+            AnalyseWindowWindow.Show();
             Log.Info("AnalyseWindow Created!");
         }
 

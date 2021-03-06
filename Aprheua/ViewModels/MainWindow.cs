@@ -102,6 +102,7 @@ namespace Aprheua.ViewModels
         public void Analyse(object parameter)
         {
             App.CreateAnalyseWindow();
+            //ToDo : waitforexit
         }
         #endregion
 
@@ -188,7 +189,7 @@ namespace Aprheua.ViewModels
             #endregion
 
             //测试事件
-            var testImage = new Models.OriginImage($"{Environment.CurrentDirectory}\\resources\\default-SelectedImage.png", ListBoxItemCheckBoxClickEvent, RemoveImageClickEvent);
+            var testImage = new Models.OriginImage(Path.Combine(App.AprheuaResourceFolder, "default-SelectedImage.png"), ListBoxItemCheckBoxClickEvent, RemoveImageClickEvent);
             for (int i =1; i <= 3; i++)
             {
                 testImage.AddCategory(Path.Combine(App.AprheuaCategoriesFolder,$"Test {i} - {testImage.Name}"), $"Test {i}");

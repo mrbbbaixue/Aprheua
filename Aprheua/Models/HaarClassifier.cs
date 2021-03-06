@@ -1,14 +1,16 @@
 ﻿using System.Collections.Generic;
 using OpenCvSharp;
+using Aprheua.ViewModels;
 
 namespace Aprheua.Models
 {
-    public class HaarClassifier
+    /*
+    public class HaarClassifier2 : NotificationObject
     {
         private string HaarClassifierPath { get; }
         private string ImageInputPath { get; }
         private string ImageBlockOutputPath { get; }
-        public HaarClassifier(string haarClassifierPath, string imageInputPath, string imageBlockOutputPath)
+        public HaarClassifier2(string haarClassifierPath, string imageInputPath, string imageBlockOutputPath)
         {
             HaarClassifierPath = haarClassifierPath;
             ImageInputPath = imageInputPath;
@@ -32,12 +34,48 @@ namespace Aprheua.Models
             return OutputImageBlockPath;
         }
     }
+    */
 
-    public enum HaarClassifierChecking
+    public class HaarClassifier : NotificationObject
     {
-        eyesHaarClassifier,
-        noseHaarClassifier,
-        earsHaarClassifier,
-        mouthHaarClassifier
+        private bool _isSelected;
+        public bool IsSelected
+        {
+            get { return _isSelected; }
+            set
+            {
+                _isSelected = value;
+                RaisePropertyChanged("IsSelected");
+            }
+        }
+
+        private string _path;
+        public string Path
+        {
+            get { return _path; }
+            set
+            {
+                _path = value;
+                RaisePropertyChanged("Path");
+            }
+        }
+
+        private string _name;
+        public string Name
+        {
+            get { return _name; }
+            set
+            {
+                _name = value;
+                RaisePropertyChanged("Name");
+            }
+        }
+
+        public HaarClassifier(string path)
+        {
+            Path = path;
+            Name = System.IO.Path.GetFileNameWithoutExtension(path);
+            IsSelected = true;
+        }
     }
 }
