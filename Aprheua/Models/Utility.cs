@@ -86,7 +86,7 @@ namespace Aprheua.Models
             {
                 return;
             }
-            ClearFolderContent(directoryPath, path => false);
+            ClearFolderContent(directoryPath, _ => false);
             Directory.Delete(directoryPath);
         }
         private static void ClearFolderContent(string directoryPath, Func<FileSystemInfo, bool> keep)
@@ -115,17 +115,17 @@ namespace Aprheua.Models
                 }
                 else
                 {
-                    throw new NotImplementedException($"Unexpected FileSystemInfo type {info.GetType()}");
+                    throw new Exception($"Unexpected FileSystemInfo type {info.GetType()}");
                 }
             }
         }
     }
 
-    /// <summary>   
-    /// 缩略图处理类   
-    /// 1、生成缩略图片或按照比例改变图片的大小和画质   
+    /// <summary>
+    /// 缩略图处理类
+    /// 1、生成缩略图片或按照比例改变图片的大小和画质
     /// 2、将生成的缩略图放到指定的目录下
-    /// </summary>   
+    /// </summary>
     public class ThumbImage
     {
         public Image ResourceImage;
@@ -133,10 +133,10 @@ namespace Aprheua.Models
         private int ImageHeight;
         public string ErrMessage;
 
-        /// <summary>   
-        /// 类的构造函数   
-        /// </summary>   
-        /// <param name="ImageFileName">图片文件的全路径名称</param>   
+        /// <summary>
+        /// 类的构造函数
+        /// </summary>
+        /// <param name="ImageFileName">图片文件的全路径名称</param>
         public ThumbImage(string ImageFileName)
         {
             ResourceImage = Image.FromFile(ImageFileName);
@@ -168,12 +168,12 @@ namespace Aprheua.Models
                 return false;
             }
         }
-        /// <summary>   
-        /// 生成缩略图方法，返回缩略图的Image对象   
-        /// </summary>   
-        /// <param name="Percent">缩略图的宽度百分比 如：0.8</param>     
-        /// <param name="targetFilePath">缩略图保存的全文件名</param>   
-        /// <returns>成功返回true,否则返回false</returns>   
+        /// <summary>
+        /// 生成缩略图方法，返回缩略图的Image对象
+        /// </summary>
+        /// <param name="Percent">缩略图的宽度百分比 如：0.8</param>
+        /// <param name="targetFilePath">缩略图保存的全文件名</param>
+        /// <returns>成功返回true,否则返回false</returns>
         public bool GetReducedImage(double Percent, string targetFilePath)
         {
             try
@@ -193,6 +193,5 @@ namespace Aprheua.Models
                 return false;
             }
         }
-
     }
 }

@@ -56,9 +56,7 @@ namespace Aprheua.Models
         public Commands.DelegateCommand RemoveImageClickEvent { get; set; }
         public Commands.DelegateCommand OpenInExplorerClickEvent { get; set; }
         public void OpenInExplorerClick(object parameter)
-        {
-            //ToDo : 在资源管理器中打开Path所在文件夹
-        }
+            => System.Diagnostics.Process.Start("explorer", Path);
         public ObservableCollection<ImageCategory> ImageCategories { get; set; }
 
         public OriginImage(string path, Commands.DelegateCommand checkBoxClickEvent, Commands.DelegateCommand removeImageClickEvent)
@@ -69,7 +67,7 @@ namespace Aprheua.Models
             OverlayImagePath = System.IO.Path.Combine(App.AprheuaOverlayImagesFolder, $"overlay-{Utility.GetTimeStamp()}-{Name}");
             NumberOfImageBlocks = 0;
             IsSelected = false;
-            ImageCategories = new ObservableCollection<ImageCategory> { };
+            ImageCategories = new ObservableCollection<ImageCategory>();
             //ToDo : （低优先级）使用Async异步执行
             //ToDo : 生成之后需要Dispose
             var thumbImage = new ThumbImage(Path);
@@ -79,8 +77,8 @@ namespace Aprheua.Models
             OpenInExplorerClickEvent = new Commands.DelegateCommand(new Action<object>(OpenInExplorerClick));
         }
         public void AddCategory(string folderPath, string name)
-        {            
-            Commands.DelegateCommand removeCategoryClickEvent = new Commands.DelegateCommand(new Action<object>((obj) =>
+        {
+            Commands.DelegateCommand removeCategoryClickEvent = new Commands.DelegateCommand(new Action<object>((_) =>
             {
                 foreach(var imagecategory in ImageCategories)
                 {
@@ -94,6 +92,5 @@ namespace Aprheua.Models
             var category = new ImageCategory(folderPath, name, removeCategoryClickEvent);
             ImageCategories.Add(category);
         }
-
     }
 }

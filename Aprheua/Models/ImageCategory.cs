@@ -23,7 +23,7 @@ namespace Aprheua.Models
 
         public ImageCategory(string folderPath, string name, Commands.DelegateCommand removeCategoryClickEvent)
         {
-            ImageBlocks = new ObservableCollection<ImageBlock> { };
+            ImageBlocks = new ObservableCollection<ImageBlock>();
             Name = name;
             if (!System.IO.Directory.Exists(folderPath))
             {

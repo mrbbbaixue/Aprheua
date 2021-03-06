@@ -44,7 +44,7 @@ namespace Aprheua.Commands
 
         public static readonly DependencyProperty CommandProperty =
             DependencyProperty.Register("Command", typeof(ICommand), typeof(EventCommand), new PropertyMetadata(null));
-        
+
         public object CommandParameter
         {
             get { return (object)GetValue(CommandParameterProperty); }
@@ -61,10 +61,7 @@ namespace Aprheua.Commands
                 parameter = CommandParameter;
             }
             var cmd = Command;
-            if (cmd != null)
-            {
-                cmd.Execute(parameter);
-            }
+            cmd?.Execute(parameter);
         }
     }
 }

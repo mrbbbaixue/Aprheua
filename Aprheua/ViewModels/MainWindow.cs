@@ -89,20 +89,19 @@ namespace Aprheua.ViewModels
             };
             if ((bool)dialog.ShowDialog())
             {
-                paths = dialog.FileNames; 
+                paths = dialog.FileNames;
                 foreach (string path in paths)
                 {
                     var sourceImage = new Models.OriginImage(path, ListBoxItemCheckBoxClickEvent, RemoveImageClickEvent);
                     SourceImages.Add(sourceImage);
                 }
             }
-
         }
 
         public DelegateCommand AnalyseCommand { get; set; }
         public void Analyse(object parameter)
         {
-
+            App.CreateAnalyseWindow();
         }
         #endregion
 
@@ -138,7 +137,7 @@ namespace Aprheua.ViewModels
         public DelegateCommand NightModeToggleButtonClickEvent { get; set; }
         public void NightModeToggleButtonClick(object parameter)
         {
-            HandyControl.Themes.ThemeManager.Current.ApplicationTheme = 
+            HandyControl.Themes.ThemeManager.Current.ApplicationTheme =
                 (HandyControl.Themes.ThemeManager.Current.ApplicationTheme != HandyControl.Themes.ApplicationTheme.Dark) ?
                 HandyControl.Themes.ApplicationTheme.Dark : HandyControl.Themes.ApplicationTheme.Light;
             App.Log.Info($"Current.ApplicationTheme changed to {HandyControl.Themes.ThemeManager.Current.ApplicationTheme}.");
@@ -153,7 +152,7 @@ namespace Aprheua.ViewModels
                 App.Log.Info($"Add Category : {categoryName}");
                 return;
             }
-            App.Log.Error($"Returned categoryName is NullOrWhiteSpace, will abort...");
+            App.Log.Error("Returned categoryName is NullOrWhiteSpace, will abort...");
         }
         public DelegateCommand RemoveImageClickEvent { get; set; }
         public void RemoveImageClick(object parameter)
@@ -167,12 +166,12 @@ namespace Aprheua.ViewModels
         public MainWindow()
         {
             #region 变量 Variables
-            WindowTitle = $"Aprheua 脸谱分割展示程序 - {Environment.CurrentDirectory}";         
+            WindowTitle = $"Aprheua 脸谱分割展示程序 - {Environment.CurrentDirectory}";
             SelectAllCheckBoxIsChecked = false;
             #endregion
 
             #region 数据 Datas
-            SourceImages = new ObservableCollection<Models.OriginImage> { };
+            SourceImages = new ObservableCollection<Models.OriginImage>();
             #endregion
 
             #region 命令 Commands
@@ -192,7 +191,7 @@ namespace Aprheua.ViewModels
             var testImage = new Models.OriginImage($"{Environment.CurrentDirectory}\\resources\\default-SelectedImage.png", ListBoxItemCheckBoxClickEvent, RemoveImageClickEvent);
             for (int i =1; i <= 3; i++)
             {
-                testImage.AddCategory(Path.Combine(App.AprheuaCategoriesFolder,$"Test {i} - {testImage.Name}"), $"Test {i}");                
+                testImage.AddCategory(Path.Combine(App.AprheuaCategoriesFolder,$"Test {i} - {testImage.Name}"), $"Test {i}");
             }
             SourceImages.Add(testImage);
         }

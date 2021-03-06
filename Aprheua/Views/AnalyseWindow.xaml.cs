@@ -5,12 +5,13 @@
     /// </summary>
     public partial class AnalyseWindow : HandyControl.Controls.Window
     {
-        private ViewModels.AnalyseWindow AnalyseWindowViewModel { get; set; }
         public AnalyseWindow()
         {
             InitializeComponent();
-            AnalyseWindowViewModel = new ViewModels.AnalyseWindow();
-            DataContext = AnalyseWindowViewModel;
+            DataContext = App.AnalyseWindowViewModel;
+            //Trigger Init function
+            App.AnalyseWindowViewModel.Init();
+            App.Log.Info("Test Message : App.AnalyseWindowViewModel.Init triggered !");
         }
     }
 }

@@ -12,13 +12,15 @@ namespace Aprheua
     /// </summary>
     public partial class App : Application
     {
-        public static string AprheuaTempFolder => Path.Combine(Environment.GetEnvironmentVariable("temp"),"Aprheua");
-        public static string AprheuaThumbImagesFolder => Path.Combine(AprheuaTempFolder,"ThumbImages");
-        public static string AprheuaOverlayImagesFolder => Path.Combine(AprheuaTempFolder,"OverlayImages");
+        public static string AprheuaTempFolder => Path.Combine(Environment.GetEnvironmentVariable("temp"), "Aprheua");
+        public static string AprheuaThumbImagesFolder => Path.Combine(AprheuaTempFolder, "ThumbImages");
+        public static string AprheuaOverlayImagesFolder => Path.Combine(AprheuaTempFolder, "OverlayImages");
         public static string AprheuaCategoriesFolder => Path.Combine(AprheuaTempFolder, "Categories");
         public static string AprheuaLogsFolder => Path.Combine(AprheuaTempFolder, "Logs");
         public static string LogFilePrefix => "Aprheua-log-";
         public static Models.LogWriter Log { get; set; }
+        public static ViewModels.MainWindow MainWindowViewModel { get; set; }
+        public static ViewModels.AnalyseWindow AnalyseWindowViewModel { get; set; }
         private void Application_Startup(object sender, StartupEventArgs e)
         {
             // 第一步 : 创建文件夹
@@ -57,12 +59,18 @@ namespace Aprheua
             Log = new Models.LogWriter(AprheuaLogsFolder);
             var assembly = Assembly.GetExecutingAssembly();
             Log.Info($"Aprheua™ by Hi-Icy Version {assembly.GetName().Version}");
-            Log.Info($"Application launched!");
+            Log.Info("Application launched!");
 
             // 第三步 : 主题设置
             var brush = (System.Windows.Media.Brush)new System.Windows.Media.BrushConverter().ConvertFromString("#F52443");
             HandyControl.Themes.ThemeManager.Current.AccentColor = brush;
             Log.Info($"Accent Color is set to {brush}");
+
+            //第四步 : 初始化ViewModel
+            MainWindowViewModel = new ViewModels.MainWindow();
+            Log.Info("MainWindowViewModel is successfully initialized.");
+            AnalyseWindowViewModel = new ViewModels.AnalyseWindow();
+            Log.Info("AnalyseWindowViewModel is successfully initialized.");
             //Final Step : Open MainWindow
             CreateMainWindow();
         }
@@ -70,7 +78,7 @@ namespace Aprheua
         {
             try
             {
-                Log.Info("Deleting temp folders...");
+                Log.Info("Cleaning up temp folders...");
                 // ToDo : ThumbImagesFolder 有Bug               
                 Models.Utility.DeleteFolder(AprheuaCategoriesFolder);
                 Models.Utility.DeleteFolder(AprheuaOverlayImagesFolder);
@@ -78,7 +86,7 @@ namespace Aprheua
             }
             catch (Exception ex)
             {
-                Log.Error($"Cannot delete temp folders!");
+                Log.Error("Cannot delete temp folders!");
                 Log.Error($"Exception Message : {ex.Message}");
                 Current.Shutdown();
             }
@@ -87,7 +95,7 @@ namespace Aprheua
         public static string CreateAddCategoryWindow()
         {
             var addCategoryWindow = new Aprheua.Views.AddCategoryWindow();
-            Log.Info($"AddCategoryWindow Created!");
+            Log.Info("AddCategoryWindow Created!");
             addCategoryWindow.ShowDialog();
             if (addCategoryWindow.IsOKClicked)
             {
