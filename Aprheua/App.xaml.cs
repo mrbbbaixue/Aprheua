@@ -63,7 +63,7 @@ namespace Aprheua
             }
             Log = new Models.LogWriter(AprheuaLogsFolder);
             var assembly = Assembly.GetExecutingAssembly();
-            Log.Info($"Aprheua™ by Hi-Icy Version {assembly.GetName().Version}");
+            Log.Info($"Aprheua Image HaarClassifier GUI Application by Hi-Icy. Version {assembly.GetName().Version}");
             Log.Info("Application launched!");
 
             // 第三步 : 主题设置
@@ -127,8 +127,8 @@ namespace Aprheua
             {
                 Owner = MainWindowWindow
             };
-            AnalyseWindowWindow.Show();
             Log.Info("AnalyseWindow Created!");
+            AnalyseWindowWindow.ShowDialog();
         }
 
         private void Application_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)

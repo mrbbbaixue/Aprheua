@@ -68,7 +68,7 @@ namespace Aprheua.Models
             NumberOfImageBlocks = 0;
             IsSelected = false;
             ImageCategories = new ObservableCollection<ImageCategory>();
-            //ToDo : （低优先级）使用Async异步执行
+            //ToDo : 异步执行
             //ToDo : 生成之后需要Dispose
             var thumbImage = new ThumbImage(Path);
             thumbImage.GetReducedImage(50, ThumbImagePath);
@@ -84,12 +84,14 @@ namespace Aprheua.Models
                 {
                     if (imagecategory.Name == name)
                     {
+                        Utility.DeleteFolder(imagecategory.FolderPath);
                         ImageCategories.Remove(imagecategory);
                         break;
                     }
                 }
             }));
             var category = new ImageCategory(folderPath, name, removeCategoryClickEvent);
+            category.ScanImages();
             ImageCategories.Add(category);
         }
     }

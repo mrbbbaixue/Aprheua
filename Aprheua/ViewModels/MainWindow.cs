@@ -102,7 +102,9 @@ namespace Aprheua.ViewModels
         public void Analyse(object parameter)
         {
             App.CreateAnalyseWindow();
+            App.Log.Info("CreateAnalyseWindow returned");
             //ToDo : waitforexit
+            //and print logs
         }
         #endregion
 
@@ -159,6 +161,7 @@ namespace Aprheua.ViewModels
         public void RemoveImageClick(object parameter)
         {
             var index = SelectedIndex;
+            Models.Utility.DeleteFolder(System.IO.Path.Combine(App.AprheuaCategoriesFolder, SourceImages[index].Name));
             SourceImages.Remove(SourceImages[index]);
         }
 
@@ -192,7 +195,7 @@ namespace Aprheua.ViewModels
             var testImage = new Models.OriginImage(Path.Combine(App.AprheuaResourceFolder, "default-SelectedImage.png"), ListBoxItemCheckBoxClickEvent, RemoveImageClickEvent);
             for (int i =1; i <= 3; i++)
             {
-                testImage.AddCategory(Path.Combine(App.AprheuaCategoriesFolder,$"Test {i} - {testImage.Name}"), $"Test {i}");
+                testImage.AddCategory(Path.Combine(App.AprheuaCategoriesFolder, testImage.Name, $"Test {i}"), $"Test {i}");
             }
             SourceImages.Add(testImage);
         }

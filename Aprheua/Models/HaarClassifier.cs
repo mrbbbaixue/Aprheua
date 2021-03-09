@@ -4,38 +4,6 @@ using Aprheua.ViewModels;
 
 namespace Aprheua.Models
 {
-    /*
-    public class HaarClassifier2 : NotificationObject
-    {
-        private string HaarClassifierPath { get; }
-        private string ImageInputPath { get; }
-        private string ImageBlockOutputPath { get; }
-        public HaarClassifier2(string haarClassifierPath, string imageInputPath, string imageBlockOutputPath)
-        {
-            HaarClassifierPath = haarClassifierPath;
-            ImageInputPath = imageInputPath;
-            ImageBlockOutputPath = imageBlockOutputPath;
-        }
-
-        public List<string> StartHaarClassifier(HaarClassifierChecking haarClassifierChecking, int nDetection, int minSize, int maxSize)
-        {
-            int count = 1;
-            List<string> OutputImageBlockPath = new List<string>();
-            Mat srcImage = new Mat(ImageInputPath, ImreadModes.AnyColor);
-            CascadeClassifier haarClassifier = new CascadeClassifier(HaarClassifierPath + $@"\{haarClassifierChecking}.xml");
-            Rect[] imageBlockRect = haarClassifier.DetectMultiScale(srcImage, 1.1, nDetection, 0, new Size(minSize, minSize), new Size(maxSize, maxSize));
-            foreach (var item in imageBlockRect)
-            {
-                Mat imageBlock = new Mat(srcImage, item);
-                imageBlock.ImWrite(ImageBlockOutputPath + $@"\{haarClassifierChecking}-{count}.jpg");
-                OutputImageBlockPath.Add(ImageBlockOutputPath + $@"\{haarClassifierChecking}-{count}.jpg");
-                count++;
-            }
-            return OutputImageBlockPath;
-        }
-    }
-    */
-
     public class HaarClassifier : NotificationObject
     {
         private bool _isSelected;
@@ -76,6 +44,25 @@ namespace Aprheua.Models
             Path = path;
             Name = System.IO.Path.GetFileNameWithoutExtension(path);
             IsSelected = true;
+            App.Log.OpenCV($"Classifier {Name} @ {Path} added.");
+        }
+        public List<string> StartHaarClassifier(string imagePath, string outputFolderPath, int nDetection, int minSize, int maxSize)
+        {
+            var count = 0;
+            List<string> OutputImageBlockPaths = new List<string>();
+            Mat srcImage = new Mat(imagePath, ImreadModes.AnyColor);
+            CascadeClassifier haarClassifier = new CascadeClassifier(Path);
+
+            foreach (var item in haarClassifier.DetectMultiScale(srcImage, 1.1, nDetection, 0, new Size(minSize, minSize), new Size(maxSize, maxSize)))
+            {
+                Mat imageBlock = new Mat(srcImage, item);
+                count++;
+                var outputImagePath = System.IO.Path.Combine(outputFolderPath, $"{Name}-{count}-{Utility.GetTimeStamp()}.jpg");
+                App.Log.OpenCV($"Classifier {Name} Output : {outputImagePath}");
+                imageBlock.ImWrite(outputImagePath);
+                OutputImageBlockPaths.Add(outputImagePath);
+            }
+            return OutputImageBlockPaths;
         }
     }
 }

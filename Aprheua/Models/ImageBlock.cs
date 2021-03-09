@@ -13,9 +13,10 @@
             }
         }
         public Commands.DelegateCommand RemoveBlockClickEvent { get; set; }
-        public ImageBlock(Commands.DelegateCommand removeBlockClickEvent)
+        public ImageBlock(string blockPath, Commands.DelegateCommand removeBlockClickEvent)
         {
             RemoveBlockClickEvent = removeBlockClickEvent;
+            BlockPath = blockPath;
         }
     }
 }

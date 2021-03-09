@@ -111,6 +111,7 @@ namespace Aprheua.Models
                     }
 
                     fileInfo.IsReadOnly = false;
+                    //ToDo : 需要先解除
                     fileInfo.Delete();
                 }
                 else

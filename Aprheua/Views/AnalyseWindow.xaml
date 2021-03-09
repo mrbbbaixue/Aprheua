@@ -6,7 +6,7 @@
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:local="clr-namespace:Aprheua.Views"
-            xmlns:viewmodels="clr-namespace:Aprheua.ViewModels"
+            xmlns:viewmodels="clr-namespace:Aprheua.ViewModels" xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
             mc:Ignorable="d"   
             ResizeMode="NoResize"
             Title="{Binding WindowTitle}"
@@ -68,6 +68,7 @@
                     hc:TipElement.Visibility="Visible" 
                     hc:TipElement.Placement="Top" 
                     IsSnapToTickEnabled="True" 
+                    Minimum="5"
                     Maximum="100" 
                     ValueStart="{Binding MinSize}"
                     ValueEnd="{Binding MaxSize}"
@@ -88,8 +89,8 @@
                     hc:TipElement.Placement="Top" 
                     IsSnapToTickEnabled="True" 
                     Maximum="10" 
-                    Minimum="1"
-                    Value="{Binding MinNeighbors}" 
+                    Minimum="0"
+                    Value="{Binding NDetection}" 
                     TickFrequency="1"
                     TickPlacement="BottomRight" 
                     Margin="0,45,0,0"
@@ -107,7 +108,13 @@
                 Margin="0,0,10,10"
                 hc:BorderElement.CornerRadius="2"
                 Style="{StaticResource ButtonPrimary}"
-                />
+                >
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="Click">
+                    <i:InvokeCommandAction Command="{Binding StartButtonClickEvent}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </Button>
     </Grid>
 </hc:Window>
 

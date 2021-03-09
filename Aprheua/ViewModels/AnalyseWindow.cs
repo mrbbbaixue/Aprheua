@@ -7,6 +7,8 @@ namespace Aprheua.ViewModels
     {
         private ViewModels.MainWindow MainWindow => App.MainWindowViewModel;
 
+        private int _selectedCount;
+
         private string _windowTitle;
         public string WindowTitle
         {
@@ -51,31 +53,57 @@ namespace Aprheua.ViewModels
             }
         }
 
-        private int _minNeighbors;
-        public int MinNeighbors
+        private int _nDetection;
+        public int NDetection
         {
-            get { return _minNeighbors; }
+            get { return _nDetection; }
             set
             {
-                _minNeighbors = value;
-                RaisePropertyChanged("MinNeighbors");
+                _nDetection = value;
+                RaisePropertyChanged("NDetection");
             }
         }
         public ObservableCollection<Models.HaarClassifier> Classifiers { get; set; }
+        public Commands.DelegateCommand StartButtonClickEvent { get; set; }
+        public void StartAnalyse(object parameter)
+        {
+            App.Log.Info("Analyse Process Started...");
+            App.Log.Info($"MinSize : {MinSize} " +
+                         $"MaxSize : {MaxSize} " +
+                         $"NDetection : {NDetection} " +
+                         $"_selectedCount : {_selectedCount} "
+                         );
+           foreach (var sourceImage in MainWindow.SourceImages)
+           {
+                if (sourceImage.IsSelected)
+                {
+                    foreach(var classifier in Classifiers)
+                    {
+                        if (classifier.IsSelected)
+                        {
+                            var classifierOutputPath = System.IO.Path.Combine(App.AprheuaCategoriesFolder, sourceImage.Name, classifier.Name);
+                            App.Log.Info($"Using {classifier.Name} to analyse {sourceImage.Path}, output to {classifierOutputPath}");
+                            classifier.StartHaarClassifier(sourceImage.Path, classifierOutputPath, NDetection, MinSize, MaxSize);
+                            //ToDo : 如果已有分类，需要记得合并
+                            sourceImage.AddCategory(classifierOutputPath, classifier.Name);
+                        }
+                    }
+                }
+           }
+        }
         public void Init()
         {
-            var selectedCount = 0;
             foreach(var img in MainWindow.SourceImages)
             {
                 if (img.IsSelected)
                 {
-                    selectedCount++;
+                    _selectedCount++;
                 }
             }
-            App.Log.Info($"selectedCount : {selectedCount}");
+            App.Log.Info($"selectedCount : {_selectedCount}");
             App.Log.Info($"Scanning classifiers under {App.AprheuaClassifiersFolder}");
             Classifiers = ScanHaarClassifierFolder(App.AprheuaClassifiersFolder);
-            SelectedImagesNotification = $"对已选的{selectedCount}个图像应用 HAAR 分析 :";
+            SelectedImagesNotification = $"对已选的 {_selectedCount} 个图像应用 HAAR 分析 :";
         }
         private ObservableCollection<Models.HaarClassifier> ScanHaarClassifierFolder(string path)
         {
@@ -86,18 +114,20 @@ namespace Aprheua.ViewModels
             {
                 var classifier = new Models.HaarClassifier(file);
                 classifiers.Add(classifier);
-                App.Log.Info($"Classifier {file} added.");
+                App.Log.Info($"From ScanHaarClassifier : Classifier {file} added.");
             }
             return classifiers;
         }
         public AnalyseWindow()
         {
-            WindowTitle = "HAAR 自动分析";
+            WindowTitle = "HAAR 分析窗口";
             SelectedImagesNotification = "";
             MinSize = 20;
             MaxSize = 50;
-            MinNeighbors = 3;
+            NDetection = 0;
             Classifiers = new ObservableCollection<Models.HaarClassifier>();
+            StartButtonClickEvent = new Commands.DelegateCommand(new Action<object>(StartAnalyse));
+            _selectedCount = 0;
         }
     }
 }
