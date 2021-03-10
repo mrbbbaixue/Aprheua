@@ -39,8 +39,9 @@ namespace Aprheua.Models
             //ToDo : AddImageBlockFromScreenShot
             App.Log.Info($"AddBlock for Category : {Name} has been triggered!");
         }
-        public void ScanImages()
+        public bool ScanImages()
         {
+            var hasNewFiles = false;
             App.Log.Info($"ScanImages in Category : {Name} has been triggered!");
             var files = System.IO.Directory
                                  .EnumerateFiles(FolderPath,"*.jpg");
@@ -48,9 +49,11 @@ namespace Aprheua.Models
             {
                 if (!CheckIfAlreadyExists(image))
                 {
+                    hasNewFiles = true;
                     AddBlockFromFile(image);
                 }
             }
+            return hasNewFiles;
         }
         private bool CheckIfAlreadyExists(string image)
         {

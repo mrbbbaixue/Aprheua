@@ -103,8 +103,6 @@ namespace Aprheua.ViewModels
         {
             App.CreateAnalyseWindow();
             App.Log.Info("CreateAnalyseWindow returned");
-            //ToDo : waitforexit
-            //and print logs
         }
         #endregion
 
@@ -191,7 +189,7 @@ namespace Aprheua.ViewModels
             RemoveImageClickEvent = new DelegateCommand(new Action<object>(RemoveImageClick));
             #endregion
 
-            //测试事件
+            //ToDo : 测试用，添加默认图像
             var testImage = new Models.OriginImage(Path.Combine(App.AprheuaResourceFolder, "default-SelectedImage.png"), ListBoxItemCheckBoxClickEvent, RemoveImageClickEvent);
             for (int i =1; i <= 3; i++)
             {

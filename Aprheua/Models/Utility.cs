@@ -28,7 +28,7 @@ namespace Aprheua.Models
                 {
                     LogStreamWriter = File.CreateText(LogFilePath);
                 }
-                Console.WriteLine($"Log > [{logType}] {logContent}");
+                Console.WriteLine($"$ [{logType}] {logContent}");
                 LogStreamWriter.WriteLine($"[{logType}][Time:{DateTime.Now} {Utility.GetTimeStamp()}] {logContent}");
                 LogStreamWriter.Close();
             }

@@ -76,7 +76,7 @@ namespace Aprheua.Models
             RemoveImageClickEvent = removeImageClickEvent;
             OpenInExplorerClickEvent = new Commands.DelegateCommand(new Action<object>(OpenInExplorerClick));
         }
-        public void AddCategory(string folderPath, string name)
+        public int AddCategory(string folderPath, string name)
         {
             Commands.DelegateCommand removeCategoryClickEvent = new Commands.DelegateCommand(new Action<object>((_) =>
             {
@@ -84,8 +84,8 @@ namespace Aprheua.Models
                 {
                     if (imagecategory.Name == name)
                     {
-                        Utility.DeleteFolder(imagecategory.FolderPath);
                         ImageCategories.Remove(imagecategory);
+                        Utility.DeleteFolder(imagecategory.FolderPath);
                         break;
                     }
                 }
@@ -93,6 +93,7 @@ namespace Aprheua.Models
             var category = new ImageCategory(folderPath, name, removeCategoryClickEvent);
             category.ScanImages();
             ImageCategories.Add(category);
+            return ImageCategories.IndexOf(category);
         }
     }
 }

@@ -65,6 +65,7 @@ namespace Aprheua.ViewModels
         }
         public ObservableCollection<Models.HaarClassifier> Classifiers { get; set; }
         public Commands.DelegateCommand StartButtonClickEvent { get; set; }
+        public Commands.DelegateCommand CloseWindowClick { get; set; }
         public void StartAnalyse(object parameter)
         {
             App.Log.Info("Analyse Process Started...");
@@ -73,25 +74,48 @@ namespace Aprheua.ViewModels
                          $"NDetection : {NDetection} " +
                          $"_selectedCount : {_selectedCount} "
                          );
-           foreach (var sourceImage in MainWindow.SourceImages)
-           {
+            foreach (var sourceImage in MainWindow.SourceImages)
+            {
                 if (sourceImage.IsSelected)
                 {
-                    foreach(var classifier in Classifiers)
+                    foreach (var classifier in Classifiers)
                     {
                         if (classifier.IsSelected)
                         {
+                            var categoryIndex = -1;
                             var classifierOutputPath = System.IO.Path.Combine(App.AprheuaCategoriesFolder, sourceImage.Name, classifier.Name);
                             App.Log.Info($"Using {classifier.Name} to analyse {sourceImage.Path}, output to {classifierOutputPath}");
+                            bool IsCategoryAlreadyCreated()
+                            {
+                                foreach (var category in sourceImage.ImageCategories)
+                                {
+                                    if (category.Name == classifier.Name)
+                                    {
+                                        App.Log.Info($"Category {category.Name} has been already taken, will only scan that folder!");
+                                        categoryIndex = sourceImage.ImageCategories.IndexOf(category);
+                                        return true;
+                                    }
+                                }
+                                return false;
+                            }
+                            if (!IsCategoryAlreadyCreated())
+                            {
+                                categoryIndex = sourceImage.AddCategory(classifierOutputPath, classifier.Name);
+                            }
                             classifier.StartHaarClassifier(sourceImage.Path, classifierOutputPath, NDetection, MinSize, MaxSize);
-                            //ToDo : 如果已有分类，需要记得合并
-                            sourceImage.AddCategory(classifierOutputPath, classifier.Name);
+                            if (categoryIndex != -1)
+                            {
+                                var hasNewFiles = sourceImage.ImageCategories[categoryIndex].ScanImages();
+                                App.Log.Info($"Index : {categoryIndex}, hasNewFiles : {hasNewFiles}");
+                            }
                         }
                     }
                 }
-           }
+            }
+            //ToDo : 显示进度条，等待完成，（如果可以的话）异步
+            CloseWindowClick.Execute(this);
         }
-        public void Init()
+        public void Init(Commands.DelegateCommand closeWindowClick)
         {
             foreach(var img in MainWindow.SourceImages)
             {
@@ -103,6 +127,7 @@ namespace Aprheua.ViewModels
             App.Log.Info($"selectedCount : {_selectedCount}");
             App.Log.Info($"Scanning classifiers under {App.AprheuaClassifiersFolder}");
             Classifiers = ScanHaarClassifierFolder(App.AprheuaClassifiersFolder);
+            CloseWindowClick = closeWindowClick;
             SelectedImagesNotification = $"对已选的 {_selectedCount} 个图像应用 HAAR 分析 :";
         }
         private ObservableCollection<Models.HaarClassifier> ScanHaarClassifierFolder(string path)

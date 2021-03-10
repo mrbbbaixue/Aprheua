@@ -5,12 +5,18 @@
     /// </summary>
     public partial class AnalyseWindow : HandyControl.Controls.Window
     {
+        public Commands.DelegateCommand CloseWindowClick { get; set; }
+        private void CloseWindow(object parameter)
+        {
+            this.Close();
+        }
         public AnalyseWindow()
         {
             InitializeComponent();
             DataContext = App.AnalyseWindowViewModel;
+            CloseWindowClick = new Commands.DelegateCommand(new System.Action<object>(CloseWindow));
             //Trigger Init function
-            App.AnalyseWindowViewModel.Init();
+            App.AnalyseWindowViewModel.Init(CloseWindowClick);
             App.Log.Info("Test Message : App.AnalyseWindowViewModel.Init triggered !");
         }
     }

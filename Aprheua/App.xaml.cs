@@ -28,7 +28,7 @@ namespace Aprheua
         public static Views.AnalyseWindow AnalyseWindowWindow { get; set; }
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            // 第一步 : 创建文件夹
+            // 第一步 : 创建程序的临时文件夹，用于存放各种缩略图，图片块和日志。
             if (!Directory.Exists(AprheuaTempFolder))
             {
                 Directory.CreateDirectory(AprheuaTempFolder);
@@ -49,6 +49,8 @@ namespace Aprheua
             {
                 Directory.CreateDirectory(AprheuaCategoriesFolder);
             }
+            //ToDo : 测试用，打开Temp文件夹
+            System.Diagnostics.Process.Start("explorer", AprheuaTempFolder);
             // 第二步 : 创建日志
             var files = Directory
                 .EnumerateFiles(AprheuaLogsFolder, $"{LogFilePrefix}*")
