@@ -1,4 +1,24 @@
-﻿using System;
+﻿/****************************************************************
+                   Copyright © 2021 Aprheua
+
+    File Name:     Models/OriginImage.cs
+
+    Author:        Chenhao Wang (MrBBBaiXue@github.com)
+
+    Version:       2.3.3.3
+
+    Date:          2021-03-11
+
+    Description:   待分类图像 OriginImage类
+
+    Classes:       OriginImage : NotificationObject
+                   // NotificationObject的继承，包含ImageCategories；
+                      处理传入的图像数据，图像类型分类和图片块。同时与前台
+                      进行间接的绑定。
+
+****************************************************************/
+
+using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Aprheua.ViewModels;

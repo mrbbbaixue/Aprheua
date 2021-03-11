@@ -1,10 +1,27 @@
-﻿using System.Windows;
+﻿/****************************************************************
+                   Copyright © 2021 Aprheua
+
+    File Name:     Views/AddCategoryWindow.xaml.cs
+
+    Author:        Chenhao Wang (MrBBBaiXue@github.com)
+                   Boyan Wang (JingNianNian@github.com)
+
+    Version:       2.3.3.3
+
+    Date:          2021-02-27
+
+    Description:   AddCategoryWindow.xaml.cs 的交互逻辑
+
+    Classes:       AddCategoryWindow : HandyControl.Controls.Window
+                   // HandyControl窗口的继承，重写构造器，获得新建分类的
+                      名称，并处理返回。
+
+****************************************************************/
+
+using System.Windows;
 
 namespace Aprheua.Views
 {
-    /// <summary>
-    /// AddCategoryWindow.xaml 的交互逻辑
-    /// </summary>
     public partial class AddCategoryWindow : HandyControl.Controls.Window
     {
         public string WindowTitle { get; set; }

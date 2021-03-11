@@ -1,4 +1,29 @@
-﻿using System;
+﻿/****************************************************************
+                   Copyright © 2021 Aprheua
+
+    File Name:     Models/Utility.cs
+
+    Author:        Chenhao Wang (MrBBBaiXue@github.com)
+                   Boyan Wang (JingNianNian@github.com)
+
+    Version:       2.3.3.3
+
+    Date:          2021-03-11
+
+    Description:   Utility 工具类，包含一些作者其他项目(Private Repo)
+                   中的代码。
+
+    Classes:       LogWriter
+                   // 用于记录日志并输出到文件和控制台窗口。
+                   Utility
+                   // 包含数个静态方法，包括获得文件哈希，获得时间戳，
+                      删除文件夹，清空文件夹内容等。
+                   ThumbImage
+                   // 生成图像的缩略图并将其输出至文件。
+
+****************************************************************/
+
+using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;

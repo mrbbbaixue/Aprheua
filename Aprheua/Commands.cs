@@ -1,4 +1,24 @@
-﻿using System;
+﻿/****************************************************************
+                   Copyright © 2021 Aprheua
+
+    File Name:     Commands.cs
+
+    Author:        Chenhao Wang (MrBBBaiXue@github.com)
+
+    Version:       2.3.3.3
+
+    Date:          2021-02-24
+
+    Description:   MVVM框架的命令绑定继承
+
+    Classes:       DelegateCommand : ICommand
+                   // MVVM框架结构的窗口命令绑定
+                   EventCommand : TriggerAction<DependencyObject>
+                   // MVVM框架结构的窗口事件绑定
+
+****************************************************************/
+
+using System;
 using System.Windows;
 using System.Windows.Input;
 using HandyControl.Interactivity;

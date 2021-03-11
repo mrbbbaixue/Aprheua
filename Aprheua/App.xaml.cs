@@ -1,4 +1,24 @@
-﻿using System;
+﻿/****************************************************************
+                   Copyright © 2021 Aprheua
+
+    File Name:     App.xaml.cs
+
+    Author:        Chenhao Wang (MrBBBaiXue@github.com)
+                   Boyan Wang (JingNianNian@github.com)
+
+    Version:       2.3.3.3
+
+    Date:          2021-03-11
+
+    Description:   整个程序的入口点，处理程序启动前的清理操作进行错误处
+                   理，创建窗口。
+
+    Classes:       App : Application
+                   // 整个App的入口点，由App.xaml路由
+
+****************************************************************/
+
+using System;
 using System.Data;
 using System.IO;
 using System.Linq;
@@ -7,9 +27,6 @@ using System.Windows;
 
 namespace Aprheua
 {
-    /// <summary>
-    /// App.xaml 的交互逻辑
-    /// </summary>
     public partial class App : Application
     {
         public static string AprheuaTempFolder => Path.Combine(Environment.GetEnvironmentVariable("temp"), "Aprheua");
@@ -49,8 +66,6 @@ namespace Aprheua
             {
                 Directory.CreateDirectory(AprheuaCategoriesFolder);
             }
-            //ToDo : 测试用，打开Temp文件夹
-            System.Diagnostics.Process.Start("explorer", AprheuaTempFolder);
             // 第二步 : 创建日志
             var files = Directory
                 .EnumerateFiles(AprheuaLogsFolder, $"{LogFilePrefix}*")

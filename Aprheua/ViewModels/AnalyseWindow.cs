@@ -1,4 +1,24 @@
-﻿using System;
+﻿/****************************************************************
+                   Copyright © 2021 Aprheua
+
+    File Name:     ViewModels/AnalyseWindow.cs
+
+    Author:        Chenhao Wang (MrBBBaiXue@github.com)
+                   Boyan Wang (JingNianNian@github.com)
+
+    Version:       2.3.3.3
+
+    Date:          2021-03-11
+
+    Description:   AnalyseWindow 的后台绑定源
+
+    Classes:       AnalyseWindow : NotificationObject
+                   // NotificationObject的继承，绑定处理窗口的数据，
+                      完成分类分析操作。
+
+****************************************************************/
+
+using System;
 using System.Collections.ObjectModel;
 
 namespace Aprheua.ViewModels

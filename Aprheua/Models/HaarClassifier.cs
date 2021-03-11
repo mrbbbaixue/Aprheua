@@ -1,4 +1,24 @@
-﻿using System.Collections.Generic;
+﻿/****************************************************************
+                   Copyright © 2021 Aprheua
+
+    File Name:     Models/ImageCategory.cs
+
+    Author:        Chenhao Wang (MrBBBaiXue@github.com)
+                   Boyan Wang (JingNianNian@github.com)
+
+    Version:       2.3.3.3
+
+    Date:          2021-03-10
+
+    Description:   OpenCV HAAR分类器 HaarClassifier类
+
+    Classes:       HaarClassifier : NotificationObject
+                   // NotificationObject的继承，为分类器模型数据的抽象，
+                      封装分类方法
+
+****************************************************************/
+
+using System.Collections.Generic;
 using OpenCvSharp;
 using Aprheua.ViewModels;
 

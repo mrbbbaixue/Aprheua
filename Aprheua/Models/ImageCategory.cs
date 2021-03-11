@@ -1,4 +1,23 @@
-﻿using System;
+﻿/****************************************************************
+                   Copyright © 2021 Aprheua
+
+    File Name:     Models/ImageCategory.cs
+
+    Author:        Chenhao Wang (MrBBBaiXue@github.com)
+
+    Version:       2.3.3.3
+
+    Date:          2021-03-10
+
+    Description:   图像分类 ImageCategory类
+
+    Classes:       ImageCategory : NotificationObject
+                   // NotificationObject的继承，包含ImageBlocks；
+                      处理传入的图像类别，同时与前台进行间接的绑定。
+
+****************************************************************/
+
+using System;
 using System.Collections.ObjectModel;
 using Aprheua.ViewModels;
 
