@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using Aprheua.ViewModels;
 
 namespace Aprheua.Models
@@ -68,10 +69,7 @@ namespace Aprheua.Models
             NumberOfImageBlocks = 0;
             IsSelected = false;
             ImageCategories = new ObservableCollection<ImageCategory>();
-            //ToDo : 异步执行
-            //ToDo : 生成之后需要Dispose
-            var thumbImage = new ThumbImage(Path);
-            thumbImage.GetReducedImage(50, ThumbImagePath);
+            GetReducedImageAsync();
             CheckBoxClickEvent = checkBoxClickEvent;
             RemoveImageClickEvent = removeImageClickEvent;
             OpenInExplorerClickEvent = new Commands.DelegateCommand(new Action<object>(OpenInExplorerClick));
@@ -94,6 +92,19 @@ namespace Aprheua.Models
             category.ScanImages();
             ImageCategories.Add(category);
             return ImageCategories.IndexOf(category);
+        }
+        private async void GetReducedImageAsync()
+        {
+            Task GetReducedImageTask()
+            {
+                return Task.Run(() =>
+                {
+                    var thumbImage = new ThumbImage(Path);
+                    thumbImage.GetReducedImage(50, ThumbImagePath);
+                    RaisePropertyChanged("ThumbImagePath");
+                });
+            }
+            await GetReducedImageTask().ConfigureAwait(false);
         }
     }
 }

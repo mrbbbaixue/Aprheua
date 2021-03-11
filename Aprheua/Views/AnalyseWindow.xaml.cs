@@ -17,7 +17,7 @@
             CloseWindowClick = new Commands.DelegateCommand(new System.Action<object>(CloseWindow));
             //Trigger Init function
             App.AnalyseWindowViewModel.Init(CloseWindowClick);
-            App.Log.Info("Test Message : App.AnalyseWindowViewModel.Init triggered !");
+            App.Log.Info("App.AnalyseWindowViewModel.Init triggered !");
         }
     }
 }

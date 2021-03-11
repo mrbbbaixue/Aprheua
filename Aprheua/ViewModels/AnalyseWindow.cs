@@ -63,9 +63,23 @@ namespace Aprheua.ViewModels
                 RaisePropertyChanged("NDetection");
             }
         }
+
+        private bool _isProcessing;
+        public bool IsProcessing
+        {
+            get { return _isProcessing; }
+            set
+            {
+                _isProcessing = value;
+                RaisePropertyChanged("IsProcessing");
+                RaisePropertyChanged("IsNotProcessing");
+            }
+        }
+        public bool IsNotProcessing => !IsProcessing;
         public ObservableCollection<Models.HaarClassifier> Classifiers { get; set; }
         public Commands.DelegateCommand StartButtonClickEvent { get; set; }
         public Commands.DelegateCommand CloseWindowClick { get; set; }
+
         public void StartAnalyse(object parameter)
         {
             App.Log.Info("Analyse Process Started...");
@@ -117,6 +131,7 @@ namespace Aprheua.ViewModels
         }
         public void Init(Commands.DelegateCommand closeWindowClick)
         {
+            _selectedCount = 0;
             foreach(var img in MainWindow.SourceImages)
             {
                 if (img.IsSelected)
@@ -150,6 +165,7 @@ namespace Aprheua.ViewModels
             MinSize = 20;
             MaxSize = 50;
             NDetection = 0;
+            IsProcessing = false;
             Classifiers = new ObservableCollection<Models.HaarClassifier>();
             StartButtonClickEvent = new Commands.DelegateCommand(new Action<object>(StartAnalyse));
             _selectedCount = 0;
