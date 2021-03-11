@@ -25,7 +25,7 @@ namespace Aprheua.Views
         public Commands.DelegateCommand CloseWindowClick { get; set; }
         private void CloseWindow(object parameter)
         {
-            this.Close();
+            Close();
         }
         public AnalyseWindow()
         {

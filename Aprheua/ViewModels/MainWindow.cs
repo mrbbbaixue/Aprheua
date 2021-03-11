@@ -115,6 +115,7 @@ namespace Aprheua.ViewModels
                     var sourceImage = new Models.OriginImage(path, ListBoxItemCheckBoxClickEvent, RemoveImageClickEvent);
                     SourceImages.Add(sourceImage);
                 }
+                ListBoxItemCheckBoxClickEvent.Execute(this);
             }
         }
 
@@ -166,6 +167,7 @@ namespace Aprheua.ViewModels
         public DelegateCommand AddCategoryClickEvent { get; set; }
         public void AddCategory(object parameter)
         {
+            if (SourceImages.Count == 0) return;
             var categoryName = App.CreateAddCategoryWindow();
             if (!String.IsNullOrWhiteSpace(categoryName))
             {
@@ -181,6 +183,7 @@ namespace Aprheua.ViewModels
             var index = SelectedIndex;
             Models.Utility.DeleteFolder(System.IO.Path.Combine(App.AprheuaCategoriesFolder, SourceImages[index].Name));
             SourceImages.Remove(SourceImages[index]);
+            ListBoxItemCheckBoxClickEvent.Execute(this);
         }
 
         #endregion

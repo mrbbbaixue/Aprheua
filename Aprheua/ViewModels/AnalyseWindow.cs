@@ -20,6 +20,7 @@
 
 using System;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 
 namespace Aprheua.ViewModels
 {
@@ -83,19 +84,6 @@ namespace Aprheua.ViewModels
                 RaisePropertyChanged("NDetection");
             }
         }
-
-        private bool _isProcessing;
-        public bool IsProcessing
-        {
-            get { return _isProcessing; }
-            set
-            {
-                _isProcessing = value;
-                RaisePropertyChanged("IsProcessing");
-                RaisePropertyChanged("IsNotProcessing");
-            }
-        }
-        public bool IsNotProcessing => !IsProcessing;
         public ObservableCollection<Models.HaarClassifier> Classifiers { get; set; }
         public Commands.DelegateCommand StartButtonClickEvent { get; set; }
         public Commands.DelegateCommand CloseWindowClick { get; set; }
@@ -146,7 +134,6 @@ namespace Aprheua.ViewModels
                     }
                 }
             }
-            //ToDo : 显示进度条，等待完成，（如果可以的话）异步
             CloseWindowClick.Execute(this);
         }
         public void Init(Commands.DelegateCommand closeWindowClick)
@@ -178,14 +165,21 @@ namespace Aprheua.ViewModels
             }
             return classifiers;
         }
+        private async void StartHaarClassifierAsync(Models.HaarClassifier classifier, string imagePath, string outputFolderPath)
+        {
+            Task StartHaarClassifierTask()
+            {
+                return Task.Run(() => classifier.StartHaarClassifier(imagePath, outputFolderPath, NDetection, MinSize, MaxSize));
+            }
+            await StartHaarClassifierTask().ConfigureAwait(false);
+        }
         public AnalyseWindow()
         {
             WindowTitle = "HAAR 分析窗口";
             SelectedImagesNotification = "";
-            MinSize = 20;
-            MaxSize = 50;
-            NDetection = 0;
-            IsProcessing = false;
+            MinSize = 10;
+            MaxSize = 80;
+            NDetection = 3;
             Classifiers = new ObservableCollection<Models.HaarClassifier>();
             StartButtonClickEvent = new Commands.DelegateCommand(new Action<object>(StartAnalyse));
             _selectedCount = 0;

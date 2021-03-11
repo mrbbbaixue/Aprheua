@@ -81,7 +81,9 @@ namespace Aprheua.Models
                 foreach (var imageBlock in ImageBlocks)
                 {
                     if (System.IO.Path.GetFullPath(imageBlock.BlockPath).Equals(System.IO.Path.GetFullPath(image)))
+                    {
                         return true;
+                    }
                 }
             }
             return false;

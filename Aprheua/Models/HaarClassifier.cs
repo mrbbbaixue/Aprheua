@@ -19,8 +19,8 @@
 ****************************************************************/
 
 using System.Collections.Generic;
-using OpenCvSharp;
 using Aprheua.ViewModels;
+using OpenCvSharp;
 
 namespace Aprheua.Models
 {
@@ -78,7 +78,6 @@ namespace Aprheua.Models
                 Mat imageBlock = new Mat(srcImage, item);
                 count++;
                 var outputImagePath = System.IO.Path.Combine(outputFolderPath, $"{Name}-{count}-{Utility.GetTimeStamp()}.jpg");
-                App.Log.OpenCV($"Classifier {Name} Output : {outputImagePath}");
                 imageBlock.ImWrite(outputImagePath);
                 OutputImageBlockPaths.Add(outputImagePath);
             }
