@@ -10,8 +10,8 @@
 
     Date:          2021-03-11
 
-    Description:   Utility 工具类，包含一些作者其他项目(Private Repo)
-                   中的代码。
+    Description:   Utility 工具类，有来自作者其他Private Repo中的代
+                   码。
 
     Classes:       LogWriter
                    // 用于记录日志并输出到文件和控制台窗口。

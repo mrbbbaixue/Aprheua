@@ -147,7 +147,17 @@ namespace Aprheua
             Log.Info("AnalyseWindow Created!");
             AnalyseWindowWindow.ShowDialog();
         }
-
+        public static void CreateClipWindow(string sourceImagePath, string targetSavePath)
+        {
+            var clipWindow = new Aprheua.Views.ClipWindow
+            {
+                SourceImagePath = sourceImagePath,
+                TargetSavePath = targetSavePath
+            };
+            Log.Info("ClipWindow Created!");
+            Log.Info($"sourceImagePath : {sourceImagePath}, targetSavePath : {targetSavePath}.");
+            clipWindow.ShowDialog();
+        }
         private void Application_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
             MessageBox.Show(e.Exception.Message);

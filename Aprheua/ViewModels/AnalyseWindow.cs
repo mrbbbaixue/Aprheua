@@ -130,6 +130,7 @@ namespace Aprheua.ViewModels
                                 var hasNewFiles = sourceImage.ImageCategories[categoryIndex].ScanImages();
                                 App.Log.Info($"Index : {categoryIndex}, hasNewFiles : {hasNewFiles}");
                             }
+                            sourceImage.ScanNumberOfImageBlocks();
                         }
                     }
                 }
@@ -165,21 +166,13 @@ namespace Aprheua.ViewModels
             }
             return classifiers;
         }
-        private async void StartHaarClassifierAsync(Models.HaarClassifier classifier, string imagePath, string outputFolderPath)
-        {
-            Task StartHaarClassifierTask()
-            {
-                return Task.Run(() => classifier.StartHaarClassifier(imagePath, outputFolderPath, NDetection, MinSize, MaxSize));
-            }
-            await StartHaarClassifierTask().ConfigureAwait(false);
-        }
         public AnalyseWindow()
         {
             WindowTitle = "HAAR 分析窗口";
             SelectedImagesNotification = "";
             MinSize = 10;
             MaxSize = 80;
-            NDetection = 3;
+            NDetection = 2;
             Classifiers = new ObservableCollection<Models.HaarClassifier>();
             StartButtonClickEvent = new Commands.DelegateCommand(new Action<object>(StartAnalyse));
             _selectedCount = 0;

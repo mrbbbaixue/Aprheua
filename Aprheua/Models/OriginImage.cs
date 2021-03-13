@@ -98,12 +98,12 @@ namespace Aprheua.Models
         {
             Commands.DelegateCommand removeCategoryClickEvent = new Commands.DelegateCommand(new Action<object>((_) =>
             {
-                foreach(var imagecategory in ImageCategories)
+                foreach(var imageCategory in ImageCategories)
                 {
-                    if (imagecategory.Name == name)
+                    if (imageCategory.Name == name)
                     {
-                        ImageCategories.Remove(imagecategory);
-                        Utility.DeleteFolder(imagecategory.FolderPath);
+                        ImageCategories.Remove(imageCategory);
+                        Utility.DeleteFolder(imageCategory.FolderPath);
                         break;
                     }
                 }
@@ -112,6 +112,16 @@ namespace Aprheua.Models
             category.ScanImages();
             ImageCategories.Add(category);
             return ImageCategories.IndexOf(category);
+        }
+        public void ScanNumberOfImageBlocks()
+        {
+            NumberOfImageBlocks = 0;
+            foreach(var imageCategory in ImageCategories)
+            {
+                 NumberOfImageBlocks += imageCategory.ImageBlocks.Count;
+                App.Log.Info($"imageCategory {imageCategory.Name} got {imageCategory.ImageBlocks.Count} new Blocks.");
+            }
+            RaisePropertyChanged("NumberOfImageBlocks");
         }
         private async void GetReducedImageAsync()
         {

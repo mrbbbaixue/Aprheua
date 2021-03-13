@@ -171,7 +171,7 @@ namespace Aprheua.ViewModels
             var categoryName = App.CreateAddCategoryWindow();
             if (!String.IsNullOrWhiteSpace(categoryName))
             {
-                SelectedImage.AddCategory(Path.Combine(App.AprheuaCategoriesFolder, $"{categoryName} - {SelectedImage.Name}"), $"{categoryName}");
+                SelectedImage.AddCategory(Path.Combine(App.AprheuaCategoriesFolder, SelectedImage.Name, categoryName), categoryName);
                 App.Log.Info($"Add Category : {categoryName}");
                 return;
             }

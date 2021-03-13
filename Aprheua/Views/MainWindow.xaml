@@ -282,10 +282,15 @@
                                                     <WrapPanel Orientation="Vertical"
                                                                Margin="5,5,5,5"
                                                                >
-                                                        <Image Source="{Binding BlockPath}"
-                                                               Width="82"
-                                                               Height="82"
+                                                        <Border BorderBrush="{DynamicResource SecondaryRegionBrush}"
+                                                                BorderThickness="2"
+                                                                CornerRadius="2"
+                                                                >
+                                                            <Image Source="{Binding BlockPath}"
+                                                               Width="78"
+                                                               Height="78"
                                                                />
+                                                        </Border>
                                                     </WrapPanel>
                                                 </DataTemplate>
                                             </ItemsControl.ItemTemplate>

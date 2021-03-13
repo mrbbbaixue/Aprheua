@@ -55,8 +55,10 @@ namespace Aprheua.Models
         }
         public void AddBlock(object parameter)
         {
-            //ToDo : AddImageBlockFromScreenShot
-            App.Log.Info($"AddBlock for Category : {Name} has been triggered!");
+            var outputPath = System.IO.Path.Combine(FolderPath, $"Snap-{Utility.GetTimeStamp()}.jpg");
+            App.CreateClipWindow(App.MainWindowViewModel.SelectedImage.Path, outputPath);
+            App.Log.Info($"AddBlockFromScreenShot for category : {Name} has been triggered!");
+            ScanImages();
         }
         public bool ScanImages()
         {
