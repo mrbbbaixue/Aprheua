@@ -16,22 +16,10 @@
 
 ****************************************************************/
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Aprheua.Views
 {
@@ -48,7 +36,7 @@ namespace Aprheua.Views
         private void Screenshot_Snapped(object sender, HandyControl.Data.FunctionEventArgs<ImageSource> e)
         {
             ImageSourceToBitmap(e.Info).Save(TargetSavePath, System.Drawing.Imaging.ImageFormat.Jpeg);
-            this.Close();
+            Close();
         }
         private void ClipWindow_Loaded(object sender, RoutedEventArgs e)
         {
@@ -58,7 +46,10 @@ namespace Aprheua.Views
         private void ClipWindow_MouseRightButtonDown(object sender, MouseButtonEventArgs e) => Close();
         private void ClipWindow_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Escape) Close();
+            if (e.Key == Key.Escape)
+            {
+                Close();
+            }
         }
         public static System.Drawing.Bitmap ImageSourceToBitmap(ImageSource imageSource)
         {

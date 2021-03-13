@@ -20,7 +20,6 @@
 
 using System;
 using System.Collections.ObjectModel;
-using System.Threading.Tasks;
 
 namespace Aprheua.ViewModels
 {

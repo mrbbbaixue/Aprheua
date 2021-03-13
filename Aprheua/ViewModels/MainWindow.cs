@@ -167,7 +167,11 @@ namespace Aprheua.ViewModels
         public DelegateCommand AddCategoryClickEvent { get; set; }
         public void AddCategory(object parameter)
         {
-            if (SourceImages.Count == 0) return;
+            if (SourceImages.Count == 0)
+            {
+                return;
+            }
+
             var categoryName = App.CreateAddCategoryWindow();
             if (!String.IsNullOrWhiteSpace(categoryName))
             {
