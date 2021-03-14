@@ -50,6 +50,10 @@ namespace Aprheua.Views
             {
                 Close();
             }
+            if (e.Key == Key.Enter)
+            {
+                Close();
+            }
         }
         public static System.Drawing.Bitmap ImageSourceToBitmap(ImageSource imageSource)
         {
