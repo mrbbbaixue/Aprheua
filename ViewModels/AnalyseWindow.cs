@@ -19,7 +19,9 @@
 ****************************************************************/
 
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using OpenCvSharp;
 
 namespace Aprheua.ViewModels
 {
@@ -99,6 +101,7 @@ namespace Aprheua.ViewModels
             {
                 if (sourceImage.IsSelected)
                 {
+                    List<Rect> rects = new List<Rect>();
                     foreach (var classifier in Classifiers)
                     {
                         if (classifier.IsSelected)
@@ -123,7 +126,8 @@ namespace Aprheua.ViewModels
                             {
                                 categoryIndex = sourceImage.AddCategory(classifierOutputPath, classifier.Name);
                             }
-                            classifier.StartHaarClassifier(sourceImage.Path, classifierOutputPath, NDetection, MinSize, MaxSize);
+                            var outputRects = classifier.StartHaarClassifier(sourceImage.Path, classifierOutputPath, NDetection, MinSize, MaxSize);
+                            rects.AddRange(outputRects);
                             if (categoryIndex != -1)
                             {
                                 var hasNewFiles = sourceImage.ImageCategories[categoryIndex].ScanImages();
@@ -131,6 +135,10 @@ namespace Aprheua.ViewModels
                             }
                             sourceImage.ScanNumberOfImageBlocks();
                         }
+                    }
+                    if (rects != null)
+                    {
+                        Models.HaarClassifier.WriteRectsToImage(rects, sourceImage.Path,sourceImage.OverlayImagePath);
                     }
                 }
             }
@@ -169,8 +177,8 @@ namespace Aprheua.ViewModels
         {
             WindowTitle = "HAAR 分析窗口";
             SelectedImagesNotification = "";
-            MinSize = 10;
-            MaxSize = 80;
+            MinSize = 20;
+            MaxSize = 100;
             NDetection = 2;
             Classifiers = new ObservableCollection<Models.HaarClassifier>();
             StartButtonClickEvent = new Commands.DelegateCommand(new Action<object>(StartAnalyse));

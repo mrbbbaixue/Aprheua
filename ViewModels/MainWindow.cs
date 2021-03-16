@@ -185,7 +185,7 @@ namespace Aprheua.ViewModels
         public void RemoveImageClick(object parameter)
         {
             var index = SelectedIndex;
-            Models.Utility.DeleteFolder(System.IO.Path.Combine(App.AprheuaCategoriesFolder, SourceImages[index].Name));
+            //Models.Utility.DeleteFolder(System.IO.Path.Combine(App.AprheuaCategoriesFolder, SourceImages[index].Name));
             SourceImages.Remove(SourceImages[index]);
             ListBoxItemCheckBoxClickEvent.Execute(this);
         }

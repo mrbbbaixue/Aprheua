@@ -45,7 +45,13 @@ namespace Aprheua
         public static Views.AnalyseWindow AnalyseWindowWindow { get; set; }
         private void Application_Startup(object sender, StartupEventArgs e)
         {
+            // 清理：如果之前没删，记得删了...
+            if (Directory.Exists(AprheuaTempFolder))
+            {
+                Models.Utility.DeleteFolder(AprheuaTempFolder);
+            }
             // 第一步 : 创建程序的临时文件夹，用于存放各种缩略图，图片块和日志。
+            // If Not Exist then Create (Consider using Delegate)
             if (!Directory.Exists(AprheuaTempFolder))
             {
                 Directory.CreateDirectory(AprheuaTempFolder);
@@ -98,22 +104,8 @@ namespace Aprheua
         }
         private void Application_Exit(object sender, ExitEventArgs e)
         {
-            try
-            {
-                Log.Info("Cleaning up temp folders...");
-                // ToDo : ThumbImagesFolder 有Bug               
-                Models.Utility.DeleteFolder(AprheuaCategoriesFolder);
-                Models.Utility.DeleteFolder(AprheuaOverlayImagesFolder);
-                Models.Utility.DeleteFolder(AprheuaThumbImagesFolder);
-            }
-            catch (Exception ex)
-            {
-                Log.Error("Cannot delete temp folders!");
-                Log.Error($"Exception Message : {ex.Message}");
-                Current.Shutdown();
-            }
+            Current.Shutdown();
         }
-        //ToDo : 程序运行完销毁临时文件夹
         public static void CreateMainWindow()
         {
             MainWindowWindow = new Aprheua.Views.MainWindow();

@@ -102,8 +102,14 @@ namespace Aprheua.Models
                 {
                     if (imageCategory.Name == name)
                     {
+                        foreach(var block in imageCategory.ImageBlocks)
+                        {
+                            block.BlockPath = "";
+                        }
                         ImageCategories.Remove(imageCategory);
-                        Utility.DeleteFolder(imageCategory.FolderPath);
+                        GC.Collect();
+                        GC.WaitForFullGCComplete();
+                        //Utility.DeleteFolder(imageCategory.FolderPath);
                         break;
                     }
                 }

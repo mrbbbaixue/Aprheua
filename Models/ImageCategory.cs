@@ -94,12 +94,15 @@ namespace Aprheua.Models
         {
             Commands.DelegateCommand removeRemoveBlockClickEvent = new Commands.DelegateCommand(new Action<object>((_) =>
             {
-                foreach (var imageblock in ImageBlocks)
+                foreach (var block in ImageBlocks)
                 {
-                    if (imageblock.BlockPath == path)
+                    if (block.BlockPath == path)
                     {
-                        System.IO.File.Delete(imageblock.BlockPath);
-                        ImageBlocks.Remove(imageblock);
+                        var deleteBlockPath = block.BlockPath;
+                        block.BlockPath = "";
+                        GC.Collect();
+                        //System.IO.File.Delete(deleteBlockPath);
+                        ImageBlocks.Remove(block);
                         break;
                     }
                 }
