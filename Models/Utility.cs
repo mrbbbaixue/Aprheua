@@ -8,7 +8,7 @@
 
     Version:       2.3.3.3
 
-    Date:          2021-03-11
+    Date:          2021-03-16
 
     Description:   Utility 工具类，有来自作者其他Private Repo中的代
                    码。
@@ -25,6 +25,7 @@
 
 using OpenCvSharp;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -90,37 +91,136 @@ namespace Aprheua.Models
         }
     }
 
-    public class ReversalBGR
+    /// <summary>
+    /// 缩略图处理类
+    /// 1、生成缩略图片或按照比例或最大像素改变图片的大小和画质
+    /// 2、将生成的缩略图放到指定的目录下
+    /// </summary>
+    public class ThumbImage
     {
-        public static double[] GetImageReversalBGR(Mat src)
+        public Image ResourceImage;
+        private int ImageWidth;
+        private int ImageHeight;
+        public string ErrMessage;
+
+        /// <summary>
+        /// 类的构造函数
+        /// </summary>
+        /// <param name="ImageFileName">图片文件的全路径名称</param>
+        public ThumbImage(string ImageFileName)
+        {
+            ResourceImage = Image.FromFile(ImageFileName);
+            ErrMessage = "";
+        }
+
+        public bool ThumbnailCallback()
+        {
+            return false;
+        }
+        /// <summary>
+        /// 生成缩略图方法，返回成功输出与否
+        /// </summary>
+        /// <param name="targetMaxPixel">缩略图的最大长/宽 如：50</param>
+        /// <param name="targetFilePath">缩略图保存的全文件名</param>
+        /// <returns>成功返回true,否则返回false</returns>
+        public bool GetReducedImage(int targetMaxPixel, string targetFilePath)
         {
             try
             {
-                double[] BGR = new double[3];
-                double imagePX = src.Rows * src.Cols;
-                for (int i = 0; i < src.Cols; i++)
-                {
-                    for (int j = 0; j < src.Rows; j++)
-                    {
-                        BGR[0] += src.At<Vec3b>(i, j)[0];
-                        BGR[1] += src.At<Vec3b>(i, j)[1];
-                        BGR[2] += src.At<Vec3b>(i, j)[2];
-                    }
-                }
-                for (int i = 0; i < 3; i++)
-                {
-                    BGR[i] /= imagePX;
-                    BGR[i] = 255 - BGR[i];
-                }
-                return BGR;
+                Image ReducedImage;
+                Image.GetThumbnailImageAbort callb = new Image.GetThumbnailImageAbort(ThumbnailCallback);
+                double Percent = Convert.ToDouble(targetMaxPixel) / Convert.ToDouble(ResourceImage.Width > ResourceImage.Height ? ResourceImage.Width : ResourceImage.Height);
+                ImageWidth = Convert.ToInt32(ResourceImage.Width * Percent);
+                ImageHeight = Convert.ToInt32(ResourceImage.Height * Percent);
+                ReducedImage = ResourceImage.GetThumbnailImage(ImageWidth, ImageHeight, callb, IntPtr.Zero);
+                ReducedImage.Save(@targetFilePath, ImageFormat.Jpeg);
+                ReducedImage.Dispose();
+                return true;
             }
-            catch
+            catch (Exception e)
             {
-                return new double[3];
+                ErrMessage = e.Message;
+                return false;
+            }
+        }
+        /// <summary>
+        /// 生成缩略图方法，返回成功输出与否
+        /// </summary>
+        /// <param name="Percent">缩略图的宽度百分比 如：0.8</param>
+        /// <param name="targetFilePath">缩略图保存的全文件名</param>
+        /// <returns>成功返回true,否则返回false</returns>
+        public bool GetReducedImage(double Percent, string targetFilePath)
+        {
+            try
+            {
+                Image ReducedImage;
+                Image.GetThumbnailImageAbort callb = new Image.GetThumbnailImageAbort(ThumbnailCallback);
+                ImageWidth = Convert.ToInt32(ResourceImage.Width * Percent);
+                ImageHeight = Convert.ToInt32(ResourceImage.Height * Percent);
+                ReducedImage = ResourceImage.GetThumbnailImage(ImageWidth, ImageHeight, callb, IntPtr.Zero);
+                ReducedImage.Save(@targetFilePath, ImageFormat.Jpeg);
+                ReducedImage.Dispose();
+                return true;
+            }
+            catch (Exception e)
+            {
+                ErrMessage = e.Message;
+                return false;
             }
         }
     }
 
+    public static class ImageAnalysis
+    {
+        public static List<Color> TenMostUsedColors { get; private set; }
+        public static List<int> TenMostUsedColorIncidences { get; private set; }
+        public static Color MostUsedColor { get; private set; }
+        public static int MostUsedColorIncidence { get; private set; }
+
+        private static int pixelColor;
+
+        private static Dictionary<int, int> dctColorIncidence;
+
+        public static Color GetMostUsedColor(string imagePath)
+        {
+            Bitmap bMap = Bitmap.FromFile(imagePath) as Bitmap;
+            if (bMap == null) throw new FileNotFoundException("Cannot open picture file for GetMostUsedColor.");
+            GetMostUsedColor(bMap);
+            return MostUsedColor;
+        }
+        public static void GetMostUsedColor(Bitmap theBitMap)
+        {
+            TenMostUsedColors = new List<Color>();
+            TenMostUsedColorIncidences = new List<int>();
+            MostUsedColor = Color.Empty;
+            MostUsedColorIncidence = 0;
+            dctColorIncidence = new Dictionary<int, int>();
+            for (int row = 0; row < theBitMap.Size.Width; row++)
+            {
+                for (int col = 0; col < theBitMap.Size.Height; col++)
+                {
+                    pixelColor = theBitMap.GetPixel(row, col).ToArgb();
+
+                    if (dctColorIncidence.Keys.Contains(pixelColor))
+                    {
+                        dctColorIncidence[pixelColor]++;
+                    }
+                    else
+                    {
+                        dctColorIncidence.Add(pixelColor, 1);
+                    }
+                }
+            }
+            var dctSortedByValueHighToLow = dctColorIncidence.OrderByDescending(x => x.Value).ToDictionary(x => x.Key, x => x.Value);
+            foreach (KeyValuePair<int, int> kvp in dctSortedByValueHighToLow.Take(10))
+            {
+                TenMostUsedColors.Add(Color.FromArgb(kvp.Key));
+                TenMostUsedColorIncidences.Add(kvp.Value);
+            }
+            MostUsedColor = Color.FromArgb(dctSortedByValueHighToLow.First().Key);
+            MostUsedColorIncidence = dctSortedByValueHighToLow.First().Value;
+        }
+    }
     public static class Utility
     {
         public static string GetFileHash(string path)
@@ -174,80 +274,6 @@ namespace Aprheua.Models
                 {
                     throw new Exception($"Unexpected FileSystemInfo type {info.GetType()}");
                 }
-            }
-        }
-    }
-
-    /// <summary>
-    /// 缩略图处理类
-    /// 1、生成缩略图片或按照比例改变图片的大小和画质
-    /// 2、将生成的缩略图放到指定的目录下
-    /// </summary>
-    public class ThumbImage
-    {
-        public Image ResourceImage;
-        private int ImageWidth;
-        private int ImageHeight;
-        public string ErrMessage;
-
-        /// <summary>
-        /// 类的构造函数
-        /// </summary>
-        /// <param name="ImageFileName">图片文件的全路径名称</param>
-        public ThumbImage(string ImageFileName)
-        {
-            ResourceImage = Image.FromFile(ImageFileName);
-            ErrMessage = "";
-        }
-
-        public bool ThumbnailCallback()
-        {
-            return false;
-        }
-
-        public bool GetReducedImage(int targetMaxPixel, string targetFilePath)
-        {
-            try
-            {
-                Image ReducedImage;
-                Image.GetThumbnailImageAbort callb = new Image.GetThumbnailImageAbort(ThumbnailCallback);
-                double Percent = Convert.ToDouble(targetMaxPixel) / Convert.ToDouble(ResourceImage.Width > ResourceImage.Height ? ResourceImage.Width : ResourceImage.Height);
-                ImageWidth = Convert.ToInt32(ResourceImage.Width * Percent);
-                ImageHeight = Convert.ToInt32(ResourceImage.Height * Percent);
-                ReducedImage = ResourceImage.GetThumbnailImage(ImageWidth, ImageHeight, callb, IntPtr.Zero);
-                ReducedImage.Save(@targetFilePath, ImageFormat.Jpeg);
-                ReducedImage.Dispose();
-                return true;
-            }
-            catch (Exception e)
-            {
-                ErrMessage = e.Message;
-                return false;
-            }
-        }
-        /// <summary>
-        /// 生成缩略图方法，返回缩略图的Image对象
-        /// </summary>
-        /// <param name="Percent">缩略图的宽度百分比 如：0.8</param>
-        /// <param name="targetFilePath">缩略图保存的全文件名</param>
-        /// <returns>成功返回true,否则返回false</returns>
-        public bool GetReducedImage(double Percent, string targetFilePath)
-        {
-            try
-            {
-                Image ReducedImage;
-                Image.GetThumbnailImageAbort callb = new Image.GetThumbnailImageAbort(ThumbnailCallback);
-                ImageWidth = Convert.ToInt32(ResourceImage.Width * Percent);
-                ImageHeight = Convert.ToInt32(ResourceImage.Height * Percent);
-                ReducedImage = ResourceImage.GetThumbnailImage(ImageWidth, ImageHeight, callb, IntPtr.Zero);
-                ReducedImage.Save(@targetFilePath, ImageFormat.Jpeg);
-                ReducedImage.Dispose();
-                return true;
-            }
-            catch (Exception e)
-            {
-                ErrMessage = e.Message;
-                return false;
             }
         }
     }

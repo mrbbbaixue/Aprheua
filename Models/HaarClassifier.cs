@@ -8,7 +8,7 @@
 
     Version:       2.3.3.3
 
-    Date:          2021-03-10
+    Date:          2021-03-16
 
     Description:   OpenCV HAAR分类器 HaarClassifier类
 
@@ -66,6 +66,8 @@ namespace Aprheua.Models
             IsSelected = true;
             App.Log.OpenCV($"Classifier {Name} @ {Path} added.");
         }
+
+        /*
         public List<string> StartHaarClassifier(string imagePath, string outputFolderPath, int nDetection, int minSize, int maxSize)
         {
             var count = 0;
@@ -83,11 +85,12 @@ namespace Aprheua.Models
             }
             return OutputImageBlockPaths;
         }
+        */
 
-        public List<string> StartHaarClassifier(string imagePath, string outputFolderPath, string outputSegmentationPath , int nDetection, int minSize, int maxSize)
+        public List<Rect> StartHaarClassifier(string imagePath, string outputFolderPath, int nDetection, int minSize, int maxSize)
         {
             var count = 0;
-            List<string> OutputImageBlockPaths = new List<string>();
+            List<Rect> OutputImageBlockRects = new List<Rect>();
             Mat srcImage = new Mat(imagePath, ImreadModes.AnyColor);
             CascadeClassifier haarClassifier = new CascadeClassifier(Path);
 
@@ -96,15 +99,28 @@ namespace Aprheua.Models
                 Mat imageBlock = new Mat(srcImage, item);
                 count++;
                 var outputImagePath = System.IO.Path.Combine(outputFolderPath, $"{Name}-{count}-{Utility.GetTimeStamp()}.jpg");
-
-                var revesalBGR = ReversalBGR.GetImageReversalBGR(srcImage);
-                Cv2.Rectangle(srcImage, item, new Scalar(revesalBGR[0], revesalBGR[1], revesalBGR[2]));
-                
                 imageBlock.ImWrite(outputImagePath);
-                OutputImageBlockPaths.Add(outputImagePath);
+                //Add to Rects for drawing.
+                OutputImageBlockRects.Add(item);
             }
-            srcImage.ImWrite(outputSegmentationPath);
-            return OutputImageBlockPaths;
+            srcImage.Dispose();
+            return OutputImageBlockRects;
         }
+
+        public static void WriteRectsToImage(List<Rect> rects, string imagePath ,string outputPath)
+        {
+            Mat srcImage = new Mat(imagePath, ImreadModes.AnyColor);
+            var mostUsedRGB = ImageAnalysis.GetMostUsedColor(imagePath);
+            var reversalRGB = System.Drawing.Color.FromArgb(255 - mostUsedRGB.R, 255 - mostUsedRGB.G, 255 - mostUsedRGB.B);
+            App.Log.Info($"mostUsedRGB : R:{mostUsedRGB.R} G:{mostUsedRGB.G} B:{mostUsedRGB.B}");
+            App.Log.Info($"reversalRGB : R:{reversalRGB.R} G:{reversalRGB.G} B:{reversalRGB.B}");
+            foreach (var rect in rects)
+            {
+                Cv2.Rectangle(srcImage, rect, new Scalar(reversalRGB.B, reversalRGB.G, reversalRGB.R));
+            }
+            srcImage.ImWrite(outputPath);
+            srcImage.Dispose();
+        }
+
     }
 }
