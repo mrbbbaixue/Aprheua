@@ -197,6 +197,7 @@ namespace Aprheua.ViewModels
             #region 变量 Variables
             WindowTitle = $"Aprheua 脸谱分割展示程序 - {Environment.CurrentDirectory}";
             SelectAllCheckBoxIsChecked = false;
+            SelectedIndex = 0;
             #endregion
 
             #region 数据 Datas
