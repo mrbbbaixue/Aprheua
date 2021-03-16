@@ -32,21 +32,19 @@ namespace Aprheua.Views
     {
         public string SourceImagePath { get; set; }
         public string TargetSavePath { get; set; }
+
+        public struct Point {
+            public int x;
+            public int y;
+        }
+
+        private Point startPoint = new Point();
+
+        private Point endPoint = new Point();
         public ClipWindow()
         {
             InitializeComponent();
             DataContext = this;
-            HandyControl.Controls.Screenshot.Snapped += Screenshot_Snapped;
-        }
-        private void Screenshot_Snapped(object sender, HandyControl.Data.FunctionEventArgs<ImageSource> e)
-        {
-            ImageSourceToBitmap(e.Info).Save(TargetSavePath, System.Drawing.Imaging.ImageFormat.Jpeg);
-            Close();
-        }
-        private void ClipWindow_Loaded(object sender, RoutedEventArgs e)
-        {
-            var screenshot = new HandyControl.Controls.Screenshot();
-            screenshot.Start();
         }
         private void ClipWindow_MouseRightButtonDown(object sender, MouseButtonEventArgs e) => Close();
         private void ClipWindow_KeyDown(object sender, KeyEventArgs e)
@@ -60,19 +58,25 @@ namespace Aprheua.Views
                 Close();
             }
         }
-        public static System.Drawing.Bitmap ImageSourceToBitmap(ImageSource imageSource)
+
+        private void Image_MouseMove(object sender, MouseEventArgs e)
         {
-            BitmapSource m = (BitmapSource)imageSource;
 
-            System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(m.PixelWidth, m.PixelHeight, System.Drawing.Imaging.PixelFormat.Format32bppPArgb); // 坑点：选Format32bppRgb将不带透明度
+        }
 
-            System.Drawing.Imaging.BitmapData data = bmp.LockBits(
-            new System.Drawing.Rectangle(System.Drawing.Point.Empty, bmp.Size), System.Drawing.Imaging.ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
+        private void Image_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            startPoint.x = (int)e.GetPosition(image).X;
+            startPoint.y = (int)e.GetPosition(image).Y;
+        }
 
-            m.CopyPixels(Int32Rect.Empty, data.Scan0, data.Height * data.Stride, data.Stride);
-            bmp.UnlockBits(data);
-
-            return bmp;
+        private void Image_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            endPoint.x = (int)e.GetPosition(image).X;
+            endPoint.y = (int)e.GetPosition(image).Y;
+            App.Log.Info($"startPoint : X : {startPoint.x} Y : {startPoint.y}");
+            App.Log.Info($"endPoint : X : {endPoint.x} Y : {endPoint.y}");
+            this.Close();
         }
     }
 }

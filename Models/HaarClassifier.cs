@@ -66,27 +66,6 @@ namespace Aprheua.Models
             IsSelected = true;
             App.Log.OpenCV($"Classifier {Name} @ {Path} added.");
         }
-
-        /*
-        public List<string> StartHaarClassifier(string imagePath, string outputFolderPath, int nDetection, int minSize, int maxSize)
-        {
-            var count = 0;
-            List<string> OutputImageBlockPaths = new List<string>();
-            Mat srcImage = new Mat(imagePath, ImreadModes.AnyColor);
-            CascadeClassifier haarClassifier = new CascadeClassifier(Path);
-
-            foreach (var item in haarClassifier.DetectMultiScale(srcImage, 1.1, nDetection, 0, new Size(minSize, minSize), new Size(maxSize, maxSize)))
-            {
-                Mat imageBlock = new Mat(srcImage, item);
-                count++;
-                var outputImagePath = System.IO.Path.Combine(outputFolderPath, $"{Name}-{count}-{Utility.GetTimeStamp()}.jpg");
-                imageBlock.ImWrite(outputImagePath);
-                OutputImageBlockPaths.Add(outputImagePath);
-            }
-            return OutputImageBlockPaths;
-        }
-        */
-
         public List<Rect> StartHaarClassifier(string imagePath, string outputFolderPath, int nDetection, int minSize, int maxSize)
         {
             var count = 0;
@@ -106,7 +85,6 @@ namespace Aprheua.Models
             srcImage.Dispose();
             return OutputImageBlockRects;
         }
-
         public static void WriteRectsToImage(List<Rect> rects, string imagePath ,string outputPath)
         {
             Mat srcImage = new Mat(imagePath, ImreadModes.AnyColor);
