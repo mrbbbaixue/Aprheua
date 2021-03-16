@@ -1,11 +1,14 @@
-# Aprheua 
+![](https://img.imgdb.cn/item/60505fe55aedab222c257252.png)
 
-GUI Interface of OpenCVSharp HAAR Classifier, with Opera Classifier Data built-in.
+# Aprheua
+
+A GUI Interface for OpenCV Sharp HAAR Classifier, with Opera Classifier Data built-in.
 
 # Build from Source
-You need Visual Studio 2019 with .NET Framework 4.7.2 installed.
 
-Clone this repository, open "Aprheua.sln" and build.
+You need **Visual Studio 2019** with **.NET Framework 4.7.2** installed.
+
+Clone this repository, open **Aprheua.sln** and hit build.
 
 # License
 
