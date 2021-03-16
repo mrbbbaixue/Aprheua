@@ -105,19 +105,6 @@ namespace Aprheua
         private void Application_Exit(object sender, ExitEventArgs e)
         {
             Current.Shutdown();
-            //try
-            //{
-            //    Log.Info("Cleaning up temp folders...");
-            //    Models.Utility.DeleteFolder(AprheuaCategoriesFolder);
-            //    Models.Utility.DeleteFolder(AprheuaOverlayImagesFolder);
-            //    Models.Utility.DeleteFolder(AprheuaThumbImagesFolder);
-            //}
-            //catch (Exception ex)
-            //{
-            //    Log.Error("Cannot delete temp folders!");
-            //    Log.Error($"Exception Message : {ex.Message}");
-            //    Current.Shutdown();
-            //}
         }
         public static void CreateMainWindow()
         {

@@ -23,6 +23,11 @@ using System.Windows.Media.Imaging;
 
 namespace Aprheua.Views
 {
+    /// <summary>
+    /// 截图窗口
+    /// <param name="SourceImagePath">截图图片来源</param>
+    /// <param name="TargetSavePath">保存图片路径</param>
+    /// </summary>
     public partial class ClipWindow : Window
     {
         public string SourceImagePath { get; set; }
