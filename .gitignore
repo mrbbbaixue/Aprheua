@@ -17,6 +17,7 @@
 mono_crash.*
 
 # Build results
+[Bb]uild/
 [Aa]prheua/build/
 [Aa]prheua/Build/
 [Dd]ebug/
