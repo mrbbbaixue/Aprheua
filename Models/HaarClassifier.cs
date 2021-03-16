@@ -83,5 +83,28 @@ namespace Aprheua.Models
             }
             return OutputImageBlockPaths;
         }
+
+        public List<string> StartHaarClassifier(string imagePath, string outputFolderPath, string outputSegmentationPath , int nDetection, int minSize, int maxSize)
+        {
+            var count = 0;
+            List<string> OutputImageBlockPaths = new List<string>();
+            Mat srcImage = new Mat(imagePath, ImreadModes.AnyColor);
+            CascadeClassifier haarClassifier = new CascadeClassifier(Path);
+
+            foreach (var item in haarClassifier.DetectMultiScale(srcImage, 1.1, nDetection, 0, new Size(minSize, minSize), new Size(maxSize, maxSize)))
+            {
+                Mat imageBlock = new Mat(srcImage, item);
+                count++;
+                var outputImagePath = System.IO.Path.Combine(outputFolderPath, $"{Name}-{count}-{Utility.GetTimeStamp()}.jpg");
+
+                var revesalBGR = ReversalBGR.GetImageReversalBGR(srcImage);
+                Cv2.Rectangle(srcImage, item, new Scalar(revesalBGR[0], revesalBGR[1], revesalBGR[2]));
+                
+                imageBlock.ImWrite(outputImagePath);
+                OutputImageBlockPaths.Add(outputImagePath);
+            }
+            srcImage.ImWrite(outputSegmentationPath);
+            return OutputImageBlockPaths;
+        }
     }
 }

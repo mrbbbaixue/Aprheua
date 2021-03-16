@@ -23,6 +23,7 @@
 
 ****************************************************************/
 
+using OpenCvSharp;
 using System;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -86,6 +87,37 @@ namespace Aprheua.Models
             Info = 0,
             Error = 1,
             OpenCV = 2
+        }
+    }
+
+    public class ReversalBGR
+    {
+        public static double[] GetImageReversalBGR(Mat src)
+        {
+            try
+            {
+                double[] BGR = new double[3];
+                double imagePX = src.Rows * src.Cols;
+                for (int i = 0; i < src.Cols; i++)
+                {
+                    for (int j = 0; j < src.Rows; j++)
+                    {
+                        BGR[0] += src.At<Vec3b>(i, j)[0];
+                        BGR[1] += src.At<Vec3b>(i, j)[1];
+                        BGR[2] += src.At<Vec3b>(i, j)[2];
+                    }
+                }
+                for (int i = 0; i < 3; i++)
+                {
+                    BGR[i] /= imagePX;
+                    BGR[i] = 255 - BGR[i];
+                }
+                return BGR;
+            }
+            catch
+            {
+                return new double[3];
+            }
         }
     }
 
