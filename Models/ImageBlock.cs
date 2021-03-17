@@ -33,8 +33,14 @@ namespace Aprheua.Models
             }
         }
         public Commands.DelegateCommand RemoveBlockClickEvent { get; set; }
+        public Commands.DelegateCommand OpenBlockInViewClickEvent { get; set; }
+        public void OpenBlockInViewClick(object parameter)
+        {
+            new HandyControl.Controls.ImageBrowser(new System.Uri(BlockPath)).Show();
+        }
         public ImageBlock(string blockPath, Commands.DelegateCommand removeBlockClickEvent)
         {
+            OpenBlockInViewClickEvent = new Commands.DelegateCommand(new System.Action<object>(OpenBlockInViewClick));
             RemoveBlockClickEvent = removeBlockClickEvent;
             BlockPath = blockPath;
         }

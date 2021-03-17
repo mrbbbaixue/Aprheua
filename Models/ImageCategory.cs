@@ -37,6 +37,8 @@ namespace Aprheua.Models
         }
 
         public readonly string FolderPath;
+
+        private int _snapCount;
         public ObservableCollection<ImageBlock> ImageBlocks { get; set; }
         public Commands.DelegateCommand RemoveCategoryClickEvent { get; set; }
         public Commands.DelegateCommand AddBlockClickEvent { get; set; }
@@ -52,10 +54,12 @@ namespace Aprheua.Models
             FolderPath = folderPath;
             RemoveCategoryClickEvent = removeCategoryClickEvent;
             AddBlockClickEvent = new Commands.DelegateCommand(new Action<object>(AddBlock));
+            _snapCount = 0;
         }
         public void AddBlock(object parameter)
         {
-            var outputPath = System.IO.Path.Combine(FolderPath, $"Snap-{ImageBlocks.Count}.jpg");
+            var outputPath = System.IO.Path.Combine(FolderPath, $"Snap-{_snapCount}.jpg");
+            _snapCount++;
             App.Log.Info(App.MainWindowViewModel.SelectedImage.Path);
             App.CreateClipWindow(App.MainWindowViewModel.SelectedImage.Path, outputPath);
             App.Log.Info($"AddBlockFromScreenShot for category : {Name} has been triggered!");
