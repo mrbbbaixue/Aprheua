@@ -286,6 +286,24 @@
                                                                 BorderThickness="2"
                                                                 CornerRadius="2"
                                                                 >
+                                                            <Border.ContextMenu>
+                                                                <ContextMenu>
+                                                                    <MenuItem Header="删除">
+                                                                        <i:Interaction.Triggers>
+                                                                            <i:EventTrigger EventName="Click">
+                                                                                <i:InvokeCommandAction Command="{Binding RemoveBlockClickEvent}"/>
+                                                                            </i:EventTrigger>
+                                                                        </i:Interaction.Triggers>
+                                                                    </MenuItem>
+                                                                    <MenuItem Header="用图片查看器打开">
+                                                                        <i:Interaction.Triggers>
+                                                                            <i:EventTrigger EventName="Click">
+                                                                                <i:InvokeCommandAction Command="{Binding OpenBlockInViewClickEvent}"/>
+                                                                            </i:EventTrigger>
+                                                                        </i:Interaction.Triggers>
+                                                                    </MenuItem>
+                                                                </ContextMenu>
+                                                            </Border.ContextMenu>
                                                             <Image Source="{Binding BlockPath}"
                                                                Width="78"
                                                                Height="78"
