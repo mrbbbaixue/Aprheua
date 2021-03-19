@@ -272,6 +272,13 @@ namespace Aprheua.Models
             MostUsedColorIncidence = dctSortedByValueHighToLow.First().Value;
         }
     }
+    /// <summary>
+    /// 杂项静态工具类
+    /// 1、获得文件哈希值
+    /// 2、获得时间戳
+    /// 3、删除文件夹
+    /// 4、清理文件夹内容
+    /// </summary>
     public static class Utility
     {
         public static string GetFileHash(string path)
