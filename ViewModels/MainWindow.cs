@@ -74,34 +74,9 @@ namespace Aprheua.ViewModels
                 RaisePropertyChanged("ImageViewerPath");
             }
         }
-
-        //ImageViewer的Bug
-        public Models.OriginImage SelectedImage
-        {
-            set
-            {
-
-            }
-            get
-            {
-                if (SelectedIndex >= 0 && SourceImages.Count > 0)
-                {
-                    RaisePropertyChanged("SelectedImage");
-                    return SourceImages[SelectedIndex];
-                }
-                else
-                {
-                    return null;
-                }
-            }
-        }
-
+        public Models.OriginImage SelectedImage => (SelectedIndex >= 0 && SourceImages.Count > 0) ? SourceImages[SelectedIndex] : null;
         public string ImageViewerPath
         {
-            set
-            {
-
-            }
             get
             {
                 if (SelectedImage != null)

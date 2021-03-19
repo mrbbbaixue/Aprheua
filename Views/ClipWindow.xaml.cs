@@ -149,11 +149,10 @@ namespace Aprheua.Views
             App.Log.Info($"endPointToImage : X : {endPointToImage.x} Y : {endPointToImage.y}");
 
             //如果截图是整个图片时的误差判断
-            //ToDo : wch你来决定误差范围
-            if (startPointToImage.x >= -5 && startPointToImage.x <= 5) { startPointToImage.x = 0; }
-            if (startPointToImage.y >= -5 && startPointToImage.y <= 5) { startPointToImage.y = 0; }
-            if (endPointToImage.x - imageWidth >= -5 && endPointToImage.x - imageWidth <= 5) { endPointToImage.x = imageWidth; }
-            if (endPointToImage.y - imageHeight >= -5 && endPointToImage.y - imageHeight <= 5) { endPointToImage.y = imageHeight; }
+            if (startPointToImage.x >= -10 && startPointToImage.x <= 10) { startPointToImage.x = 0; }
+            if (startPointToImage.y >= -10 && startPointToImage.y <= 10) { startPointToImage.y = 0; }
+            if (endPointToImage.x - imageWidth >= -10 && endPointToImage.x - imageWidth <= 10) { endPointToImage.x = imageWidth; }
+            if (endPointToImage.y - imageHeight >= -10 && endPointToImage.y - imageHeight <= 10) { endPointToImage.y = imageHeight; }
 
             //调试看数据
             App.Log.Info($"startPoint : X : {startPointToImage.x} Y : {startPointToImage.y}");
