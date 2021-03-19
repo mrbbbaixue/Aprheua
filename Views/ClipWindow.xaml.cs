@@ -59,6 +59,11 @@ namespace Aprheua.Views
 
         private double scaleTimes = 1;
 
+        //判断图片宽距离屏幕边缘有空间还是高距离屏幕边缘有空间
+        private bool widthSpace = false;
+
+        private bool heightSpace = false;
+
         public ClipWindow()
         {
             InitializeComponent();
@@ -80,13 +85,18 @@ namespace Aprheua.Views
             screenHeight = (int)SystemParameters.PrimaryScreenHeight;
             App.Log.Info($"Screen : Width : {screenWidth} Height : {screenHeight}");
             //calculate ScaleTimes
-            if (imageWidth > imageHeight)
+
+
+            //我采用图片长宽比相对于屏幕长宽比来决定缩放比例
+            if ((double)imageWidth / (double)imageHeight > (double)screenWidth / (double)screenHeight)
             {
                 scaleTimes = (double)screenWidth / (double)imageWidth;
+                heightSpace = true;
             }
             else
             {
                 scaleTimes = (double)screenHeight / (double)imageHeight;
+                widthSpace = true;
             }
             App.Log.Info($"ScaleTimes : {scaleTimes}");
         }
@@ -121,8 +131,10 @@ namespace Aprheua.Views
             borderClipArea.Margin = myThickness;
             startPoint.x = (int)e.GetPosition(image).X;
             startPoint.y = (int)e.GetPosition(image).Y;
-            startPointToImage.x = (int)(startPoint.x / scaleTimes);
-            startPointToImage.y = (int)(startPoint.y / scaleTimes);
+            startPointToImage.x = widthSpace ? (int)((startPoint.x - (screenWidth - imageWidth * scaleTimes) / 2) / scaleTimes) :
+                                               (int)(startPoint.x / scaleTimes);
+            startPointToImage.y = heightSpace ? (int)((startPoint.y - (screenHeight - imageHeight * scaleTimes) / 2) / scaleTimes) :
+                                                (int)(startPoint.y / scaleTimes);
             App.Log.Info($"startPoint : X : {startPoint.x} Y : {startPoint.y}");
             App.Log.Info($"startPointToImage : X : {startPointToImage.x} Y : {startPointToImage.y}");
         }
@@ -131,10 +143,26 @@ namespace Aprheua.Views
         {
             endPoint.x = (int)e.GetPosition(image).X;
             endPoint.y = (int)e.GetPosition(image).Y;
-            endPointToImage.x = (int)(endPoint.x / scaleTimes);
-            endPointToImage.y = (int)(endPoint.y / scaleTimes);
+            
+            endPointToImage.x = widthSpace ? (int)((endPoint.x - (screenWidth - imageWidth * scaleTimes) / 2) / scaleTimes) :
+                                               (int)(endPoint.x / scaleTimes);
+            endPointToImage.y = heightSpace ? (int)((endPoint.y - (screenHeight - imageHeight * scaleTimes) / 2) / scaleTimes) :
+                                                (int)(endPoint.y / scaleTimes);
+
             App.Log.Info($"endPoint : X : {endPoint.x} Y : {endPoint.y}");
             App.Log.Info($"endPointToImage : X : {endPointToImage.x} Y : {endPointToImage.y}");
+
+            //如果截图是整个图片时的误差判断
+            //ToDo : wch你来决定误差范围
+            if (startPointToImage.x >= -5 && startPointToImage.x <= 5) { startPointToImage.x = 0; }
+            if (startPointToImage.y >= -5 && startPointToImage.y <= 5) { startPointToImage.y = 0; }
+            if (endPointToImage.x - imageWidth >= -5 && endPointToImage.x - imageWidth <= 5) { endPointToImage.x = imageWidth; }
+            if (endPointToImage.y - imageHeight >= -5 && endPointToImage.y - imageHeight <= 5) { endPointToImage.y = imageHeight; }
+
+            //调试看数据
+            App.Log.Info($"startPoint : X : {startPointToImage.x} Y : {startPointToImage.y}");
+            App.Log.Info($"endPoint : X : {endPointToImage.x} Y : {endPointToImage.y}");
+
             CutPicture(startPointToImage.x,
                        startPointToImage.y,
                        endPointToImage.x - startPointToImage.x,
@@ -157,7 +185,7 @@ namespace Aprheua.Views
             //加载图片
             System.Drawing.Image img = System.Drawing.Image.FromStream(new System.IO.MemoryStream(System.IO.File.ReadAllBytes(SourceImagePath)));
             //判断超出的位置否
-            if ((img.Width < x + width) || img.Height < y + height)
+            if ((img.Width <= x + width) || img.Height <= y + height)
             {
                 MessageBox.Show("裁剪尺寸超出原有尺寸！");
                 img.Dispose();
