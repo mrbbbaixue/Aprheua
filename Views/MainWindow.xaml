@@ -205,6 +205,7 @@
                 hc:IconElement.Geometry="{StaticResource SaveGeometry}"
                 hc:IconElement.Height="14"
                 hc:IconElement.Width="14"
+                Command="{Binding ExportCommand}"
                 />
             <Border Margin="0,55,20,55"
                     Background="{DynamicResource RegionBrush}"

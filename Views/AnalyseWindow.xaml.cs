@@ -32,7 +32,7 @@ namespace Aprheua.Views
             InitializeComponent();
             DataContext = App.AnalyseWindowViewModel;
             CloseWindowClick = new Commands.DelegateCommand(new System.Action<object>(CloseWindow));
-            //Trigger Init function
+            //触发初始化函数
             App.AnalyseWindowViewModel.Init(CloseWindowClick);
             App.Log.Info("App.AnalyseWindowViewModel.Init triggered !");
         }

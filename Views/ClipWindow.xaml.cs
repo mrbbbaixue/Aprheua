@@ -4,10 +4,11 @@
     File Name:     Views/ClipWindow.xaml.cs
 
     Author:        Chenhao Wang (MrBBBaiXue@github.com)
+                   Boyan Wang (JingNianNian@github.com)
 
-    Version:       2.3.3.3
+    Version:       1.0.0.0
 
-    Date:          2021-03-13
+    Date:          2021-03-19
 
     Description:   ClipWindow.xaml 的交互逻辑
 
@@ -36,7 +37,7 @@ namespace Aprheua.Views
             public int x;
             public int y;
         }
-        
+
         private Point startPoint = new Point();
 
         private Point endPoint = new Point();
@@ -74,7 +75,7 @@ namespace Aprheua.Views
         /// <param name="e"></param>
         private void ClipWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            //Get Pixel Width and height!
+            //获得图片的大小
             using (FileStream fs = new FileStream(SourceImagePath, FileMode.Open, FileAccess.Read))
             {
                 System.Drawing.Image image = System.Drawing.Image.FromStream(fs);
@@ -82,14 +83,13 @@ namespace Aprheua.Views
                 imageHeight = image.Height;
             }
             App.Log.Info($"Image : Width : {imageWidth} Height : {imageHeight}");
-            //Get Monitor Resolution
+            //获得显示器分辨率
             screenWidth = (int)SystemParameters.PrimaryScreenWidth;
             screenHeight = (int)SystemParameters.PrimaryScreenHeight;
             App.Log.Info($"Screen : Width : {screenWidth} Height : {screenHeight}");
-            //calculate ScaleTimes
 
-
-            //我采用图片长宽比相对于屏幕长宽比来决定缩放比例
+            //计算缩放比例
+            //采用图片长宽比相对于屏幕长宽比来决定缩放比例
             if ((double)imageWidth / (double)imageHeight > (double)screenWidth / (double)screenHeight)
             {
                 scaleTimes = (double)screenWidth / (double)imageWidth;
@@ -117,7 +117,7 @@ namespace Aprheua.Views
         }
 
         /// <summary>
-        /// 当鼠标移动时触发，按下左键并正向拖动时计算所选区域的width和height。
+        /// 当鼠标移动时触发，按下左键并正向拖动时计算所选区域的Width和Height。
         /// 若反向移动或未按下鼠标左键，则直接退出该方法。
         /// </summary>
         private void Image_MouseMove(object sender, MouseEventArgs e)
@@ -141,25 +141,24 @@ namespace Aprheua.Views
             borderClipArea.Margin = myThickness;
             startPoint.x = (int)e.GetPosition(image).X;
             startPoint.y = (int)e.GetPosition(image).Y;
-            startPointToImage.x = widthSpace ? (int)((startPoint.x - (screenWidth - imageWidth * scaleTimes) / 2) / scaleTimes) :
+            startPointToImage.x = widthSpace ? (int)((startPoint.x - ((screenWidth - (imageWidth * scaleTimes)) / 2)) / scaleTimes) :
                                                (int)(startPoint.x / scaleTimes);
-            startPointToImage.y = heightSpace ? (int)((startPoint.y - (screenHeight - imageHeight * scaleTimes) / 2) / scaleTimes) :
+            startPointToImage.y = heightSpace ? (int)((startPoint.y - ((screenHeight - (imageHeight * scaleTimes)) / 2)) / scaleTimes) :
                                                 (int)(startPoint.y / scaleTimes);
             App.Log.Info($"startPoint : X : {startPoint.x} Y : {startPoint.y}");
             App.Log.Info($"startPointToImage : X : {startPointToImage.x} Y : {startPointToImage.y}");
         }
         /// <summary>
         /// 当鼠标左键抬起时触发，记录释放像素点的坐标以及换算到相对于原图的像素点坐标。
-        /// 进行误差判断，并调用CutPictuer方法在原图片中截出所选区域图像。
+        /// 进行误差判断，并调用CutPicture方法在原图片中截出所选区域图像。
         /// </summary>
         private void Image_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             endPoint.x = (int)e.GetPosition(image).X;
             endPoint.y = (int)e.GetPosition(image).Y;
-            
-            endPointToImage.x = widthSpace ? (int)((endPoint.x - (screenWidth - imageWidth * scaleTimes) / 2) / scaleTimes) :
+            endPointToImage.x = widthSpace ? (int)((endPoint.x - ((screenWidth - (imageWidth * scaleTimes)) / 2)) / scaleTimes) :
                                                (int)(endPoint.x / scaleTimes);
-            endPointToImage.y = heightSpace ? (int)((endPoint.y - (screenHeight - imageHeight * scaleTimes) / 2) / scaleTimes) :
+            endPointToImage.y = heightSpace ? (int)((endPoint.y - ((screenHeight - (imageHeight * scaleTimes)) / 2)) / scaleTimes) :
                                                 (int)(endPoint.y / scaleTimes);
 
             App.Log.Info($"endPoint : X : {endPoint.x} Y : {endPoint.y}");

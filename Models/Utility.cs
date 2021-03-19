@@ -131,7 +131,7 @@ namespace Aprheua.Models
     /// 1、生成缩略图片或按照比例或最大像素改变图片的大小和画质
     /// 2、将生成的缩略图放到指定的目录下
     /// </summary>
-    public class ThumbImage
+    public class ThumbImage : IDisposable
     {
         public Image ResourceImage;
         private int ImageWidth;
@@ -202,6 +202,11 @@ namespace Aprheua.Models
                 ErrMessage = e.Message;
                 return false;
             }
+        }
+        public void Dispose()
+        {
+            //释放对象
+            ResourceImage.Dispose();
         }
     }
 
@@ -278,9 +283,15 @@ namespace Aprheua.Models
     /// 2、获得时间戳
     /// 3、删除文件夹
     /// 4、清理文件夹内容
+    /// 5、复制文件夹中的所有内容
     /// </summary>
     public static class Utility
     {
+        /// <summary>
+        /// 获得文件哈希值
+        /// </summary>
+        /// <param name="path">文件路径</param>
+        /// <returns>文件的哈希值</returns>
         public static string GetFileHash(string path)
         {
             var hash = SHA1.Create();
@@ -289,12 +300,21 @@ namespace Aprheua.Models
             stream.Close();
             return BitConverter.ToString(hashByte).Replace("-", "");
         }
+        /// <summary>
+        /// 获得时间戳
+        /// </summary>
+        /// <returns>当前时间戳</returns>
         public static long GetTimeStamp()
         {
             System.DateTime startTime = TimeZone.CurrentTimeZone.ToLocalTime(new System.DateTime(1970, 1, 1));
             long timeStamp = (long)(DateTime.Now - startTime).TotalSeconds;
             return timeStamp;
         }
+        /// <summary>
+        /// 删除文件夹
+        /// </summary>
+        /// <param name="directoryPath">文件夹路径</param>
+        /// <returns>无</returns>
         public static void DeleteFolder(string directoryPath)
         {
             if (!Directory.Exists(directoryPath))
@@ -304,6 +324,12 @@ namespace Aprheua.Models
             ClearFolderContent(directoryPath, _ => false);
             Directory.Delete(directoryPath);
         }
+        /// <summary>
+        /// 清理文件夹内容
+        /// </summary>
+        /// <param name="directoryPath">文件夹路径</param>
+        /// <param name="keep">要保留的文件列表</param>
+        /// <returns>无</returns>
         private static void ClearFolderContent(string directoryPath, Func<FileSystemInfo, bool> keep)
         {
             var directory = new DirectoryInfo(directoryPath);
@@ -314,7 +340,7 @@ namespace Aprheua.Models
                     ClearFolderContent(info.FullName, keep);
                     if (!directoryInfo.EnumerateFileSystemInfos().Any())
                     {
-                        // delete directory if it's empty
+                        // 如果文件夹是空的，直接删除
                         directoryInfo.Delete();
                     }
                 }
@@ -332,6 +358,30 @@ namespace Aprheua.Models
                 {
                     throw new Exception($"Unexpected FileSystemInfo type {info.GetType()}");
                 }
+            }
+        }
+        /// <summary>
+        /// 复制文件夹中的所有内容
+        /// </summary>
+        /// <param name="sourcePath">源目录</param>
+        /// <param name="targetPath">目标目录</param>
+        public static void CopyFolder(string sourcePath, string targetPath)
+        {
+            if (!Directory.Exists(targetPath))
+            {
+                Directory.CreateDirectory(targetPath);
+            }
+            foreach (string file in Directory.GetFiles(sourcePath))
+            {
+                string pFilePath = Path.Combine(targetPath, Path.GetFileName(file));
+                if (File.Exists(pFilePath))
+                    continue;
+                File.Copy(file, pFilePath, true);
+            }
+            string[] dirs = Directory.GetDirectories(sourcePath);
+            foreach (string dir in dirs)
+            {
+                CopyFolder(dir, Path.Combine(targetPath, Path.GetFileName(dir)));
             }
         }
     }

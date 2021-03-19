@@ -29,7 +29,6 @@ namespace Aprheua.ViewModels
 {
     /// <summary>
     /// 为解决Image读取后无法释放的问题，重写的DisposableImage
-    /// from : https://blog.csdn.net/u012559285/article/details/76887341
     /// </summary>
     public class DisposableImage : Image
     {

@@ -25,7 +25,7 @@ using OpenCvSharp;
 namespace Aprheua.Models
 {
     /// <summary>
-    /// 分类器处理类
+    /// HAAR分类器处理类
     /// </summary>
     public class HaarClassifier : NotificationObject
     {
@@ -82,6 +82,7 @@ namespace Aprheua.Models
         /// <param name="nDetection">重复检测次数</param>
         /// <param name="minSize">最小矩形大小</param>
         /// <param name="maxSize">最大矩形大小</param>
+        /// <returns>List<Rect>对象，图片块的内容</returns>
         public List<Rect> StartHaarClassifier(string imagePath, string outputFolderPath, int nDetection, int minSize, int maxSize)
         {
             var count = 0;
@@ -99,6 +100,7 @@ namespace Aprheua.Models
                 OutputImageBlockRects.Add(item);
             }
             srcImage.Dispose();
+            System.GC.Collect();
             return OutputImageBlockRects;
         }
 
@@ -108,20 +110,23 @@ namespace Aprheua.Models
         /// <param name="rects">要在图像中勾出的矩形列表</param>
         /// <param name="imagePath">图像文件的路径</param>
         /// <param name="outputPath">保存勾出矩形块之后的图像路径</param>
+        /// <returns>无</returns>
         public static void WriteRectsToImage(List<Rect> rects, string imagePath ,string outputPath)
         {
             Mat srcImage = new Mat(imagePath, ImreadModes.AnyColor);
             var mostUsedRGB = ImageAnalysis.GetMostUsedColor(imagePath);
+            // 获得图片中最多使用的RGB颜色，使得框框更加清晰
             var reversalRGB = System.Drawing.Color.FromArgb(255 - mostUsedRGB.R, 255 - mostUsedRGB.G, 255 - mostUsedRGB.B);
-            App.Log.Info($"mostUsedRGB : R:{mostUsedRGB.R} G:{mostUsedRGB.G} B:{mostUsedRGB.B}");
-            App.Log.Info($"reversalRGB : R:{reversalRGB.R} G:{reversalRGB.G} B:{reversalRGB.B}");
+            // RGB 反色算法 255 - x
+            App.Log.OpenCV($"mostUsedRGB : R:{mostUsedRGB.R} G:{mostUsedRGB.G} B:{mostUsedRGB.B}");
+            App.Log.OpenCV($"reversalRGB : R:{reversalRGB.R} G:{reversalRGB.G} B:{reversalRGB.B}");
             foreach (var rect in rects)
             {
                 Cv2.Rectangle(srcImage, rect, new Scalar(reversalRGB.B, reversalRGB.G, reversalRGB.R));
             }
             srcImage.ImWrite(outputPath);
             srcImage.Dispose();
+            System.GC.Collect();
         }
-
     }
 }

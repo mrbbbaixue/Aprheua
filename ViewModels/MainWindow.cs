@@ -80,10 +80,10 @@ namespace Aprheua.ViewModels
             }
         }
         public Models.OriginImage SelectedImage => (SourceImages.Count > 0) ? SourceImages[SelectedIndex] : null;
-        public string ImageViewerPath => (SelectedImage != null) ? 
+        public string ImageViewerPath => (SelectedImage != null) ?
             ((ShowBlockOverlayCheckBoxIsChecked) ? SelectedImage.OverlayImagePath : SelectedImage.Path) :
             App.AprheuaDefaultImage;
-
+        // 三目，当当前选中图片的时候查询“显示分割块”是否已经勾选，如果是，返回分割块路径，否，返回原图路径
         #endregion
 
         #region 数据 Datas
@@ -151,6 +151,27 @@ namespace Aprheua.ViewModels
             // 完整垃圾清理
             GC.Collect();
         }
+
+        public DelegateCommand ExportCommand { get; set; }
+        public void Export(object parameter)
+        {
+            // 导出事件
+            var dialog = new System.Windows.Forms.FolderBrowserDialog
+            {
+                Description = "选择导出文件夹 :"
+            };
+            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                if (string.IsNullOrEmpty(dialog.SelectedPath))
+                {
+                    return;
+                }
+                // 复制文件夹到目标位置
+                var sourcePath = App.AprheuaCategoriesFolder;
+                var targetPath = Path.Combine(dialog.SelectedPath,$"Aprheua-Export-{Models.Utility.GetTimeStamp()}");
+                Models.Utility.CopyFolder(sourcePath, targetPath);
+            }
+        }
         #endregion
 
         #region 事件 Events
@@ -215,6 +236,11 @@ namespace Aprheua.ViewModels
         public void RemoveImageClick(object parameter)
         {
             var index = SelectedIndex;
+            // 删除后Index超出索引范围的处理方案：
+            // 如果是第一个图像被删除，则当前默认选中下一张图片
+            // 如果是最后一个图像被删除，则当前默认选中上一张图片
+            // 如果是超过3张图片的列表，则当前默认选中下一张图片
+            // 如果只剩下一张图片，就直接删除，还原初始状态
             if (index == 0 && SourceImages.Count > 1)
             {
                 SelectedIndex++;
@@ -242,7 +268,8 @@ namespace Aprheua.ViewModels
         {
             // 初始化ViewModel的属性
             #region 变量 Variables
-            WindowTitle = $"Aprheua - {Environment.CurrentDirectory}";
+            //更改程序标题
+            WindowTitle = $"Aprheua HAAR Classifier GUI Program - {Environment.CurrentDirectory}";
             SelectAllCheckBoxIsChecked = false;
             SelectedIndex = 0;
             #endregion
@@ -254,12 +281,14 @@ namespace Aprheua.ViewModels
             #region 命令 Commands
             ImportCommand = new DelegateCommand(new Action<object>(Import));
             AnalyseCommand = new DelegateCommand(new Action<object>(Analyse));
+            ExportCommand = new DelegateCommand(new Action<object>(Export));
             #endregion
 
             #region 事件 Events
             SelectAllCheckBoxClickEvent = new DelegateCommand(new Action<object>(SelectAllCheckBoxClick));
             ListBoxItemCheckBoxClickEvent = new DelegateCommand(new Action<object>(ListBoxItemCheckBoxClick));
             NightModeToggleButtonClickEvent = new DelegateCommand(new Action<object>(NightModeToggleButtonClick));
+            // 使用委托方式，将Model中的元素直接与主UI线程绑定
             AddCategoryClickEvent = new DelegateCommand(new Action<object>(AddCategory));
             RemoveImageClickEvent = new DelegateCommand(new Action<object>(RemoveImageClick));
             #endregion    
