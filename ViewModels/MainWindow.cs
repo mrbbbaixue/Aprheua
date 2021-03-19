@@ -6,9 +6,9 @@
     Author:        Chenhao Wang (MrBBBaiXue@github.com)
                    Boyan Wang (JingNianNian@github.com)
 
-    Version:       2.3.3.3
+    Version:       1.0.0.0
 
-    Date:          2021-03-11
+    Date:          2021-03-19
 
     Description:   MainWindow 的后台绑定源
 
@@ -45,6 +45,7 @@ namespace Aprheua.ViewModels
             get { return _selectAllCheckBoxIsChecked; }
             set
             {
+                // bool？值可以为null，对应checkbox的三个属性：勾选，不选，半选。
                 _selectAllCheckBoxIsChecked = value;
                 RaisePropertyChanged("SelectAllCheckBoxIsChecked");
             }
@@ -73,6 +74,7 @@ namespace Aprheua.ViewModels
             set
             {
                 _showBlockOverlayCheckBoxIsChecked = value;
+                // 每当显示分割块的checkbox改变时，应该通知UI图片浏览器的链接已经改变
                 RaisePropertyChanged("ShowBlockOverlayCheckBoxIsChecked");
                 RaisePropertyChanged("ImageViewerPath");
             }
@@ -110,7 +112,7 @@ namespace Aprheua.ViewModels
                     SourceImages.Add(sourceImage);
                 }
                 SelectedIndex = 0;
-
+                // 检查全选按钮的情况
                 ListBoxItemCheckBoxClickEvent.Execute(this);
             }
             GC.Collect();
@@ -125,6 +127,7 @@ namespace Aprheua.ViewModels
             {
                 selectedCount += sourceImage.IsSelected ? 1 : 0;
             }
+            // 统计被选择的图像的数量
             if (selectedCount == 0)
             {
                 // 目前似乎用户没有使用多选功能
@@ -154,6 +157,7 @@ namespace Aprheua.ViewModels
         public DelegateCommand SelectAllCheckBoxClickEvent { get; set; }
         public void SelectAllCheckBoxClick(object parameter)
         {
+            // 处理图像全选事件
             foreach(var sourceImage in SourceImages)
             {
                 sourceImage.IsSelected = (bool)SelectAllCheckBoxIsChecked;
@@ -162,6 +166,7 @@ namespace Aprheua.ViewModels
         public DelegateCommand ListBoxItemCheckBoxClickEvent { get; set; }
         public void ListBoxItemCheckBoxClick(object parameter)
         {
+            // 单个图像是否被选择的检查事件
             int selectedCount = 0;
             foreach (var sourceImage in SourceImages)
             {
@@ -182,6 +187,7 @@ namespace Aprheua.ViewModels
         public DelegateCommand NightModeToggleButtonClickEvent { get; set; }
         public void NightModeToggleButtonClick(object parameter)
         {
+            // 切换明亮/黑暗模式
             HandyControl.Themes.ThemeManager.Current.ApplicationTheme =
                 (HandyControl.Themes.ThemeManager.Current.ApplicationTheme != HandyControl.Themes.ApplicationTheme.Dark) ?
                 HandyControl.Themes.ApplicationTheme.Dark : HandyControl.Themes.ApplicationTheme.Light;
@@ -194,10 +200,11 @@ namespace Aprheua.ViewModels
             {
                 return;
             }
-
+            // 判断图像是否为空，如果为空，则按钮不应该被触发
             var categoryName = App.CreateAddCategoryWindow();
             if (!String.IsNullOrWhiteSpace(categoryName))
             {
+                // 判断创建分类的返回值是否为空，如果是空则报错
                 SelectedImage.AddCategory(Path.Combine(App.AprheuaCategoriesFolder, SelectedImage.Name, categoryName), categoryName);
                 App.Log.Info($"Add Category : {categoryName}");
                 return;
@@ -233,6 +240,7 @@ namespace Aprheua.ViewModels
 
         public MainWindow()
         {
+            // 初始化ViewModel的属性
             #region 变量 Variables
             WindowTitle = $"Aprheua - {Environment.CurrentDirectory}";
             SelectAllCheckBoxIsChecked = false;
