@@ -36,7 +36,7 @@ namespace Aprheua.Views
             public int x;
             public int y;
         }
-
+        
         private Point startPoint = new Point();
 
         private Point endPoint = new Point();
@@ -55,9 +55,9 @@ namespace Aprheua.Views
 
         private double scaleTimes = 1;
 
-        //判断图片宽距离屏幕边缘有空间还是高距离屏幕边缘有空间
+        //判断图片宽距离屏幕边缘是否有空间
         private bool widthSpace = false;
-
+        //判断图片高距离屏幕边缘是否有空间
         private bool heightSpace = false;
 
         public ClipWindow()
@@ -66,6 +66,12 @@ namespace Aprheua.Views
             DataContext = this;
         }
         private bool inClip = false;
+
+        /// <summary>
+        /// 加载截图相关信息的方法，计算使图片放大的倍率
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ClipWindow_Loaded(object sender, RoutedEventArgs e)
         {
             //Get Pixel Width and height!
@@ -96,6 +102,7 @@ namespace Aprheua.Views
             }
             App.Log.Info($"ScaleTimes : {scaleTimes}");
         }
+
         private void ClipWindow_MouseRightButtonDown(object sender, MouseButtonEventArgs e) => Close();
         private void ClipWindow_KeyDown(object sender, KeyEventArgs e)
         {
@@ -109,6 +116,10 @@ namespace Aprheua.Views
             }
         }
 
+        /// <summary>
+        /// 当鼠标移动时触发，按下左键并正向拖动时计算所选区域的width和height。
+        /// 若反向移动或未按下鼠标左键，则直接退出该方法。
+        /// </summary>
         private void Image_MouseMove(object sender, MouseEventArgs e)
         {
             if (!inClip)
@@ -120,6 +131,9 @@ namespace Aprheua.Views
             borderClipArea.Height = (int)e.GetPosition(image).Y - startPoint.y - 1;
         }
 
+        /// <summary>
+        /// 当鼠标左键按下时触发，记录按下像素点的坐标以及换算到相对于原图的像素点坐标。
+        /// </summary>
         private void Image_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             inClip = true;
@@ -134,7 +148,10 @@ namespace Aprheua.Views
             App.Log.Info($"startPoint : X : {startPoint.x} Y : {startPoint.y}");
             App.Log.Info($"startPointToImage : X : {startPointToImage.x} Y : {startPointToImage.y}");
         }
-
+        /// <summary>
+        /// 当鼠标左键抬起时触发，记录释放像素点的坐标以及换算到相对于原图的像素点坐标。
+        /// 进行误差判断，并调用CutPictuer方法在原图片中截出所选区域图像。
+        /// </summary>
         private void Image_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             endPoint.x = (int)e.GetPosition(image).X;
@@ -148,7 +165,7 @@ namespace Aprheua.Views
             App.Log.Info($"endPoint : X : {endPoint.x} Y : {endPoint.y}");
             App.Log.Info($"endPointToImage : X : {endPointToImage.x} Y : {endPointToImage.y}");
 
-            //如果截图是整个图片时的误差判断
+            //如果截图是整个图片，进行误差判断。
             if (startPointToImage.x >= -10 && startPointToImage.x <= 10) { startPointToImage.x = 0; }
             if (startPointToImage.y >= -10 && startPointToImage.y <= 10) { startPointToImage.y = 0; }
             if (endPointToImage.x - imageWidth >= -10 && endPointToImage.x - imageWidth <= 10) { endPointToImage.x = imageWidth; }
@@ -157,7 +174,7 @@ namespace Aprheua.Views
             //调试看数据
             App.Log.Info($"startPoint : X : {startPointToImage.x} Y : {startPointToImage.y}");
             App.Log.Info($"endPoint : X : {endPointToImage.x} Y : {endPointToImage.y}");
-
+            //调用裁剪方法，生成所选区域图片。
             CutPicture(startPointToImage.x,
                        startPointToImage.y,
                        endPointToImage.x - startPointToImage.x,
@@ -166,7 +183,7 @@ namespace Aprheua.Views
             Close();
         }
         /// <summary>
-        /// 图片裁剪，生成新图。
+        /// 图片裁剪，生成所选区域图片。
         /// <param name="x">修改起点x坐标</param>
         /// <param name="y">修改起点y坐标</param>
         /// <param name="width">新图宽度</param>

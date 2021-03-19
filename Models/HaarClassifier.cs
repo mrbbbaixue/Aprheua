@@ -24,6 +24,9 @@ using OpenCvSharp;
 
 namespace Aprheua.Models
 {
+    /// <summary>
+    /// 分类器处理类
+    /// </summary>
     public class HaarClassifier : NotificationObject
     {
         private bool _isSelected;
@@ -59,6 +62,10 @@ namespace Aprheua.Models
             }
         }
 
+        /// <summary>
+        /// 类的构造函数
+        /// </summary>
+        /// <param name="path">HAAR分类器数据集的路径</param>
         public HaarClassifier(string path)
         {
             Path = path;
@@ -66,6 +73,15 @@ namespace Aprheua.Models
             IsSelected = true;
             App.Log.OpenCV($"Classifier {Name} @ {Path} added.");
         }
+
+        /// <summary>
+        /// 对图片进行分类并保存的方法，返回一个列表，其中储存分类产生的所有Rect对象。
+        /// </summary>
+        /// <param name="imagePath">图像文件的路径</param>
+        /// <param name="outputFolderPath">输出分类图像块的文件夹</param>
+        /// <param name="nDetection">重复检测次数</param>
+        /// <param name="minSize">最小矩形大小</param>
+        /// <param name="maxSize">最大矩形大小</param>
         public List<Rect> StartHaarClassifier(string imagePath, string outputFolderPath, int nDetection, int minSize, int maxSize)
         {
             var count = 0;
@@ -85,6 +101,13 @@ namespace Aprheua.Models
             srcImage.Dispose();
             return OutputImageBlockRects;
         }
+
+        /// <summary>
+        /// 在图像中勾出所有分类产生的图像块。
+        /// </summary>
+        /// <param name="rects">要在图像中勾出的矩形列表</param>
+        /// <param name="imagePath">图像文件的路径</param>
+        /// <param name="outputPath">保存勾出矩形块之后的图像路径</param>
         public static void WriteRectsToImage(List<Rect> rects, string imagePath ,string outputPath)
         {
             Mat srcImage = new Mat(imagePath, ImreadModes.AnyColor);
