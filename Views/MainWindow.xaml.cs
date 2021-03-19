@@ -23,6 +23,7 @@ namespace Aprheua.Views
         public MainWindow()
         {
             InitializeComponent();
+            // 将初始化后的﻿MainWindowViewModel与当前的MainWindow绑定
             DataContext = App.MainWindowViewModel;
         }
     }

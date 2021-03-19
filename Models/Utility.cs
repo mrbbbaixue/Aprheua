@@ -6,12 +6,11 @@
     Author:        Chenhao Wang (MrBBBaiXue@github.com)
                    Boyan Wang (JingNianNian@github.com)
 
-    Version:       2.3.3.3
+    Version:       1.0.0.0
 
-    Date:          2021-03-16
+    Date:          2021-03-19
 
-    Description:   Utility 工具类，有来自作者其他Private Repo中的代
-                   码。
+    Description:   Utility 工具类。
 
     Classes:       LogWriter
                    // 用于记录日志并输出到文件和控制台窗口。
@@ -33,15 +32,31 @@ using System.Security.Cryptography;
 
 namespace Aprheua.Models
 {
+    /// <summary>
+    /// 日志记录类
+    /// 1、写出日志文件并将其输出到文件和控制台
+    /// 2、自动格式化日志字符串
+    /// </summary>
     public class LogWriter
     {
         private string LogFilePath { get; }
         private StreamWriter LogStreamWriter { get; set; }
+
+        /// <summary>
+        /// 类的构造函数
+        /// </summary>
+        /// <param name="logFilePath">日志文件的路径</param>
         public LogWriter(string logFilePath)
         {
             LogFilePath = System.IO.Path.Combine(logFilePath, $"{App.LogFilePrefix}{Utility.GetTimeStamp()}.log");
         }
 
+        /// <summary>
+        /// 私有的写日志方法
+        /// </summary>
+        /// <param name="logContent">日志字符串内容</param>
+        /// <param name="logType">日志类型：Info, Error, OpenCV</param>
+        /// <returns>无</returns>
         private void Write(string logContent, LogType logType)
         {
             if (!string.IsNullOrEmpty(LogFilePath) && !string.IsNullOrEmpty(logContent))
@@ -63,21 +78,42 @@ namespace Aprheua.Models
                 throw new Exception("Please Check The LogPath Or inputMessage!");
             }
         }
+        /// <summary>
+        /// 公开写日志方法，日志等级为Info
+        /// </summary>
+        /// <param name="content">日志内容</param>
+        /// <returns>无</returns>
         public void Info(string content)
         {
             Write(content, LogType.Info);
             return;
         }
+
+        /// <summary>
+        /// 公开写日志方法，日志等级为Error
+        /// </summary>
+        /// <param name="content">日志内容</param>
+        /// <returns>无</returns>
         public void Error(string content)
         {
             Write(content, LogType.Error);
             return;
         }
+
+        /// <summary>
+        /// 公开写日志方法，日志等级为OpenCV
+        /// </summary>
+        /// <param name="content">日志内容</param>
+        /// <returns>无</returns>
         public void OpenCV(string content)
         {
             Write(content, LogType.OpenCV);
             return;
         }
+        /// <summary>
+        /// 使用记事本打开日志文件
+        /// </summary>
+        /// <returns>无</returns>
         public void OpenInNotepad()
         {
             System.Diagnostics.Process.Start("notepad", LogFilePath);
@@ -168,6 +204,11 @@ namespace Aprheua.Models
             }
         }
     }
+
+    /// <summary>
+    /// 图像分析静态工具类
+    /// 1、获得图像的最多使用的颜色
+    /// </summary>
     public static class ImageAnalysis
     {
         public static List<Color> TenMostUsedColors { get; private set; }
@@ -178,7 +219,11 @@ namespace Aprheua.Models
         private static int pixelColor;
 
         private static Dictionary<int, int> dctColorIncidence;
-
+        /// <summary>
+        /// 获得图像最多使用颜色的静态方法
+        /// </summary>
+        /// <param name="imagePath">图像文件的路径</param>
+        /// <returns>最多使用颜色的颜色值</returns>
         public static Color GetMostUsedColor(string imagePath)
         {
             if (!(Bitmap.FromFile(imagePath) is Bitmap bMap))
@@ -189,7 +234,12 @@ namespace Aprheua.Models
             GetMostUsedColor(bMap);
             return MostUsedColor;
         }
-        public static void GetMostUsedColor(Bitmap theBitMap)
+        /// <summary>
+        /// 获得图像最多使用颜色的静态方法
+        /// </summary>
+        /// <param name="theBitMap">位图对象</param>
+        /// <returns>无</returns>
+        private static void GetMostUsedColor(Bitmap theBitMap)
         {
             TenMostUsedColors = new List<Color>();
             TenMostUsedColorIncidences = new List<int>();
@@ -222,6 +272,13 @@ namespace Aprheua.Models
             MostUsedColorIncidence = dctSortedByValueHighToLow.First().Value;
         }
     }
+    /// <summary>
+    /// 杂项静态工具类
+    /// 1、获得文件哈希值
+    /// 2、获得时间戳
+    /// 3、删除文件夹
+    /// 4、清理文件夹内容
+    /// </summary>
     public static class Utility
     {
         public static string GetFileHash(string path)
