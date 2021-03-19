@@ -36,6 +36,7 @@ namespace Aprheua
         public static string AprheuaLogsFolder => Path.Combine(AprheuaTempFolder, "Logs");
         public static string AprheuaClassifiersFolder => Path.Combine(Environment.CurrentDirectory, "classifiers");
         public static string AprheuaResourceFolder => Path.Combine(Environment.CurrentDirectory,"resources");
+        public static string AprheuaDefaultImage => Path.Combine(AprheuaResourceFolder, "Aprheua-default.png");
         public static string LogFilePrefix => "Aprheua-log-";
         public static Models.LogWriter Log { get; set; }
         public static ViewModels.MainWindow MainWindowViewModel { get; set; }
