@@ -304,7 +304,7 @@
                                                                     </MenuItem>
                                                                 </ContextMenu>
                                                             </Border.ContextMenu>
-                                                            <Image Source="{Binding BlockPath}"
+                                                            <viewmodels:DisposableImage Source="{Binding BlockPath}"
                                                                Width="78"
                                                                Height="78"
                                                                />

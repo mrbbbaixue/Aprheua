@@ -45,20 +45,24 @@ namespace Aprheua
         public static Views.AnalyseWindow AnalyseWindowWindow { get; set; }
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            // 清理：如果之前没删，记得删了...
-            if (Directory.Exists(AprheuaTempFolder))
-            {
-                Models.Utility.DeleteFolder(AprheuaTempFolder);
-            }
+
             // 第一步 : 创建程序的临时文件夹，用于存放各种缩略图，图片块和日志。
             // If Not Exist then Create (Consider using Delegate)
             if (!Directory.Exists(AprheuaTempFolder))
             {
                 Directory.CreateDirectory(AprheuaTempFolder);
             }
+            if (Directory.Exists(AprheuaThumbImagesFolder))
+            {
+                Models.Utility.DeleteFolder(AprheuaThumbImagesFolder);
+            }
             if (!Directory.Exists(AprheuaThumbImagesFolder))
             {
                 Directory.CreateDirectory(AprheuaThumbImagesFolder);
+            }
+            if (Directory.Exists(AprheuaOverlayImagesFolder))
+            {
+                Models.Utility.DeleteFolder(AprheuaOverlayImagesFolder);
             }
             if (!Directory.Exists(AprheuaOverlayImagesFolder))
             {
@@ -78,6 +82,7 @@ namespace Aprheua
                 .OrderByDescending(x => x);
             foreach (var file in files.Skip(4))
             {
+                // 如果Log文件超过5个，最早的会被删除
                 try
                 {
                     File.Delete(file);
@@ -99,11 +104,16 @@ namespace Aprheua
             Log.Info("MainWindowViewModel is successfully initialized.");
             AnalyseWindowViewModel = new ViewModels.AnalyseWindow();
             Log.Info("AnalyseWindowViewModel is successfully initialized.");
-            //Final Step : Open MainWindow
+            //最后一步 : 创建MainWindow
             CreateMainWindow();
         }
         private void Application_Exit(object sender, ExitEventArgs e)
         {
+            //程序退出 清理Categories文件夹
+            if (Directory.Exists(AprheuaCategoriesFolder))
+            {
+                Models.Utility.DeleteFolder(AprheuaCategoriesFolder);
+            }
             Current.Shutdown();
         }
         public static void CreateMainWindow()

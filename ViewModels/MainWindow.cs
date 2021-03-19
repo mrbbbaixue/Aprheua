@@ -75,20 +75,52 @@ namespace Aprheua.ViewModels
             }
         }
 
-        public Models.OriginImage SelectedImage => (SelectedIndex >= 0) ? SourceImages[SelectedIndex] : null;
+        //ImageViewer的Bug
+        public Models.OriginImage SelectedImage
+        {
+            set
+            {
+
+            }
+            get
+            {
+                if (SelectedIndex >= 0 && SourceImages.Count > 0)
+                {
+                    RaisePropertyChanged("SelectedImage");
+                    return SourceImages[SelectedIndex];
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
 
         public string ImageViewerPath
         {
+            set
+            {
+
+            }
             get
             {
                 if (SelectedImage != null)
                 {
-                    return (ShowBlockOverlayCheckBoxIsChecked) ? SourceImages[SelectedIndex].OverlayImagePath : SourceImages[SelectedIndex].Path;
+                    if (ShowBlockOverlayCheckBoxIsChecked)
+                    {
+                        return SelectedImage.OverlayImagePath;
+                    }
+                    else
+                    {
+                        return SelectedImage.Path;
+                    }
                 }
-                return null;
+                else
+                {
+                    return null;
+                }
             }
         }
-
         #endregion
 
         #region 数据 Datas
@@ -100,7 +132,7 @@ namespace Aprheua.ViewModels
         public void Import(object parameter)
         {
             string[] paths;
-            //打开文件（允许多选）
+            // 打开文件（允许多选）
             var dialog = new Microsoft.Win32.OpenFileDialog
             {
                 Multiselect = true,
@@ -112,6 +144,7 @@ namespace Aprheua.ViewModels
                 paths = dialog.FileNames;
                 foreach (string path in paths)
                 {
+                    // 向SourceImages中逐个添加SourceImage对象。
                     var sourceImage = new Models.OriginImage(path, ListBoxItemCheckBoxClickEvent, RemoveImageClickEvent);
                     SourceImages.Add(sourceImage);
                 }
@@ -123,7 +156,7 @@ namespace Aprheua.ViewModels
         public void Analyse(object parameter)
         {
             App.CreateAnalyseWindow();
-            App.Log.Info("CreateAnalyseWindow returned");
+            App.Log.Info("CreateAnalyseWindow process completed.");
         }
         #endregion
 
@@ -185,9 +218,11 @@ namespace Aprheua.ViewModels
         public void RemoveImageClick(object parameter)
         {
             var index = SelectedIndex;
-            //Models.Utility.DeleteFolder(System.IO.Path.Combine(App.AprheuaCategoriesFolder, SourceImages[index].Name));
+            Models.Utility.DeleteFolder(System.IO.Path.Combine(App.AprheuaCategoriesFolder, SourceImages[index].Name));
             SourceImages.Remove(SourceImages[index]);
+            // 需要更新多选框的状态
             ListBoxItemCheckBoxClickEvent.Execute(this);
+            ShowBlockOverlayCheckBoxIsChecked = false;
         }
 
         #endregion
@@ -195,7 +230,7 @@ namespace Aprheua.ViewModels
         public MainWindow()
         {
             #region 变量 Variables
-            WindowTitle = $"Aprheua 脸谱分割展示程序 - {Environment.CurrentDirectory}";
+            WindowTitle = $"Aprheua - {Environment.CurrentDirectory}";
             SelectAllCheckBoxIsChecked = false;
             SelectedIndex = 0;
             #endregion
@@ -215,15 +250,7 @@ namespace Aprheua.ViewModels
             NightModeToggleButtonClickEvent = new DelegateCommand(new Action<object>(NightModeToggleButtonClick));
             AddCategoryClickEvent = new DelegateCommand(new Action<object>(AddCategory));
             RemoveImageClickEvent = new DelegateCommand(new Action<object>(RemoveImageClick));
-            #endregion
-
-            //ToDo : 测试用，添加默认图像
-            var testImage = new Models.OriginImage(Path.Combine(App.AprheuaResourceFolder, "default-SelectedImage.png"), ListBoxItemCheckBoxClickEvent, RemoveImageClickEvent);
-            for (int i =1; i <= 3; i++)
-            {
-                testImage.AddCategory(Path.Combine(App.AprheuaCategoriesFolder, testImage.Name, $"Test {i}"), $"Test {i}");
-            }
-            SourceImages.Add(testImage);
+            #endregion    
         }
     }
 }

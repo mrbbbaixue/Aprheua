@@ -104,10 +104,9 @@ namespace Aprheua.Models
                     if (block.BlockPath == path)
                     {
                         var deleteBlockPath = block.BlockPath;
-                        block.BlockPath = "";
-                        GC.Collect();
-                        //System.IO.File.Delete(deleteBlockPath);
                         ImageBlocks.Remove(block);
+                        GC.Collect();
+                        System.IO.File.Delete(deleteBlockPath);
                         break;
                     }
                 }

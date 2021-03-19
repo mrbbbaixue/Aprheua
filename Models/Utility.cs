@@ -23,7 +23,6 @@
 
 ****************************************************************/
 
-using OpenCvSharp;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -169,7 +168,6 @@ namespace Aprheua.Models
             }
         }
     }
-
     public static class ImageAnalysis
     {
         public static List<Color> TenMostUsedColors { get; private set; }
@@ -183,8 +181,11 @@ namespace Aprheua.Models
 
         public static Color GetMostUsedColor(string imagePath)
         {
-            Bitmap bMap = Bitmap.FromFile(imagePath) as Bitmap;
-            if (bMap == null) throw new FileNotFoundException("Cannot open picture file for GetMostUsedColor.");
+            if (!(Bitmap.FromFile(imagePath) is Bitmap bMap))
+            {
+                throw new FileNotFoundException("Cannot open picture file for GetMostUsedColor.");
+            }
+
             GetMostUsedColor(bMap);
             return MostUsedColor;
         }

@@ -16,13 +16,9 @@
 
 ****************************************************************/
 
-using System;
 using System.IO;
-using System.Linq;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 
 namespace Aprheua.Views
 {
@@ -140,7 +136,7 @@ namespace Aprheua.Views
                        endPointToImage.x - startPointToImage.x,
                        endPointToImage.y - startPointToImage.y
                        );
-            this.Close();
+            Close();
         }
         /// <summary>
         /// 图片裁剪，生成新图。

@@ -10,7 +10,7 @@ using System.Windows;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("?")]
 [assembly: AssemblyProduct("Aprheua")]
-[assembly: AssemblyCopyright("Copyright ©  2021 Aprheua")]
+[assembly: AssemblyCopyright("Copyright © 2021 Aprheua")]
 [assembly: AssemblyTrademark("Aprheua™")]
 [assembly: AssemblyCulture("")]
 
@@ -49,5 +49,5 @@ using System.Windows;
 //可以指定所有这些值，也可以使用“生成号”和“修订号”的默认值
 //通过使用 "*"，如下所示:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("2.3.3.3")]
-[assembly: AssemblyFileVersion("6.6.6.6")]
+[assembly: AssemblyVersion("2.5.4.0")]
+[assembly: AssemblyFileVersion("2.5.4.0")]
