@@ -20,6 +20,9 @@
 
 namespace Aprheua.Models
 {
+    /// <summary>
+    /// 图像块处理类
+    /// </summary>
     public class ImageBlock : ViewModels.NotificationObject
     {
         private string _blockPath;
@@ -33,8 +36,20 @@ namespace Aprheua.Models
             }
         }
         public Commands.DelegateCommand RemoveBlockClickEvent { get; set; }
+        public Commands.DelegateCommand OpenBlockInViewClickEvent { get; set; }
+        public void OpenBlockInViewClick(object parameter)
+        {
+            new HandyControl.Controls.ImageBrowser(new System.Uri(BlockPath)).Show();
+        }
+
+        /// <summary>
+        /// 类的构造函数
+        /// </summary>
+        /// <param name="blockPath">图像块路径</param>
+        /// <param name="removeBlockClickEvent">删除图像块的委托事件</param>
         public ImageBlock(string blockPath, Commands.DelegateCommand removeBlockClickEvent)
         {
+            OpenBlockInViewClickEvent = new Commands.DelegateCommand(new System.Action<object>(OpenBlockInViewClick));
             RemoveBlockClickEvent = removeBlockClickEvent;
             BlockPath = blockPath;
         }

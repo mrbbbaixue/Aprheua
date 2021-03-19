@@ -6,12 +6,11 @@
     Author:        Chenhao Wang (MrBBBaiXue@github.com)
                    Boyan Wang (JingNianNian@github.com)
 
-    Version:       2.3.3.3
+    Version:       1.0.0.0
 
-    Date:          2021-03-16
+    Date:          2021-03-19
 
-    Description:   Utility 工具类，有来自作者其他Private Repo中的代
-                   码。
+    Description:   Utility 工具类。
 
     Classes:       LogWriter
                    // 用于记录日志并输出到文件和控制台窗口。
@@ -23,7 +22,6 @@
 
 ****************************************************************/
 
-using OpenCvSharp;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -34,15 +32,31 @@ using System.Security.Cryptography;
 
 namespace Aprheua.Models
 {
+    /// <summary>
+    /// 日志记录类
+    /// 1、写出日志文件并将其输出到文件和控制台
+    /// 2、自动格式化日志字符串
+    /// </summary>
     public class LogWriter
     {
         private string LogFilePath { get; }
         private StreamWriter LogStreamWriter { get; set; }
+
+        /// <summary>
+        /// 类的构造函数
+        /// </summary>
+        /// <param name="logFilePath">日志文件的路径</param>
         public LogWriter(string logFilePath)
         {
             LogFilePath = System.IO.Path.Combine(logFilePath, $"{App.LogFilePrefix}{Utility.GetTimeStamp()}.log");
         }
 
+        /// <summary>
+        /// 私有的写日志方法
+        /// </summary>
+        /// <param name="logContent">日志字符串内容</param>
+        /// <param name="logType">日志类型：Info, Error, OpenCV</param>
+        /// <returns>无</returns>
         private void Write(string logContent, LogType logType)
         {
             if (!string.IsNullOrEmpty(LogFilePath) && !string.IsNullOrEmpty(logContent))
@@ -64,21 +78,42 @@ namespace Aprheua.Models
                 throw new Exception("Please Check The LogPath Or inputMessage!");
             }
         }
+        /// <summary>
+        /// 公开写日志方法，日志等级为Info
+        /// </summary>
+        /// <param name="content">日志内容</param>
+        /// <returns>无</returns>
         public void Info(string content)
         {
             Write(content, LogType.Info);
             return;
         }
+
+        /// <summary>
+        /// 公开写日志方法，日志等级为Error
+        /// </summary>
+        /// <param name="content">日志内容</param>
+        /// <returns>无</returns>
         public void Error(string content)
         {
             Write(content, LogType.Error);
             return;
         }
+
+        /// <summary>
+        /// 公开写日志方法，日志等级为OpenCV
+        /// </summary>
+        /// <param name="content">日志内容</param>
+        /// <returns>无</returns>
         public void OpenCV(string content)
         {
             Write(content, LogType.OpenCV);
             return;
         }
+        /// <summary>
+        /// 使用记事本打开日志文件
+        /// </summary>
+        /// <returns>无</returns>
         public void OpenInNotepad()
         {
             System.Diagnostics.Process.Start("notepad", LogFilePath);
@@ -96,7 +131,7 @@ namespace Aprheua.Models
     /// 1、生成缩略图片或按照比例或最大像素改变图片的大小和画质
     /// 2、将生成的缩略图放到指定的目录下
     /// </summary>
-    public class ThumbImage
+    public class ThumbImage : IDisposable
     {
         public Image ResourceImage;
         private int ImageWidth;
@@ -168,8 +203,17 @@ namespace Aprheua.Models
                 return false;
             }
         }
+        public void Dispose()
+        {
+            //释放对象
+            ResourceImage.Dispose();
+        }
     }
 
+    /// <summary>
+    /// 图像分析静态工具类
+    /// 1、获得图像的最多使用的颜色
+    /// </summary>
     public static class ImageAnalysis
     {
         public static List<Color> TenMostUsedColors { get; private set; }
@@ -180,15 +224,27 @@ namespace Aprheua.Models
         private static int pixelColor;
 
         private static Dictionary<int, int> dctColorIncidence;
-
+        /// <summary>
+        /// 获得图像最多使用颜色的静态方法
+        /// </summary>
+        /// <param name="imagePath">图像文件的路径</param>
+        /// <returns>最多使用颜色的颜色值</returns>
         public static Color GetMostUsedColor(string imagePath)
         {
-            Bitmap bMap = Bitmap.FromFile(imagePath) as Bitmap;
-            if (bMap == null) throw new FileNotFoundException("Cannot open picture file for GetMostUsedColor.");
+            if (!(Bitmap.FromFile(imagePath) is Bitmap bMap))
+            {
+                throw new FileNotFoundException("Cannot open picture file for GetMostUsedColor.");
+            }
+
             GetMostUsedColor(bMap);
             return MostUsedColor;
         }
-        public static void GetMostUsedColor(Bitmap theBitMap)
+        /// <summary>
+        /// 获得图像最多使用颜色的静态方法
+        /// </summary>
+        /// <param name="theBitMap">位图对象</param>
+        /// <returns>无</returns>
+        private static void GetMostUsedColor(Bitmap theBitMap)
         {
             TenMostUsedColors = new List<Color>();
             TenMostUsedColorIncidences = new List<int>();
@@ -221,8 +277,21 @@ namespace Aprheua.Models
             MostUsedColorIncidence = dctSortedByValueHighToLow.First().Value;
         }
     }
+    /// <summary>
+    /// 杂项静态工具类
+    /// 1、获得文件哈希值
+    /// 2、获得时间戳
+    /// 3、删除文件夹
+    /// 4、清理文件夹内容
+    /// 5、复制文件夹中的所有内容
+    /// </summary>
     public static class Utility
     {
+        /// <summary>
+        /// 获得文件哈希值
+        /// </summary>
+        /// <param name="path">文件路径</param>
+        /// <returns>文件的哈希值</returns>
         public static string GetFileHash(string path)
         {
             var hash = SHA1.Create();
@@ -231,12 +300,21 @@ namespace Aprheua.Models
             stream.Close();
             return BitConverter.ToString(hashByte).Replace("-", "");
         }
+        /// <summary>
+        /// 获得时间戳
+        /// </summary>
+        /// <returns>当前时间戳</returns>
         public static long GetTimeStamp()
         {
             System.DateTime startTime = TimeZone.CurrentTimeZone.ToLocalTime(new System.DateTime(1970, 1, 1));
             long timeStamp = (long)(DateTime.Now - startTime).TotalSeconds;
             return timeStamp;
         }
+        /// <summary>
+        /// 删除文件夹
+        /// </summary>
+        /// <param name="directoryPath">文件夹路径</param>
+        /// <returns>无</returns>
         public static void DeleteFolder(string directoryPath)
         {
             if (!Directory.Exists(directoryPath))
@@ -246,6 +324,12 @@ namespace Aprheua.Models
             ClearFolderContent(directoryPath, _ => false);
             Directory.Delete(directoryPath);
         }
+        /// <summary>
+        /// 清理文件夹内容
+        /// </summary>
+        /// <param name="directoryPath">文件夹路径</param>
+        /// <param name="keep">要保留的文件列表</param>
+        /// <returns>无</returns>
         private static void ClearFolderContent(string directoryPath, Func<FileSystemInfo, bool> keep)
         {
             var directory = new DirectoryInfo(directoryPath);
@@ -256,7 +340,7 @@ namespace Aprheua.Models
                     ClearFolderContent(info.FullName, keep);
                     if (!directoryInfo.EnumerateFileSystemInfos().Any())
                     {
-                        // delete directory if it's empty
+                        // 如果文件夹是空的，直接删除
                         directoryInfo.Delete();
                     }
                 }
@@ -274,6 +358,30 @@ namespace Aprheua.Models
                 {
                     throw new Exception($"Unexpected FileSystemInfo type {info.GetType()}");
                 }
+            }
+        }
+        /// <summary>
+        /// 复制文件夹中的所有内容
+        /// </summary>
+        /// <param name="sourcePath">源目录</param>
+        /// <param name="targetPath">目标目录</param>
+        public static void CopyFolder(string sourcePath, string targetPath)
+        {
+            if (!Directory.Exists(targetPath))
+            {
+                Directory.CreateDirectory(targetPath);
+            }
+            foreach (string file in Directory.GetFiles(sourcePath))
+            {
+                string pFilePath = Path.Combine(targetPath, Path.GetFileName(file));
+                if (File.Exists(pFilePath))
+                    continue;
+                File.Copy(file, pFilePath, true);
+            }
+            string[] dirs = Directory.GetDirectories(sourcePath);
+            foreach (string dir in dirs)
+            {
+                CopyFolder(dir, Path.Combine(targetPath, Path.GetFileName(dir)));
             }
         }
     }

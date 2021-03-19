@@ -8,21 +8,38 @@
         Title="ClipWindow"
         WindowState="Maximized"
         WindowStyle="None"
-        Loaded="ClipWindow_Loaded"
         Background="#BF000000"
         AllowsTransparency="True"
         MouseRightButtonDown="ClipWindow_MouseRightButtonDown"
         KeyDown="ClipWindow_KeyDown"
         Topmost="True" TabIndex="0"
+        x:Name="clipWindow"
+        Loaded="ClipWindow_Loaded"
         >
     <Grid>
-        <Image x:Name="image" Source="{Binding SourceImagePath}"/>
+        <Grid x:Name="image"
+              MouseLeftButtonDown="Image_MouseLeftButtonDown"
+              MouseMove="Image_MouseMove"
+              MouseLeftButtonUp="Image_MouseLeftButtonUp"
+              >
+            <Grid.Background>
+                <ImageBrush ImageSource="{Binding SourceImagePath}" Stretch="Uniform"/>
+            </Grid.Background>
+            <Border x:Name="borderClipArea"
+                Background="#7F99B4D1"
+                BorderThickness="1"
+                HorizontalAlignment="Left"             
+                Margin="0,0,0,0"
+                VerticalAlignment="Top"                
+                BorderBrush="White"
+                />
+        </Grid>
         <Label Height="30"
                HorizontalAlignment="Left"
                VerticalAlignment="Top"
                Margin="20,20,0,0"
                Style="{StaticResource LabelPrimary}"
-               Content="回车确认，右键或Esc退出截图。"
+               Content="拖动截图，鼠标右键或按Esc退出。"
                />
     </Grid>
 </Window>

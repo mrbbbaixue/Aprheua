@@ -36,7 +36,7 @@ namespace Aprheua.Views
             IsOKClicked = false;
             DataContext = this;
         }
-
+        // 只有当点击的是确定时，才会触发添加，否则略过。
         private void OkButton_Click(object sender, RoutedEventArgs e)
         {
             IsOKClicked = true;

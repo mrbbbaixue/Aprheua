@@ -205,6 +205,7 @@
                 hc:IconElement.Geometry="{StaticResource SaveGeometry}"
                 hc:IconElement.Height="14"
                 hc:IconElement.Width="14"
+                Command="{Binding ExportCommand}"
                 />
             <Border Margin="0,55,20,55"
                     Background="{DynamicResource RegionBrush}"
@@ -286,7 +287,25 @@
                                                                 BorderThickness="2"
                                                                 CornerRadius="2"
                                                                 >
-                                                            <Image Source="{Binding BlockPath}"
+                                                            <Border.ContextMenu>
+                                                                <ContextMenu>
+                                                                    <MenuItem Header="删除">
+                                                                        <i:Interaction.Triggers>
+                                                                            <i:EventTrigger EventName="Click">
+                                                                                <i:InvokeCommandAction Command="{Binding RemoveBlockClickEvent}"/>
+                                                                            </i:EventTrigger>
+                                                                        </i:Interaction.Triggers>
+                                                                    </MenuItem>
+                                                                    <MenuItem Header="用图片查看器打开">
+                                                                        <i:Interaction.Triggers>
+                                                                            <i:EventTrigger EventName="Click">
+                                                                                <i:InvokeCommandAction Command="{Binding OpenBlockInViewClickEvent}"/>
+                                                                            </i:EventTrigger>
+                                                                        </i:Interaction.Triggers>
+                                                                    </MenuItem>
+                                                                </ContextMenu>
+                                                            </Border.ContextMenu>
+                                                            <viewmodels:DisposableImage Source="{Binding BlockPath}"
                                                                Width="78"
                                                                Height="78"
                                                                />
