@@ -39,7 +39,7 @@
                VerticalAlignment="Top"
                Margin="20,20,0,0"
                Style="{StaticResource LabelPrimary}"
-               Content="画区域截图。"
+               Content="拖动截图，鼠标右键或按Esc退出。"
                />
     </Grid>
 </Window>

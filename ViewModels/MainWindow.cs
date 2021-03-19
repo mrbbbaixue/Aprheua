@@ -60,6 +60,9 @@ namespace Aprheua.ViewModels
                 RaisePropertyChanged("SelectedIndex");
                 RaisePropertyChanged("SelectedImage");
                 RaisePropertyChanged("ImageViewerPath");
+                // 每次切换到新图片的时候会将是否选择分割块重置，防止用户困惑
+                ShowBlockOverlayCheckBoxIsChecked = false;
+                RaisePropertyChanged("ShowBlockOverlayCheckBoxIsChecked");
             }
         }
 
@@ -74,28 +77,11 @@ namespace Aprheua.ViewModels
                 RaisePropertyChanged("ImageViewerPath");
             }
         }
-        public Models.OriginImage SelectedImage => (SelectedIndex >= 0 && SourceImages.Count > 0) ? SourceImages[SelectedIndex] : null;
-        public string ImageViewerPath
-        {
-            get
-            {
-                if (SelectedImage != null)
-                {
-                    if (ShowBlockOverlayCheckBoxIsChecked)
-                    {
-                        return SelectedImage.OverlayImagePath;
-                    }
-                    else
-                    {
-                        return SelectedImage.Path;
-                    }
-                }
-                else
-                {
-                    return null;
-                }
-            }
-        }
+        public Models.OriginImage SelectedImage => (SourceImages.Count > 0) ? SourceImages[SelectedIndex] : null;
+        public string ImageViewerPath => (SelectedImage != null) ? 
+            ((ShowBlockOverlayCheckBoxIsChecked) ? SelectedImage.OverlayImagePath : SelectedImage.Path) :
+            App.AprheuaDefaultImage;
+
         #endregion
 
         #region 数据 Datas
@@ -123,15 +109,44 @@ namespace Aprheua.ViewModels
                     var sourceImage = new Models.OriginImage(path, ListBoxItemCheckBoxClickEvent, RemoveImageClickEvent);
                     SourceImages.Add(sourceImage);
                 }
+                SelectedIndex = 0;
+
                 ListBoxItemCheckBoxClickEvent.Execute(this);
             }
+            GC.Collect();
         }
 
         public DelegateCommand AnalyseCommand { get; set; }
         public void Analyse(object parameter)
         {
+            int selectedCount = 0;
+            bool isOnlyCurrentImage = false;
+            foreach (var sourceImage in SourceImages)
+            {
+                selectedCount += sourceImage.IsSelected ? 1 : 0;
+            }
+            if (selectedCount == 0)
+            {
+                // 目前似乎用户没有使用多选功能
+                // 那么应该自动选择当前查看的图片，在分析完成之后再取消勾选
+                if (SourceImages.Count == 0)
+                {
+                    return;
+                }
+                SourceImages[SelectedIndex].IsSelected = true;
+                isOnlyCurrentImage = true;
+                App.Log.Info($"isOnlyCurrentImage : {isOnlyCurrentImage}.");
+            }
             App.CreateAnalyseWindow();
+            if (isOnlyCurrentImage)
+            {
+                SourceImages[SelectedIndex].IsSelected = false;
+                // 取消勾选
+                App.Log.Info("CurrentImage unselected!");
+            }
             App.Log.Info("CreateAnalyseWindow process completed.");
+            // 完整垃圾清理
+            GC.Collect();
         }
         #endregion
 
@@ -193,11 +208,25 @@ namespace Aprheua.ViewModels
         public void RemoveImageClick(object parameter)
         {
             var index = SelectedIndex;
+            if (index == 0 && SourceImages.Count > 1)
+            {
+                SelectedIndex++;
+            }
+            else if (index == SourceImages.Count - 1 && SourceImages.Count > 1)
+            {
+                SelectedIndex--;
+            }
+            else if (SourceImages.Count - 1 > 0)
+            {
+                SelectedIndex++;
+            }
             Models.Utility.DeleteFolder(System.IO.Path.Combine(App.AprheuaCategoriesFolder, SourceImages[index].Name));
             SourceImages.Remove(SourceImages[index]);
-            // 需要更新多选框的状态
+            // 在删除图片之后更新多选框的状态
             ListBoxItemCheckBoxClickEvent.Execute(this);
             ShowBlockOverlayCheckBoxIsChecked = false;
+            // 手动触发GC
+            GC.Collect();
         }
 
         #endregion
