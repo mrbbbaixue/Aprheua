@@ -1,4 +1,4 @@
-![](https://img.imgdb.cn/item/60505fe55aedab222c257252.png)
+![Aprheua-Logo-Square-100px](https://user-images.githubusercontent.com/17956756/148714728-e693ac79-8c6d-4aeb-96a9-da0ab45d3b6b.png)
 
 # Aprheua
 
