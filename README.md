@@ -1,5 +1,9 @@
 ![Aprheua-Logo-Square-100px](https://user-images.githubusercontent.com/17956756/148714728-e693ac79-8c6d-4aeb-96a9-da0ab45d3b6b.png)
 
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/MrBBBaiXue/Aprheua)
+![GitHub all releases](https://img.shields.io/github/downloads/MrBBBaiXue/Aprheua/total)
+![GitHub](https://img.shields.io/github/license/MrBBBaiXue/Aprheua)
+
 # Aprheua
 
 A GUI Interface for OpenCV Sharp HAAR Classifier, with Opera Classifier Data built-in.
